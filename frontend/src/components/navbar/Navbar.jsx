@@ -40,36 +40,45 @@ export default function Navbar() {
   return (
     <nav>
       <ul className="flex bg-navbar justify-between px-4 py-1 items-center">
-        <NavItem to={"/"} className="flex items-center space-x-1">
-          <img src={logo} alt="Logo" className="h-12" />
-          <h1>Capy Shop</h1>
-        </NavItem>
+        <div className="flex items-center space-x-6">
+          <NavItem to={"/"} className="flex items-center space-x-1">
+            <img src={logo} alt="Logo" className="h-12" />
+            <h1>Capy Shop</h1>
+          </NavItem>
+          <Dropdown
+            title="Menu"
+            className="absolute flex flex-col mt-1 bg-navbar p-4 rounded-md"
+            open={open}
+            handleClick={handleClick}
+          >
+            {arr.map((item) => (
+              <DropdownItem
+                key={item}
+                path={`/${item}`}
+                open={open}
+                handleClick={handleClick}
+                className="capitalize py-0.5 "
+              >
+                {item}
+              </DropdownItem>
+            ))}
+          </Dropdown>
+        </div>
         <input
           type={"text"}
           placeholder="Search"
           className="w-96 h-10 rounded-md border-0"
         />
-        <Dropdown
-          title="Menu"
-          className="absolute flex flex-col mt-1 bg-navbar p-4 rounded-md"
-          open={open}
-          handleClick={handleClick}
-        >
-          {arr.map((item) => (
-            <DropdownItem
-              key={item}
-              path={`/${item}`}
-              open={open}
-              handleClick={handleClick}
-              className="capitalize py-0.5 "
-            >
-              {item}
-            </DropdownItem>
-          ))}
-        </Dropdown>
-        <NavItem to={"/cart"}>
-          <FaCartShopping size={28} />
-        </NavItem>
+        <div className="flex items-center space-x-6">
+          <NavItem
+            to={"/cart"}
+            count={2}
+            className="flex items-center space-x-1 relative p-2"
+          >
+            <FaCartShopping size={28} />
+          </NavItem>
+          <NavItem to={"/login"}>Login</NavItem>
+        </div>
       </ul>
     </nav>
   );
