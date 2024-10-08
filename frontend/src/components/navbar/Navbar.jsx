@@ -1,4 +1,4 @@
-import logo from "../../../public/logo.png";
+import logo from "/logo.png";
 import { FaCartShopping } from "react-icons/fa6";
 import NavItem from "./NavItem.jsx";
 import { useState } from "react";
