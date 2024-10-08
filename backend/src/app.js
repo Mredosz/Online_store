@@ -6,11 +6,13 @@ const app = express();
 
 const productRoutes = require("./routes/products");
 const categoryRouter = require("./routes/categories");
+const reviewRouter = require("./routes/reviews");
 
 app.use(express.json());
 
 app.use("/products", productRoutes);
 app.use("/category", categoryRouter);
+app.use("/review", reviewRouter);
 
 connectDb()
   .then(() => {

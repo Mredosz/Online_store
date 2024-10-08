@@ -41,7 +41,7 @@ exports.addProduct = async (req, res) => {
       }
     });
     await newProduct.save();
-    res.status(201).json(newProduct);
+    res.status(201).json("Created");
   } catch (e) {
     res.status(409).json({ message: e.message });
   }

@@ -20,6 +20,7 @@ exports.addCategory = async (req, res) => {
       }
     });
     await newCategory.save();
+    res.status(201).json("Created");
   } catch (e) {
     res.status(409).json({ message: e.message });
   }
