@@ -5,10 +5,12 @@ const connectDb = require("./util/database");
 const app = express();
 
 const productRoutes = require("./routes/products");
+const categoryRouter = require("./routes/categories");
 
 app.use(express.json());
 
 app.use("/products", productRoutes);
+app.use("/category", categoryRouter);
 
 connectDb()
   .then(() => {
