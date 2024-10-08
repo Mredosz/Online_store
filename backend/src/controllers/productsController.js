@@ -19,6 +19,16 @@ exports.getProductById = async (req, res) => {
   }
 };
 
+exports.getProductsByCategory = async (req, res) => {
+  const categoryId = req.query.categoryId;
+  try {
+    const products = await Product.find({ categoryId: categoryId });
+    res.status(200).json(products);
+  } catch (e) {
+    res.status(404).json({ message: e.message });
+  }
+};
+
 exports.addProduct = async (req, res) => {
   const product = req.body;
   const categoryId = req.query.categoryId;
