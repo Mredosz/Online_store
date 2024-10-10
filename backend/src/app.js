@@ -1,4 +1,3 @@
-//https://dummyjson.com/docs/products#products-categories
 const express = require("express");
 const connectDb = require("./util/database");
 
@@ -7,12 +6,14 @@ const app = express();
 const productRoutes = require("./routes/products");
 const categoryRouter = require("./routes/categories");
 const reviewRouter = require("./routes/reviews");
+const accountRouter = require("./routes/accounts");
 
 app.use(express.json());
 
 app.use("/products", productRoutes);
 app.use("/category", categoryRouter);
 app.use("/review", reviewRouter);
+app.use("/account", accountRouter);
 
 connectDb()
   .then(() => {

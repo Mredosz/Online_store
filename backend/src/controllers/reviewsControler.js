@@ -16,11 +16,11 @@ exports.addReview = async (req, res) => {
   const newReview = new Review({ ...opinion, productId });
   const reviews = await Review.find();
   try {
-    // reviews.forEach((opinion) => {
-    //   if (opinion.review === opinion.review) {
-    //     throw new Error("Review already exist.");
-    //   }
-    // });
+    reviews.forEach((opinion) => {
+      if (opinion.review === newReview.review) {
+        throw new Error("Review already exist.");
+      }
+    });
     await newReview.save();
     res.status(201).json("Created");
   } catch (e) {

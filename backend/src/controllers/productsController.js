@@ -69,9 +69,3 @@ exports.deleteProduct = async (req, res) => {
     res.status(404).json({ message: e.message });
   }
 };
-
-// exports.getTopRatedProducts = async (req, res) => {
-//   try{
-//     const products = await Product.find().sort()
-//   }
-// }
