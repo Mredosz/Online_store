@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const connectDb = require("./util/database");
 
 const app = express();
@@ -9,6 +10,8 @@ const reviewRouter = require("./routes/reviews");
 const accountRouter = require("./routes/accounts");
 
 app.use(express.json());
+
+app.use(cors({ origin: "http://localhost:5173" }));
 
 app.use("/products", productRoutes);
 app.use("/category", categoryRouter);
