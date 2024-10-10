@@ -2,17 +2,7 @@ import { useState } from "react";
 import ProductInfo from "./ProductInfo.jsx";
 import Button from "./Button.jsx";
 
-export default function Product() {
-  const product = {
-    image:
-      "https://www.rainforest-alliance.org/wp-content/uploads/2021/06/capybara-square-1.jpg.optimal.jpg",
-    title: "Product",
-    shortDescription:
-      "loerm ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-    availableQuantity: 10,
-    price: 10,
-    deliveryPrice: 5,
-  };
+export default function Product({ product }) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
 
   return (
