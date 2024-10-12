@@ -9,6 +9,7 @@ const categoryRouter = require("./routes/categories");
 const reviewRouter = require("./routes/reviews");
 const accountRouter = require("./routes/accounts");
 const orderRouter = require("./routes/orders");
+const cartRouter = require("./routes/carts");
 
 app.use(express.json());
 
@@ -19,6 +20,7 @@ app.use("/category", categoryRouter);
 app.use("/review", reviewRouter);
 app.use("/account", accountRouter);
 app.use("/order", orderRouter);
+app.use("/cart", cartRouter);
 
 connectDb()
   .then(() => {
