@@ -1,13 +1,13 @@
 import { useState } from "react";
-import ProductInfo from "./ProductInfo.jsx";
+import ProductInfo from "./reusable/ProductInfo.jsx";
 import Button from "./Button.jsx";
+import { Link } from "react-router-dom";
 
 export default function Product({ product }) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
-
   return (
     <div
-      className="bg-gray-100 flex flex-col justify-center w-[300px] h-[540px] rounded-md shadow-md"
+      className="bg-gray-100 flex flex-col justify-center w-[300px] h-[540px] rounded-md shadow-md m-3"
       onMouseOver={() => setIsMouseEnter(true)}
       onMouseOut={() => setIsMouseEnter(false)}
     >
@@ -31,7 +31,7 @@ export default function Product({ product }) {
         {isMouseEnter && (
           <div className="flex justify-around items-end h-full pb-2">
             <Button className="bg-yellow-500 hover:bg-yellow-600">
-              View details
+              <Link to={`/products/details/${product._id}`}>View details</Link>
             </Button>
             <Button className="bg-red-500 hover:bg-red-600">Add to cart</Button>
           </div>
