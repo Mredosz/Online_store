@@ -78,6 +78,7 @@ export default function Navbar() {
             <FaCartShopping size={28} />
           </NavItem>
           <NavItem to={"/login"}>Login</NavItem>
+          <NavItem to={"/register"}>Sign In</NavItem>
         </div>
       </ul>
     </nav>
