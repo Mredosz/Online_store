@@ -1,6 +1,8 @@
 const User = require("../models/user");
+const checkErrors = require("../util/checkErrors");
 
 exports.register = async (req, res) => {
+  if (checkErrors(req, res)) return;
   const user = req.body;
   const newUser = new User(user);
   const users = await User.find();
@@ -18,6 +20,7 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+  if (checkErrors(req, res)) return;
   const user = req.body;
   const users = await User.find();
   try {

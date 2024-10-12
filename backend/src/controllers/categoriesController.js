@@ -1,4 +1,5 @@
 const Category = require("../models/Category");
+const checkErrors = require("../util/checkErrors");
 
 exports.getAllCategories = async (req, res) => {
   try {
@@ -10,6 +11,7 @@ exports.getAllCategories = async (req, res) => {
 };
 
 exports.addCategory = async (req, res) => {
+  if (checkErrors(req, res)) return;
   const category = req.body;
   const newCategory = new Category(category);
   const categories = await Category.find();
@@ -27,6 +29,7 @@ exports.addCategory = async (req, res) => {
 };
 
 exports.updateCategory = async (req, res) => {
+  if (checkErrors(req, res)) return;
   const categoryId = req.query.categoryId;
   const category = req.body;
   try {

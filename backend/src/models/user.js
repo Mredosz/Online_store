@@ -16,7 +16,7 @@ const userSchema = new Schema({
   lastName: {
     type: String,
   },
-  birtDay: {
+  birthDay: {
     type: Date,
   },
   address: {

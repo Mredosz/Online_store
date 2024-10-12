@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const checkErrors = require("../util/checkErrors");
 
 exports.getAllProducts = async (req, res) => {
   try {
@@ -30,6 +31,7 @@ exports.getProductsByCategory = async (req, res) => {
 };
 
 exports.addProduct = async (req, res) => {
+  if (checkErrors(req, res)) return;
   const product = req.body;
   const categoryId = req.query.categoryId;
   const newProduct = new Product({ ...product, categoryId });
@@ -48,6 +50,7 @@ exports.addProduct = async (req, res) => {
 };
 
 exports.updateProduct = async (req, res) => {
+  if (checkErrors(req, res)) return;
   const productId = req.query.productId;
   const product = req.body;
   try {

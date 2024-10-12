@@ -1,4 +1,5 @@
 const Review = require("../models/review");
+const checkErrors = require("../util/checkErrors");
 
 exports.getAllReviewsFromProduct = async (req, res) => {
   const productId = req.query.productId;
@@ -11,6 +12,7 @@ exports.getAllReviewsFromProduct = async (req, res) => {
 };
 
 exports.addReview = async (req, res) => {
+  if (checkErrors(req, res)) return;
   const productId = req.query.productId;
   const opinion = req.body;
   const newReview = new Review({ ...opinion, productId });
