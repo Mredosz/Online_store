@@ -19,23 +19,6 @@ const userSchema = new Schema({
   birthDay: {
     type: Date,
   },
-  address: {
-    street: {
-      type: String,
-    },
-    city: {
-      type: String,
-    },
-    postalCode: {
-      type: String,
-    },
-    homeNumber: {
-      type: String,
-    },
-    phoneNumber: {
-      type: String,
-    },
-  },
   role: {
     type: String,
     required: true,
