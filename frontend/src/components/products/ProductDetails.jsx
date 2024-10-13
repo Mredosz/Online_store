@@ -1,25 +1,37 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getProductDetails } from "../../request/products.js";
-import { FaCartPlus, FaClock, FaTruck } from "react-icons/fa";
-import ProductInfo from "./reusable/ProductInfo.jsx";
+import { FaCalendarAlt, FaCartPlus, FaClock, FaTruck } from "react-icons/fa";
 import DetailsSections from "./reusable/DetailsSections.jsx";
+import { useState } from "react";
+import AddButton from "./reusable/AddButton.jsx";
+import SpecificationElement from "./reusable/SpecificationElement.jsx";
 
 export default function ProductDetails() {
   const params = useParams();
+
+  const [isTooMuch, setIsTooMuch] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ["products", params.productId],
     queryFn: () => getProductDetails(params.productId),
   });
 
+  const changeHandler = (event) => {
+    if (event.target.value > data.availableQuantity) {
+      setIsTooMuch(true);
+    } else {
+      setIsTooMuch(false);
+    }
+  };
+
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="flex flex-col items-center bg-gray-50 h-full min-h-[calc(100vh-168px)]">
-      <div className="flex mt-9 h-full w-full justify-center">
-        <div className="flex h-1/4 w-1/4 mr-20">
-          <img src={data.image} alt={data.name} className="h-full w-full" />
+    <div className="flex flex-col items-center h-full min-h-[calc(100vh-168px)]">
+      <div className="flex mt-7 h-full w-full justify-center">
+        <div className="flex mr-20 justify-end items-end">
+          <img src={data.image} alt={data.name} className="h-[26rem]" />
         </div>
         <div>
           <div className="flex flex-col pt-3 pl-3">
@@ -31,11 +43,24 @@ export default function ProductDetails() {
               Specyfikacja
             </div>
             <div className="flex flex-col rounded-md border border-gray-300 shadow-md h-[23rem] w-64">
-              <div className="border-b border-gray-300 w-full p-4">
-                <p className="flex justify-end text-3xl">{data.price} $</p>
-                <button className="flex justify-center items-center bg-green-500 hover:bg-green-700 p-2 rounded-md m-3">
-                  <FaCartPlus /> Add to cart
-                </button>
+              <div className="border-b border-gray-300 w-full pt-4">
+                <p className="flex justify-end text-3xl mr-4">
+                  {data.price} zł
+                </p>
+                <div className="flex mt-3 justify-center">
+                  <input
+                    type={"number"}
+                    className="rounded-md h-10 w-20 mt-3 text-xl"
+                    defaultValue={1}
+                    min={1}
+                    max={data.availableQuantity}
+                    onChange={changeHandler}
+                  />
+                  <AddButton isTooMuch={isTooMuch}>
+                    <FaCartPlus />
+                    <p className="ml-2 text-white">Add to cart</p>
+                  </AddButton>
+                </div>
               </div>
               <div>
                 <DetailsSections
@@ -57,19 +82,29 @@ export default function ProductDetails() {
                 >
                   <FaTruck size={26} className="mr-3 flex justify-center" />
                 </DetailsSections>
-                <DetailsSections
-                  component="div"
-                  firstText="Available"
-                  secondText={data.availableQuantity}
-                  isLast
-                />
+                <DetailsSections component="button" firstText="Waranty" isLast>
+                  <FaCalendarAlt
+                    size={26}
+                    className="mr-3 flex justify-center"
+                  />
+                </DetailsSections>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center">
-        Długi opis i specyfikacja
+      <div className="flex flex-col mt-10 w-full justify-center items-center">
+        <h1 className="text-3xl">Specification</h1>
+        <ul className="mt-4 w-3/4">
+          {data.specifications.map(({ key, value }, index) => (
+            <SpecificationElement
+              key={key}
+              left={key}
+              right={value}
+              index={index}
+            />
+          ))}
+        </ul>
       </div>
     </div>
   );
