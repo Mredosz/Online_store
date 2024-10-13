@@ -57,7 +57,7 @@ export default function ProductDetails() {
                     onChange={changeHandler}
                   />
                   <AddButton isTooMuch={isTooMuch}>
-                    <FaCartPlus />
+                    <FaCartPlus className="text-white" />
                     <p className="ml-2 text-white">Add to cart</p>
                   </AddButton>
                 </div>
