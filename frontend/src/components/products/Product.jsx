@@ -2,6 +2,7 @@ import { useState } from "react";
 import ProductInfo from "./reusable/ProductInfo.jsx";
 import Button from "./Button.jsx";
 import { Link } from "react-router-dom";
+import { FaCartPlus } from "react-icons/fa";
 
 export default function Product({ product }) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
@@ -11,32 +12,41 @@ export default function Product({ product }) {
       onMouseOver={() => setIsMouseEnter(true)}
       onMouseOut={() => setIsMouseEnter(false)}
     >
-      <div className="flex flex-col">
-        <img src={product.image} alt={product.title} className="rounded-t-md" />
-        <h2 className="pt-3 flex justify-center text-xl uppercase font-bold">
-          {product.title}
-        </h2>
-      </div>
-      <div className="flex flex-col p-3 w-full h-full">
-        <ProductInfo left="Price:" right={`${product.price} zł`} />
-        <ProductInfo
-          left="Price with delivery:"
-          right={`${product.deliveryPrice} zł`}
-        />
-        <ProductInfo
-          left="Available products:"
-          right={product.availableQuantity}
-        />
-        {!isMouseEnter && <p className="pt-2">{product.shortDescription}</p>}
-        {isMouseEnter && (
-          <div className="flex justify-around items-end h-full pb-2">
-            <Button className="bg-yellow-500 hover:bg-yellow-600">
-              <Link to={`/products/details/${product._id}`}>View details</Link>
-            </Button>
-            <Button className="bg-red-500 hover:bg-red-600">Add to cart</Button>
-          </div>
-        )}
-      </div>
+      <Link
+        to={`/products/details/${product._id}`}
+        className="flex flex-col h-full"
+      >
+        <div className="flex flex-col">
+          <img
+            src={product.image}
+            alt={product.title}
+            className="rounded-t-md"
+          />
+          <h2 className="pt-3 flex justify-center text-xl uppercase font-bold">
+            {product.title}
+          </h2>
+        </div>
+        <div className="flex flex-col p-3 w-full h-full">
+          <ProductInfo left="Price:" right={`${product.price} zł`} />
+          <ProductInfo
+            left="Price with delivery:"
+            right={`${product.deliveryPrice} zł`}
+          />
+          <ProductInfo
+            left="Available products:"
+            right={product.availableQuantity}
+          />
+          <p className="pt-2">{product.shortDescription}</p>
+        </div>
+      </Link>
+      {isMouseEnter && (
+        <div className="relative">
+          <Button className="bg-gray-100 absolute bottom-0 right-0 m-3 flex border items-center border-green-500 text-green-500 hover:bg-green-500 hover:text-gray-100">
+            <FaCartPlus />
+            <p className="ml-2">Add to cart</p>
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
