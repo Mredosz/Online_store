@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         navbar: "#9fb8ab",
+        form: "#fdf6e9",
       },
     },
   },

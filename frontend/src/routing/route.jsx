@@ -4,6 +4,8 @@ import ErrorElement from "../components/errors/ErrorElement.jsx";
 import Cart from "../components/cart/Cart.jsx";
 import RootElement from "../components/rootElement/RootElement.jsx";
 import ProductDetails from "../components/products/ProductDetails.jsx";
+import Login from "../components/account/login/Login.jsx";
+import Register from "../components/account/regiter/Register.jsx";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,8 @@ const router = createBrowserRouter([
           { path: "details/:productId", element: <ProductDetails /> },
         ],
       },
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
     ],
   },
 ]);

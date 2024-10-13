@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ProductInfo from "./reusable/ProductInfo.jsx";
-import Button from "./Button.jsx";
+import Button from "./reusable/Button.jsx";
 import { Link } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
 
