@@ -28,7 +28,7 @@ export default function ProductDetails() {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="flex flex-col items-center h-full min-h-[calc(100vh-168px)]">
+    <div className="flex flex-col items-center h-full">
       <div className="flex mt-7 h-full w-full justify-center">
         <div className="flex mr-20 justify-end items-end">
           <img src={data.image} alt={data.name} className="h-[26rem]" />
@@ -50,7 +50,7 @@ export default function ProductDetails() {
                 <div className="flex mt-3 justify-center">
                   <input
                     type={"number"}
-                    className="rounded-md h-10 w-20 mt-3 text-xl"
+                    className="rounded-md h-10 w-20 mt-3 text-xl border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-500"
                     defaultValue={1}
                     min={1}
                     max={data.availableQuantity}
