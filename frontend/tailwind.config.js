@@ -6,6 +6,7 @@ export default {
       colors: {
         navbar: "#9fb8ab",
         form: "#fdf6e9",
+        formBorder: "#f2c99f",
       },
     },
   },

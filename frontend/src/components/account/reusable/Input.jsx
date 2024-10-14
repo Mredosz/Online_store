@@ -1,4 +1,9 @@
-export default function Input({ label, error, id, className, ...props }) {
+import { forwardRef } from "react";
+
+const Input = forwardRef(function Input(
+  { label, error, id, className, ...props },
+  ref,
+) {
   let classes = `rounded-md border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-500 ${className}`;
   return (
     <div className="flex flex-col mt-2">
@@ -8,7 +13,7 @@ export default function Input({ label, error, id, className, ...props }) {
       >
         {label}
       </label>
-      <input id={id} className={classes} {...props} />
+      <input id={id} className={classes} ref={ref} {...props} />
       <div>
         {error.value && (
           <p className="text-red-500 break-words">{error.message}</p>
@@ -16,4 +21,6 @@ export default function Input({ label, error, id, className, ...props }) {
       </div>
     </div>
   );
-}
+});
+
+export default Input;
