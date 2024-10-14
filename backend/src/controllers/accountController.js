@@ -30,7 +30,7 @@ exports.login = async (req, res) => {
   try {
     const doMatch = await bcrypt.compare(user.password, userDb.password);
     if (userDb.email === user.email && doMatch) {
-      res.status(200).json("Logged in");
+      res.status(200).json({ message: "Logged in", role: userDb.role });
     } else {
       throw new Error("Invalid credentials");
     }
