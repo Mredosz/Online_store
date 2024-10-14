@@ -1,6 +1,8 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const checkErrors = require("../util/checkErrors");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 exports.register = async (req, res) => {
   if (checkErrors(req, res)) return;
@@ -30,7 +32,18 @@ exports.login = async (req, res) => {
   try {
     const doMatch = await bcrypt.compare(user.password, userDb.password);
     if (userDb.email === user.email && doMatch) {
-      res.status(200).json({ message: "Logged in", role: userDb.role });
+      const token = jwt.sign({ id: userDb._id }, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
+      res
+        .cookie("accessToken", token, {
+          httpOnly: true,
+          secure: false,
+          maxAge: 1000 * 60 * 60,
+          path: "/",
+        })
+        .status(200)
+        .json({ message: "Logged in", role: userDb.role });
     } else {
       throw new Error("Invalid credentials");
     }

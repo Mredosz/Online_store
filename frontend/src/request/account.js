@@ -6,5 +6,9 @@ export const register = async (user) => {
 };
 
 export const login = async (user) => {
-  return (await axios.post("http://localhost:3000/account/login", user)).data;
+  return (
+    await axios.post("http://localhost:3000/account/login", user, {
+      withCredentials: true,
+    })
+  ).data;
 };

@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const connectDb = require("./util/database");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
@@ -10,10 +11,14 @@ const reviewRouter = require("./routes/reviews");
 const accountRouter = require("./routes/accounts");
 const orderRouter = require("./routes/orders");
 const cartRouter = require("./routes/carts");
+const accessRouter = require("./routes/access");
 
 app.use(express.json());
+app.use(cookieParser());
 
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+
+app.use("/cart", accessRouter);
 
 app.use("/products", productRoutes);
 app.use("/category", categoryRouter);
