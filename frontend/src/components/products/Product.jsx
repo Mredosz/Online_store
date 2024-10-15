@@ -19,11 +19,11 @@ export default function Product({ product }) {
         <div className="flex flex-col">
           <img
             src={product.image}
-            alt={product.title}
+            alt={product.name}
             className="rounded-t-md"
           />
           <h2 className="pt-3 flex justify-center text-xl uppercase font-bold">
-            {product.title}
+            {product.name}
           </h2>
         </div>
         <div className="flex flex-col p-3 w-full h-full">
