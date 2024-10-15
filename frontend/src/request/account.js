@@ -12,3 +12,17 @@ export const login = async (user) => {
     })
   ).data;
 };
+
+export const logout = async () => {
+  return (
+    await axios.get("http://localhost:3000/account/logout", {
+      withCredentials: true,
+    })
+  ).data;
+};
+
+export const protect = async () => {
+  await axios.get("http://localhost:3000/protected", {
+    withCredentials: true,
+  });
+};

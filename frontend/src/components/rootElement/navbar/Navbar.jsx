@@ -1,9 +1,11 @@
 import logo from "/logo.png";
 import { FaCartShopping } from "react-icons/fa6";
 import NavItem from "./NavItem.jsx";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Dropdown from "./dropdown/Dropdown.jsx";
 import DropdownItem from "./dropdown/DropdownItem.jsx";
+import { AccountContext } from "../../../store/account-context.jsx";
+import { logout } from "../../../request/account.js";
 
 export default function Navbar() {
   const arr = [
@@ -33,10 +35,17 @@ export default function Navbar() {
     "womens-watches",
   ];
   const [open, setOpen] = useState(false);
+  const { isLogged, setIsLogged } = useContext(AccountContext);
 
   const handleClick = () => {
     setOpen((prevState) => !prevState);
   };
+
+  const handleLogout = async () => {
+    setIsLogged(false);
+    await logout();
+  };
+
   return (
     <nav>
       <ul className="flex bg-navbar justify-between px-4 py-1 items-center">
@@ -77,8 +86,9 @@ export default function Navbar() {
           >
             <FaCartShopping size={28} />
           </NavItem>
-          <NavItem to={"/login"}>Login</NavItem>
-          <NavItem to={"/register"}>Sign In</NavItem>
+          {isLogged && <button onClick={handleLogout}>Logout</button>}
+          {!isLogged && <NavItem to={"/login"}>Login</NavItem>}
+          {!isLogged && <NavItem to={"/register"}>Sign In</NavItem>}
         </div>
       </ul>
     </nav>
