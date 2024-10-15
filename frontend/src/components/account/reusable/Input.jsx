@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 
 const Input = forwardRef(function Input(
-  { label, error, id, className, ...props },
+  { label, error = { value: false }, id, className, textarea, ...props },
   ref,
 ) {
   let classes = `rounded-md border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-500 ${className}`;
@@ -13,7 +13,10 @@ const Input = forwardRef(function Input(
       >
         {label}
       </label>
-      <input id={id} className={classes} ref={ref} {...props} />
+      {!textarea && <input id={id} className={classes} ref={ref} {...props} />}
+      {textarea && (
+        <textarea id={id} className={classes} ref={ref} {...props} />
+      )}
       <div>
         {error.value && (
           <p className="text-red-500 break-words">{error.message}</p>
