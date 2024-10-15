@@ -18,7 +18,7 @@ app.use(cookieParser());
 
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
-app.use("/cart", accessRouter);
+app.use("/protected", accessRouter);
 
 app.use("/products", productRoutes);
 app.use("/category", categoryRouter);

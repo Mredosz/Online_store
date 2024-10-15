@@ -34,6 +34,7 @@ export default function Login() {
   useEffect(() => {
     if (isSuccess) {
       navigate(data.role === "user" ? "/" : "/admin");
+      localStorage.setItem("is_logged_in", true);
     }
   }, [isSuccess]);
 

@@ -23,7 +23,8 @@ services:
     depends_on:
       - mongo
     environment:
-      MONGO_URI: mongodb://user:password@mongo:27017/mongo_db
+      MONGO_URI: mongodb://user:password@mongo:27017/mongo_db,
+      JWT_SECRET: VGhpcyBpcyBhIHNlY3JldCBleGFtcGxlIHZhbHVlIQ==
     volumes:
       - ../:/usr/src/app
     command: npm start

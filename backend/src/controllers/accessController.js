@@ -1,9 +1,5 @@
 const jwt = require("jsonwebtoken");
-const {
-  renewToken,
-  createTokensAndAddToCookie,
-} = require("../util/tokenManager");
-const { logout } = require("./accountController");
+const { createTokensAndAddToCookie } = require("../util/tokenManager");
 require("dotenv").config();
 
 exports.checkAccess = async (req, res, next) => {
@@ -12,11 +8,23 @@ exports.checkAccess = async (req, res, next) => {
   const ONE_DAY = 1000 * 60 * 60 * 24;
 
   if (!refreshToken) {
-    await logout(req, res);
-    return;
+    res.clearCookie("accessToken").clearCookie("refreshToken");
+    return res.status(307).json({ message: "Refresh token missing" });
   }
 
-  const decodedRefreshToken = jwt.decode(refreshToken);
+  let decodedRefreshToken;
+
+  try {
+    decodedRefreshToken = jwt.verify(refreshToken, process.env.JWT_SECRET);
+    if (!decodedRefreshToken.id) {
+      return res
+        .status(401)
+        .json({ message: "Invalid refresh token: missing id" });
+    }
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid refresh token" });
+  }
+
   let decodedAccessToken;
 
   if (accessToken) {
@@ -27,24 +35,30 @@ exports.checkAccess = async (req, res, next) => {
     !accessToken ||
     (decodedAccessToken && decodedAccessToken.exp * 1000 < Date.now())
   ) {
-    createTokensAndAddToCookie(res, decodedRefreshToken.id, "accessToken");
-  } else {
     try {
-      req.user = jwt.verify(accessToken, process.env.JWT_SECRET);
-      next();
+      createTokensAndAddToCookie(
+        res,
+        { _id: decodedRefreshToken.id },
+        "accessToken",
+      );
     } catch (err) {
-      return res.status(401).json({ message: "Access token invalid" });
+      return res.status(401).json({ message: "Invalid refresh token" });
     }
   }
 
   if (decodedRefreshToken.exp * 1000 < Date.now() + ONE_DAY) {
-    renewToken(res, decodedRefreshToken, "refreshToken");
+    try {
+      createTokensAndAddToCookie(
+        res,
+        { _id: decodedRefreshToken.id },
+        "refreshToken",
+      );
+    } catch (err) {
+      return res.status(401).json({ message: "Unable to renew refresh token" });
+    }
   }
 
-  try {
-    req.user = jwt.verify(refreshToken, process.env.JWT_SECRET);
-    next();
-  } catch (err) {
-    return res.status(401).json({ message: "Token expired or invalid" });
-  }
+  req.user = { id: decodedRefreshToken.id };
+  res.status(204).json("");
+  next();
 };

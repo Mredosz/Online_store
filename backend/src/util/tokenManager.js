@@ -22,22 +22,5 @@ exports.createTokensAndAddToCookie = (res, userDb, tokenType) => {
     maxAge: maxAge,
     path: "/",
   });
-};
-
-exports.renewToken = (res, token, tokenType) => {
-  const maxAge =
-    tokenType === "accessToken" ? COOKIE_REFRESH_TOKEN : COOKIE_ACCESS_TOKEN;
-  const expired =
-    tokenType === "accessToken" ? ACCESS_TOKEN_EXPIRED : REFRESH_TOKEN_EXPIRED;
-
-  const newToken = jwt.sign({ token }, JWT_SECRET, {
-    expiresIn: expired,
-  });
-
-  res.cookie(tokenType, newToken, {
-    httpOnly: true,
-    secure: false,
-    maxAge: maxAge,
-    path: "/",
-  });
+  return token;
 };
