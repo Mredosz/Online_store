@@ -8,6 +8,9 @@ import Login from "../components/account/login/Login.jsx";
 import Register from "../components/account/regiter/Register.jsx";
 import AdminMain from "../components/admin/main/AdminMain.jsx";
 import AdminRootElement from "../components/admin/rootElement/AdminRootElement.jsx";
+import AllReview from "../components/admin/review/AllReview.jsx";
+import AllCategory from "../components/admin/category/AllCategory.jsx";
+import Products from "../components/admin/products/Products.jsx";
 
 const router = createBrowserRouter([
   {
@@ -33,9 +36,9 @@ const router = createBrowserRouter([
     element: <AdminRootElement />,
     children: [
       { index: true, element: <AdminMain /> },
-      { path: "products", element: <AdminMain /> },
-      { path: "category", element: <AdminMain /> },
-      { path: "review", element: <AdminMain /> },
+      { path: "products", element: <Products /> },
+      { path: "category", element: <AllCategory /> },
+      { path: "review", element: <AllReview /> },
     ],
   },
 ]);
