@@ -20,11 +20,11 @@ router.post(
       "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one number, and one symbol.",
     ),
   body("firstName")
-    .isLength({ min: 3 })
-    .withMessage("Name must be at least 3 characters long."),
+    .isLength({ min: 3, max: 20 })
+    .withMessage("Name must be at least 3 and max 20 characters long."),
   body("lastName")
-    .isLength({ min: 3 })
-    .withMessage("Surname must be at least 3 characters long."),
+    .isLength({ min: 3, max: 20 })
+    .withMessage("Surname must be at least 3 and max 20 characters long."),
   body("confirmPassword").custom((value, { req }) => {
     if (value !== req.body.password) {
       throw new Error("Passwords do not match.");

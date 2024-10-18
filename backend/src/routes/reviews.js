@@ -7,7 +7,10 @@ router.get("/", reviewController.getAllReviewsFromProduct);
 
 router.post(
   "/",
-  body("review").isLength({ max: 300 }).withMessage("Review is to long."),
+  body("review")
+    .isLength({ min: 3, max: 300 })
+    .withMessage("Review is to long."),
+  body("rating").isNumeric().withMessage("Rating must be a number."),
   reviewController.addReview,
 );
 
