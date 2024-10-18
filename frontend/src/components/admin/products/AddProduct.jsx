@@ -29,7 +29,7 @@ export default function AddProduct() {
         {({ handleSubmit, values }) => (
           <Form
             onSubmit={handleSubmit}
-            className="w-96 bg-form border border-formBorder p-4 rounded-md my-3"
+            className="bg-form min-w-96 border border-formBorder p-4 rounded-md my-3"
           >
             <h1 className="flex justify-center text-3xl text-gray-500 mb-4 uppercase font-semibold">
               Add Product
@@ -60,16 +60,19 @@ export default function AddProduct() {
                   </h4>
                   {values.specifications.map((specification, index) => (
                     <div key={index} className="mt-5">
-                      <InputAdmin
-                        id={`specifications[${index}].key`}
-                        label="key"
-                        type="text"
-                      />
-                      <InputAdmin
-                        id={`specifications[${index}].value`}
-                        label="value"
-                        type="text"
-                      />
+                      <div className="flex">
+                        <InputAdmin
+                          id={`specifications[${index}].key`}
+                          label="key"
+                          type="text"
+                          className="mr-3"
+                        />
+                        <InputAdmin
+                          id={`specifications[${index}].value`}
+                          label="value"
+                          type="text"
+                        />
+                      </div>
                       <button
                         type="button"
                         className="bg-red-500 hover:bg-red-600 mt-2 py-1 rounded-md w-full"

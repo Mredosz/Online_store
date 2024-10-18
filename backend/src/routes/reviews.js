@@ -3,6 +3,7 @@ const reviewController = require("../controllers/reviewsControler");
 const { body } = require("express-validator");
 const router = express.Router();
 
+router.get("/all", reviewController.getAllReviews);
 router.get("/", reviewController.getAllReviewsFromProduct);
 
 router.post(
@@ -11,6 +12,7 @@ router.post(
     .isLength({ min: 3, max: 300 })
     .withMessage("Review is to long."),
   body("rating").isNumeric().withMessage("Rating must be a number."),
+  body("isAccepted").isBoolean().withMessage("isAccepted must be a boolean."),
   reviewController.addReview,
 );
 

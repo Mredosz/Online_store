@@ -1,6 +1,14 @@
 import { ErrorMessage, Field } from "formik";
 
-export default function InputAdmin({ label, textarea, id, ...props }) {
+export default function InputAdmin({
+  label,
+  textarea,
+  id,
+  className,
+  ...props
+}) {
+  const classes = `rounded-md border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-500 ${className}`;
+
   return (
     <div className="flex flex-col mt-2">
       <label
@@ -10,7 +18,7 @@ export default function InputAdmin({ label, textarea, id, ...props }) {
         {label}
       </label>
       <Field
-        className="rounded-md border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-500"
+        className={classes}
         name={id}
         as={textarea ? "textarea" : "input"}
         {...props}

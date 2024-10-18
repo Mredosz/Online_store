@@ -19,6 +19,10 @@ const reviewSchema = new Schema({
     type: String,
     required: true,
   },
+  isAccepted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model("Review", reviewSchema);

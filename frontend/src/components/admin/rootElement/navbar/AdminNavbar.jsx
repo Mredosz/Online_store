@@ -19,7 +19,6 @@ export default function AdminNavbar() {
         </NavItem>
         <div className="flex space-x-3">
           <NavItem to={"products"}>Products</NavItem>
-          <NavItem to={"category"}>Category</NavItem>
           <NavItem to={"review"}>Review</NavItem>
         </div>
         <button onClick={handleLogout}>Logout</button>

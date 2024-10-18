@@ -29,3 +29,12 @@ exports.addReview = async (req, res) => {
     res.status(409).json({ message: e.message });
   }
 };
+
+exports.getAllReviews = async (req, res) => {
+  try {
+    const reviews = await Review.find();
+    res.status(200).json(reviews);
+  } catch (e) {
+    res.status(404).json({ message: e.message });
+  }
+};
