@@ -8,6 +8,7 @@ export default function AdminNavbar() {
 
   const handleLogout = async () => {
     navigate("/");
+    localStorage.removeItem("is_logged_in");
     await logout();
   };
   return (
