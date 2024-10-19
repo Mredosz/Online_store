@@ -7,6 +7,7 @@ export default {
         navbar: "#9fb8ab",
         form: "#fdf6e9",
         formBorder: "#f2c99f",
+        darkerNavbar: "#9fe9ab",
       },
     },
   },

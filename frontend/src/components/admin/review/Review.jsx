@@ -1,5 +1,5 @@
 import Td from "../reusable/table/Td.jsx";
-import ButtonAdmin from "../reusable/ButtonAdmin.jsx";
+import ButtonAdmin from "../reusable/Buttons/ButtonAdmin.jsx";
 import { useState } from "react";
 
 export default function Review({ review, onClick }) {

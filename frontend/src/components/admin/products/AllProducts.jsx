@@ -3,7 +3,7 @@ import { deleteProduct, getAllProducts } from "../../../request/products.js";
 import Th from "../reusable/table/Th.jsx";
 import Td from "../reusable/table/Td.jsx";
 import { useNavigate } from "react-router-dom";
-import ButtonAdmin from "../reusable/ButtonAdmin.jsx";
+import ButtonAdmin from "../reusable/Buttons/ButtonAdmin.jsx";
 
 export default function AllProducts() {
   const queryClient = useQueryClient();
