@@ -1,5 +1,3 @@
-import { FieldArray, Form, Formik } from "formik";
-import InputAdmin from "../reusable/form/InputAdmin.jsx";
 import { validation } from "../../../validators/productAdmin.js";
 import { getProductDetails, updateProduct } from "../../../request/products.js";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
