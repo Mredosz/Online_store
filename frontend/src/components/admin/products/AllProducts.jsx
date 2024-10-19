@@ -2,9 +2,12 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteProduct, getAllProducts } from "../../../request/products.js";
 import Th from "../reusable/table/Th.jsx";
 import Td from "../reusable/table/Td.jsx";
+import { useNavigate } from "react-router-dom";
 
 export default function AllProducts() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
   const { data, isLoading } = useQuery({
     queryFn: getAllProducts,
     queryKey: ["products"],
@@ -13,6 +16,10 @@ export default function AllProducts() {
   const handleDelete = async (id) => {
     await deleteProduct(id);
     await queryClient.invalidateQueries("products");
+  };
+
+  const handleEdit = async (id) => {
+    navigate(`/admin/products/${id}`);
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -44,7 +51,7 @@ export default function AllProducts() {
                 />
               </Td>
               <Td>
-                <button>Edit</button>
+                <button onClick={() => handleEdit(product._id)}>Edit</button>
               </Td>
               <Td>
                 <button onClick={() => handleDelete(product._id)}>

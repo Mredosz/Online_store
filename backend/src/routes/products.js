@@ -25,12 +25,6 @@ router.post(
     .isNumeric()
     .withMessage("Delivery price must be a number."),
   body("image").isURL().withMessage("Image must be a URL."),
-  body("key")
-    .isLength({ min: 3, max: 50 })
-    .withMessage("Type must be a string."),
-  body("value")
-    .isLength({ min: 3, max: 50 })
-    .withMessage("Value must be a string."),
   productController.addProduct,
 );
 

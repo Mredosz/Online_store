@@ -10,6 +10,7 @@ import AdminMain from "../components/admin/main/AdminMain.jsx";
 import AdminRootElement from "../components/admin/rootElement/AdminRootElement.jsx";
 import AllReview from "../components/admin/review/AllReview.jsx";
 import Products from "../components/admin/products/Products.jsx";
+import EditProduct from "../components/admin/products/EditProduct.jsx";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +36,19 @@ const router = createBrowserRouter([
     element: <AdminRootElement />,
     children: [
       { index: true, element: <AdminMain /> },
-      { path: "products", element: <Products /> },
+      {
+        path: "products",
+        children: [
+          {
+            index: true,
+            element: <Products />,
+          },
+          {
+            path: ":productId",
+            element: <EditProduct />,
+          },
+        ],
+      },
       { path: "review", element: <AllReview /> },
     ],
   },

@@ -23,7 +23,11 @@ export default function InputAdmin({
         as={textarea ? "textarea" : "input"}
         {...props}
       />
-      <ErrorMessage name={id} component="div" />
+      <ErrorMessage
+        className="text-red-500 font-semibold"
+        name={id}
+        component="div"
+      />
     </div>
   );
 }
