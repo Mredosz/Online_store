@@ -3,6 +3,7 @@ import { deleteProduct, getAllProducts } from "../../../request/products.js";
 import Th from "../reusable/table/Th.jsx";
 import Td from "../reusable/table/Td.jsx";
 import { useNavigate } from "react-router-dom";
+import ButtonAdmin from "../reusable/ButtonAdmin.jsx";
 
 export default function AllProducts() {
   const queryClient = useQueryClient();
@@ -51,12 +52,20 @@ export default function AllProducts() {
                 />
               </Td>
               <Td>
-                <button onClick={() => handleEdit(product._id)}>Edit</button>
+                <ButtonAdmin
+                  className="bg-yellow-500 hover:bg-yellow-600"
+                  onClick={() => handleEdit(product._id)}
+                >
+                  Edit
+                </ButtonAdmin>
               </Td>
               <Td>
-                <button onClick={() => handleDelete(product._id)}>
+                <ButtonAdmin
+                  className="bg-red-500 hover:bg-red-600"
+                  onClick={() => handleDelete(product._id)}
+                >
                   Delete
-                </button>
+                </ButtonAdmin>
               </Td>
             </tr>
           ))}

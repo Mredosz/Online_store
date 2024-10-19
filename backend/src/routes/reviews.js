@@ -16,4 +16,10 @@ router.post(
   reviewController.addReview,
 );
 
+router.put(
+  "/",
+  body("isAccepted").isBoolean().withMessage("isAccepted must be a boolean."),
+  reviewController.acceptReview,
+);
+
 module.exports = router;

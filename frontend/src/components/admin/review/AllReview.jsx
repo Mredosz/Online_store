@@ -1,17 +1,28 @@
-import { useQuery } from "@tanstack/react-query";
-import { getAllReview } from "../../../request/review.js";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { acceptReview, getAllReview } from "../../../request/review.js";
 import Th from "../reusable/table/Th.jsx";
-import Td from "../reusable/table/Td.jsx";
+import Review from "./Review.jsx";
 
 export default function AllReview() {
+  const queryClient = useQueryClient();
+
   const { data, isLoading } = useQuery({
-    queryKey: "review",
+    queryKey: ["review"],
     queryFn: getAllReview,
+  });
+
+  const { mutateAsync } = useMutation({
+    mutationFn: ({ id, isAccepted }) => acceptReview(id, isAccepted),
   });
 
   if (isLoading) {
     return <div>Is loading ...</div>;
   }
+
+  const handleAcceptReview = async (id, isAccepted) => {
+    await mutateAsync({ id, isAccepted });
+    queryClient.invalidateQueries(["review"]);
+  };
 
   return (
     <div className="flex justify-center items-center w-full my-5">
@@ -28,16 +39,11 @@ export default function AllReview() {
         </thead>
         <tbody>
           {data.map((review) => (
-            <tr key={review._id} className="hover:bg-gray-100">
-              <Td>{review.productId}</Td>
-              <Td>{review.userId}</Td>
-              <Td>{review.rating}</Td>
-              <Td>{review.review}</Td>
-              <Td>{review.isAccepted}</Td>
-              <Td>
-                <button>Edit</button>
-              </Td>
-            </tr>
+            <Review
+              review={review}
+              onClick={handleAcceptReview}
+              key={review._id}
+            />
           ))}
         </tbody>
       </table>

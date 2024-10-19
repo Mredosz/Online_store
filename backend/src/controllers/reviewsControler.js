@@ -38,3 +38,15 @@ exports.getAllReviews = async (req, res) => {
     res.status(404).json({ message: e.message });
   }
 };
+
+exports.acceptReview = async (req, res) => {
+  if (checkErrors(req, res)) return;
+  const reviewId = req.query.reviewId;
+  const isAccepted = req.body.isAccepted;
+  try {
+    await Review.findByIdAndUpdate(reviewId, { isAccepted });
+    res.status(200).json("Accepted");
+  } catch (e) {
+    res.status(404).json({ message: e.message });
+  }
+};

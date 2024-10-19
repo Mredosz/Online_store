@@ -19,3 +19,11 @@ export const addReview = async (review) => {
     })
   ).data;
 };
+
+export const acceptReview = async (id, value) => {
+  return (
+    await axios.put(`http://localhost:3000/review?reviewId=${id}`, {
+      isAccepted: value,
+    })
+  ).data;
+};
