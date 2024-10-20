@@ -1,10 +1,13 @@
 const Review = require("../models/review");
+const Product = require("../models/product");
 const checkErrors = require("../util/checkErrors");
 
 exports.getAllReviewsFromProduct = async (req, res) => {
   const productId = req.query.productId;
   try {
-    const reviews = await Review.find({ productId: productId });
+    const reviews = await Review.find({ productId: productId }).populate(
+      "userId",
+    );
     res.status(200).json(reviews);
   } catch (e) {
     res.status(404).json({ message: e.message });
@@ -15,15 +18,27 @@ exports.addReview = async (req, res) => {
   if (checkErrors(req, res)) return;
   const productId = req.query.productId;
   const opinion = req.body;
-  const newReview = new Review({ ...opinion, productId });
-  const reviews = await Review.find();
+  const newReview = new Review({
+    ...opinion,
+    date: Date.now(),
+    productId,
+    isAccepted: false,
+  });
+
   try {
-    reviews.forEach((opinion) => {
-      if (opinion.review === newReview.review) {
-        throw new Error("Review already exist.");
-      }
+    const existingReview = await Review.findOne({
+      productId: productId,
+      userId: opinion.userId,
     });
-    await newReview.save();
+
+    if (existingReview) {
+      throw new Error("Review already exist.");
+    }
+
+    const savedReview = await newReview.save();
+    await Product.findByIdAndUpdate(productId, {
+      $push: { reviews: savedReview._id },
+    });
     res.status(201).json("Created");
   } catch (e) {
     res.status(409).json({ message: e.message });
@@ -32,7 +47,9 @@ exports.addReview = async (req, res) => {
 
 exports.getAllReviews = async (req, res) => {
   try {
-    const reviews = await Review.find();
+    const reviews = await Review.find()
+      .populate("userId")
+      .populate("productId");
     res.status(200).json(reviews);
   } catch (e) {
     res.status(404).json({ message: e.message });

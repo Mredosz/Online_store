@@ -19,6 +19,10 @@ const reviewSchema = new Schema({
     type: String,
     required: true,
   },
+  date: {
+    type: Date,
+    required: true,
+  },
   isAccepted: {
     type: Boolean,
     default: false,

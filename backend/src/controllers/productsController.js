@@ -13,18 +13,8 @@ exports.getAllProducts = async (req, res) => {
 exports.getProductById = async (req, res) => {
   try {
     const productId = req.query.productId;
-    const product = await Product.findById(productId);
+    const product = await Product.findById(productId).populate("reviews");
     res.status(200).json(product);
-  } catch (e) {
-    res.status(404).json({ message: e.message });
-  }
-};
-
-exports.getProductsByCategory = async (req, res) => {
-  const categoryId = req.query.categoryId;
-  try {
-    const products = await Product.find({ categoryId: categoryId });
-    res.status(200).json(products);
   } catch (e) {
     res.status(404).json({ message: e.message });
   }

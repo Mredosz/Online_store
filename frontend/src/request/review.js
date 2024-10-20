@@ -4,9 +4,9 @@ export const getAllReview = async () => {
   return (await axios.get("http://localhost:3000/review/all")).data;
 };
 
-export const getAllFromProduct = async (user) => {
+export const getAllReviewFromProduct = async (id) => {
   return (
-    await axios.get("http://localhost:3000/review", {
+    await axios.get(`http://localhost:3000/review?productId=${id}`, {
       withCredentials: true,
     })
   ).data;

@@ -7,6 +7,8 @@ import { useReducer, useState } from "react";
 import AddButton from "./reusable/AddButton.jsx";
 import SpecificationElement from "./reusable/SpecificationElement.jsx";
 import ProductModal from "./modal/ProductModal.jsx";
+import ReviewsAll from "./review/ReviewsAll.jsx";
+import ReviewStar from "./review/ReviewStar.jsx";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -58,9 +60,9 @@ export default function ProductDetails() {
           <img src={data.image} alt={data.name} className="h-[26rem]" />
         </div>
         <div>
-          <div className="flex flex-col pt-3 pl-3">
-            <h1 className="text-3xl">{data.name}</h1>
-            <p>******</p>
+          <div className="flex flex-col pt-3 pl-3 mb-2">
+            <h1 className="text-3xl mb-2">{data.name}</h1>
+            <ReviewStar list={data.reviews} />
           </div>
           <div className="flex space-x-5">
             <div className="rounded-md border border-gray-300 shadow-md p-4 w-64">
@@ -144,6 +146,7 @@ export default function ProductDetails() {
           ))}
         </ul>
       </div>
+      <ReviewsAll />
     </div>
   );
 }
