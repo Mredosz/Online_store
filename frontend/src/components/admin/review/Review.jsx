@@ -13,8 +13,8 @@ export default function Review({ review, onClick }) {
 
   return (
     <tr className="hover:bg-gray-100">
-      <Td>{review.productId}</Td>
-      <Td>{review.userId}</Td>
+      <Td>{review.productId.name}</Td>
+      <Td>{review.userId?.email}</Td>
       <Td>{review.rating}</Td>
       <Td>{review.review}</Td>
       <Td>{review.isAccepted ? "Yes" : "No"}</Td>

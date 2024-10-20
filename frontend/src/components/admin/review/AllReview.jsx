@@ -26,7 +26,7 @@ export default function AllReview() {
 
   return (
     <div className="flex justify-center items-center w-full my-5">
-      <table className="table-auto border-collapse border-gray-300 w-1/2">
+      <table className="table-auto border-collapse border-gray-300 w-3/4">
         <thead>
           <tr>
             <Th>Product</Th>
