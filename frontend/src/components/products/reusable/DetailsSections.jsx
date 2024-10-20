@@ -4,12 +4,11 @@ export default function DetailsSections({
   firstText,
   secondText,
   isLast,
+  ...props
 }) {
   let classButton = "hover:bg-gray-200 w-full p-3 flex items-center";
 
-  !isLast
-    ? (classButton += " border-b border-gray-300")
-    : (classButton += " rounded-b-md");
+  classButton += !isLast ? " border-b border-gray-300" : " rounded-b-md";
 
   return component !== "button" ? (
     <div className="flex justify-between p-3 border-b border-gray-300">
@@ -17,7 +16,7 @@ export default function DetailsSections({
       <p className="pr-3">{secondText}</p>
     </div>
   ) : (
-    <button onClick={() => console.log("click")} className={classButton}>
+    <button {...props} className={classButton}>
       {children}
       <div>
         <p className="flex items-start">{firstText}</p>

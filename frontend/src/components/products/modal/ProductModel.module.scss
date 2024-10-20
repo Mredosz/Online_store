@@ -1,0 +1,86 @@
+$modal-button-color: #ff4343;
+$modal-button-color-hover: #b90202;
+$base-size: 5px;
+
+@mixin button-style($bg-color, $font-size, $bg-hover-color) {
+    background-color: $bg-color;
+    font-size: $font-size;
+    padding: $base-size*2 $base-size*4;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    &:hover{
+        background-color: $bg-hover-color;
+    }
+}
+
+@mixin header-style($font-size) {
+    font-size: $font-size;
+    font-weight: bold;
+}
+
+%base-style {
+    font-family: Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 40;
+}
+
+.modalContent {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    max-width: 600px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 50;
+}
+
+.button{
+    @include button-style($modal-button-color, 12px, $modal-button-color-hover);
+    margin-top: 1rem;
+}
+
+.h2{
+    @extend %base-style;
+    @include header-style(20px);
+    margin-bottom: 0.5rem;
+}
+
+.h3{
+    @extend %base-style;
+    @include header-style(16px);
+    margin-top: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.pDiv{
+    display: flex;
+
+    p:first-child {
+        @if true {
+            font-weight: bold;
+            margin-right: 0.5rem;
+        } @else {
+            font-weight: normal;
+        }
+    }
+}
+
+.p{
+    margin-top: 0.5rem;
+}

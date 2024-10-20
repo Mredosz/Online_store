@@ -3,14 +3,29 @@ import { useQuery } from "@tanstack/react-query";
 import { getProductDetails } from "../../request/products.js";
 import { FaCalendarAlt, FaCartPlus, FaClock, FaTruck } from "react-icons/fa";
 import DetailsSections from "./reusable/DetailsSections.jsx";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import AddButton from "./reusable/AddButton.jsx";
 import SpecificationElement from "./reusable/SpecificationElement.jsx";
+import ProductModal from "./modal/ProductModal.jsx";
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "DELIVER":
+      return { content: "delivery" };
+    case "WARRANTY":
+      return { content: "warranty" };
+    case "BUY_NOW":
+      return { content: "buy_now" };
+    default:
+      return state;
+  }
+}
 
 export default function ProductDetails() {
   const params = useParams();
-
   const [isTooMuch, setIsTooMuch] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [state, dispatch] = useReducer(reducer, { content: "" });
 
   const { data, isLoading } = useQuery({
     queryKey: ["products", params.productId],
@@ -23,6 +38,15 @@ export default function ProductDetails() {
     } else {
       setIsTooMuch(false);
     }
+  };
+
+  const handleOpenModal = (type) => {
+    dispatch({ type });
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -72,6 +96,7 @@ export default function ProductDetails() {
                   component="button"
                   firstText="Buy now, get on Tuesday"
                   secondText="Click for more information"
+                  onClick={() => handleOpenModal("BUY_NOW")}
                 >
                   <FaClock size={26} className="mr-3 flex justify-center" />
                 </DetailsSections>
@@ -79,10 +104,16 @@ export default function ProductDetails() {
                   component="button"
                   firstText="Free Deliver"
                   secondText="Click for more information"
+                  onClick={() => handleOpenModal("DELIVER")}
                 >
                   <FaTruck size={26} className="mr-3 flex justify-center" />
                 </DetailsSections>
-                <DetailsSections component="button" firstText="Waranty" isLast>
+                <DetailsSections
+                  component="button"
+                  firstText="Waranty"
+                  onClick={() => handleOpenModal("WARRANTY")}
+                  isLast
+                >
                   <FaCalendarAlt
                     size={26}
                     className="mr-3 flex justify-center"
@@ -93,6 +124,9 @@ export default function ProductDetails() {
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <ProductModal content={state.content} onClose={handleCloseModal} />
+      )}
       <div className="flex flex-col mt-10 w-full justify-center items-center">
         <h1 className="text-3xl">Specification</h1>
         <ul className="mt-4 w-3/4">
