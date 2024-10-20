@@ -128,8 +128,12 @@ export default function ProductDetails() {
         <ProductModal content={state.content} onClose={handleCloseModal} />
       )}
       <div className="flex flex-col mt-10 w-full justify-center items-center">
-        <h1 className="text-3xl">Specification</h1>
-        <ul className="mt-4 w-3/4">
+        <h1 className="text-3xl mb-4">Specification</h1>
+        <article className="rounded-md border border-gray-300 shadow-md p-4 w-3/4">
+          <h2 className="text-2xl mb-2">Description</h2>
+          {data.shortDescription}
+        </article>
+        <ul className="my-4 w-3/4">
           {data.specifications.map(({ key, value }, index) => (
             <SpecificationElement
               key={key}

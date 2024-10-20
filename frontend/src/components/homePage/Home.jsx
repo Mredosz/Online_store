@@ -35,7 +35,7 @@ export default function Home() {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex flex-wrap justify-center items-center">
       {data.map((product) => (
         <Product key={product._id} product={product} />
       ))}
