@@ -17,3 +17,22 @@ exports.createTokensAndAddToCookie = (res, userDb) => {
   });
   return token;
 };
+
+exports.getUserIdFromToken = (req, res) => {
+  let decodedRefreshToken;
+
+  try {
+    decodedRefreshToken = jwt.verify(
+      req.cookies.refreshToken,
+      process.env.JWT_SECRET,
+    );
+    if (!decodedRefreshToken.id) {
+      return res
+        .status(401)
+        .json({ message: "Invalid refresh token: missing id" });
+    }
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid refresh token" });
+  }
+  return decodedRefreshToken.id;
+};
