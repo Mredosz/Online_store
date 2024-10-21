@@ -1,6 +1,7 @@
 const Review = require("../models/review");
 const Product = require("../models/product");
 const checkErrors = require("../util/checkErrors");
+const jwt = require("jsonwebtoken");
 
 exports.getAllReviewsFromProduct = async (req, res) => {
   const productId = req.query.productId;
@@ -15,20 +16,38 @@ exports.getAllReviewsFromProduct = async (req, res) => {
 };
 
 exports.addReview = async (req, res) => {
+  let decodedRefreshToken;
+
+  try {
+    decodedRefreshToken = jwt.verify(
+      req.cookies.refreshToken,
+      process.env.JWT_SECRET,
+    );
+    if (!decodedRefreshToken.id) {
+      return res
+        .status(401)
+        .json({ message: "Invalid refresh token: missing id" });
+    }
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid refresh token" });
+  }
+
   if (checkErrors(req, res)) return;
   const productId = req.query.productId;
+  const userId = decodedRefreshToken.id;
   const opinion = req.body;
   const newReview = new Review({
     ...opinion,
     date: Date.now(),
     productId,
+    userId,
     isAccepted: false,
   });
 
   try {
     const existingReview = await Review.findOne({
       productId: productId,
-      userId: opinion.userId,
+      userId: userId,
     });
 
     if (existingReview) {
