@@ -9,6 +9,8 @@ import SpecificationElement from "./reusable/SpecificationElement.jsx";
 import ProductModal from "./modal/ProductModal.jsx";
 import ReviewsAll from "./review/ReviewsAll.jsx";
 import ReviewStar from "./review/ReviewStar.jsx";
+import { addToCartThunk } from "../../store/cart-redux.jsx";
+import { useDispatch } from "react-redux";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -27,6 +29,7 @@ function reducer(state, action) {
 
 export default function ProductDetails() {
   const params = useParams();
+  const dispatchCart = useDispatch();
   const [isTooMuch, setIsTooMuch] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [state, dispatch] = useReducer(reducer, { content: "" });
@@ -51,6 +54,10 @@ export default function ProductDetails() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleAddToCart = async (product) => {
+    dispatchCart(addToCartThunk(product));
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -84,7 +91,10 @@ export default function ProductDetails() {
                     max={data.availableQuantity}
                     onChange={changeHandler}
                   />
-                  <AddButton isTooMuch={isTooMuch}>
+                  <AddButton
+                    isTooMuch={isTooMuch}
+                    onClick={() => handleAddToCart(data)}
+                  >
                     <FaCartPlus className="text-white" />
                     <p className="ml-2 text-white">Add to cart</p>
                   </AddButton>

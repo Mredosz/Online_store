@@ -3,9 +3,17 @@ import ProductInfo from "./reusable/ProductInfo.jsx";
 import Button from "./reusable/Button.jsx";
 import { Link } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
+import { addToCartThunk } from "../../store/cart-redux.jsx";
+import { useDispatch } from "react-redux";
 
 export default function Product({ product }) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleAddToCart = async (product) => {
+    dispatch(addToCartThunk(product));
+  };
+
   return (
     <div
       className="bg-gray-100 flex flex-col justify-center w-[300px] h-[540px] rounded-md shadow-md m-3"
@@ -41,7 +49,10 @@ export default function Product({ product }) {
       </Link>
       {isMouseEnter && (
         <div className="relative">
-          <Button className="bg-gray-100 absolute bottom-0 right-0 m-3 flex border items-center border-green-500 text-green-500 hover:bg-green-500 hover:text-gray-100">
+          <Button
+            onClick={() => handleAddToCart(product)}
+            className="bg-gray-100 absolute bottom-0 right-0 m-3 flex border items-center border-green-500 text-green-500 hover:bg-green-500 hover:text-gray-100"
+          >
             <FaCartPlus />
             <p className="ml-2">Add to cart</p>
           </Button>

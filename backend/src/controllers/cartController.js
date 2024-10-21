@@ -1,8 +1,9 @@
 const Cart = require("../models/cart");
 const checkErrors = require("../util/checkErrors");
+const { getUserIdFromToken } = require("../util/tokenManager");
 
 exports.getCartById = async (req, res) => {
-  const userId = req.query.userId;
+  const userId = getUserIdFromToken(req, res);
   try {
     const cart = await Cart.findOne({ userId });
     res.status(200).json(cart);
@@ -13,15 +14,26 @@ exports.getCartById = async (req, res) => {
 
 exports.addToCart = async (req, res) => {
   if (checkErrors(req, res)) return;
-  const cart = req.body;
+  const userId = getUserIdFromToken(req, res);
+  const products = req.body;
   try {
-    const cartDb = await Cart.findOne({ userId: cart.userId });
+    const cartDb = await Cart.findOne({ userId });
     if (cartDb) {
-      cartDb.products.push(cart.products[0]);
+      products.forEach((newProduct) => {
+        const existingProduct = cartDb.products.find(
+          ({ product }) => product._id === newProduct.product._id,
+        );
+
+        if (existingProduct) {
+          existingProduct.quantity = newProduct.quantity;
+        } else {
+          cartDb.products.push(newProduct);
+        }
+      });
       await cartDb.save();
       res.status(201).json("Added to cart");
     } else {
-      const newCart = new Cart(cart);
+      const newCart = new Cart({ products, userId });
       await newCart.save();
       res.status(201).json("Added to cart");
     }
@@ -34,10 +46,9 @@ exports.deleteFromCart = async (req, res) => {
   const { userId, productId } = req.body;
   try {
     const cart = await Cart.findOne({ userId });
-    const products = cart.products.filter(
+    cart.products = cart.products.filter(
       (product) => product.productId !== productId,
     );
-    cart.products = products;
     await cart.save();
     res.status(200).json("Deleted from cart");
   } catch (e) {

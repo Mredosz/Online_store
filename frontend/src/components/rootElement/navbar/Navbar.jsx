@@ -4,9 +4,11 @@ import NavItem from "./NavItem.jsx";
 import { useContext } from "react";
 import { AccountContext } from "../../../store/account-context.jsx";
 import { logout } from "../../../request/account.js";
+import { useSelector } from "react-redux";
 
 export default function Navbar() {
   const { isLogged, setIsLogged } = useContext(AccountContext);
+  const totalQuantity = useSelector((state) => state.totalQuantity);
 
   const handleLogout = async () => {
     setIsLogged(false);
@@ -29,7 +31,7 @@ export default function Navbar() {
         <div className="flex items-center space-x-6">
           <NavItem
             to={"/cart"}
-            count={2}
+            count={totalQuantity > 9 ? "9+" : totalQuantity}
             className="flex items-center space-x-1 relative p-2"
           >
             <FaCartShopping size={28} />

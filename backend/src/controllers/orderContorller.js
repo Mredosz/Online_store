@@ -1,5 +1,6 @@
 const Order = require("../models/order");
 const checkErrors = require("../util/checkErrors");
+const { getUserIdFromToken } = require("../util/tokenManager");
 
 exports.getAllOrders = async (req, res) => {
   try {
@@ -22,8 +23,12 @@ exports.getOrderById = async (req, res) => {
 
 exports.addOrder = async (req, res) => {
   if (checkErrors(req, res)) return;
+  const userId = getUserIdFromToken(req, res);
   const order = req.body;
-  const newOrder = new Order(order);
+  const newOrder = new Order({
+    ...order,
+    userId,
+  });
   try {
     await newOrder.save();
     res.status(201).json("Created");
