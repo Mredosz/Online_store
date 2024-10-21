@@ -6,7 +6,7 @@ const Input = forwardRef(function Input(
 ) {
   let classes = `rounded-md border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-500 ${className}`;
   return (
-    <div className="flex flex-col mt-2">
+    <div className="flex flex-col mt-2 w-full">
       <label
         className="uppercase font-semibold mb-1 text-gray-500"
         htmlFor={id}

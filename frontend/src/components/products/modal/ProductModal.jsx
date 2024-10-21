@@ -1,6 +1,7 @@
 import { createPortal } from "react-dom";
 import styles from "./ProductModel.module.scss";
 import { buyNow, delivery, warranty } from "./content.jsx";
+import ReviewAdd from "../review/add/ReviewAdd.jsx";
 
 export default function ProductModal({ onClose, content }) {
   const getContent = () => {
@@ -11,6 +12,8 @@ export default function ProductModal({ onClose, content }) {
         return delivery;
       case "buy_now":
         return buyNow;
+      case "add_review":
+        return <ReviewAdd />;
       default:
         return null;
     }

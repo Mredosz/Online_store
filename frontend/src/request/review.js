@@ -12,9 +12,9 @@ export const getAllReviewFromProduct = async (id) => {
   ).data;
 };
 
-export const addReview = async (review) => {
+export const addReview = async (id, review) => {
   return (
-    await axios.post("http://localhost:3000/review", review, {
+    await axios.post(`http://localhost:3000/review?productId=${id}`, review, {
       withCredentials: true,
     })
   ).data;

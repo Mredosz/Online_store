@@ -18,6 +18,8 @@ function reducer(state, action) {
       return { content: "warranty" };
     case "BUY_NOW":
       return { content: "buy_now" };
+    case "ADD_REVIEW":
+      return { content: "add_review" };
     default:
       return state;
   }
@@ -146,7 +148,7 @@ export default function ProductDetails() {
           ))}
         </ul>
       </div>
-      <ReviewsAll />
+      <ReviewsAll onClick={() => handleOpenModal("ADD_REVIEW")} />
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllReviewFromProduct } from "../../../request/review.js";
 import ReviewStar from "./ReviewStar.jsx";
 
-export default function ReviewsAll() {
+export default function ReviewsAll({ onClick }) {
   const param = useParams();
   const { data, isLoading } = useQuery({
     queryKey: ["review", param.productId],
@@ -14,8 +14,14 @@ export default function ReviewsAll() {
   }
 
   return (
-    <div className="w-3/4 flex flex-col mb-5">
+    <div className="w-3/4 relative flex flex-col mb-5">
       <h1 className="text-3xl mb-4 mt-3 text-center">Reviews</h1>
+      <button
+        onClick={onClick}
+        className="rounded-md py-2 px-4 bg-green-500 hover:bg-green-700 absolute right-16 top-6"
+      >
+        Add review
+      </button>
       <ul className="flex flex-col items-center divide-y space-y-4 divide-gray-400">
         {data
           .filter((review) => review.isAccepted === true)

@@ -10,8 +10,6 @@ export default function ({ rating, list }) {
   }
   const ratingFloor = Math.floor(ratingAll) || Math.floor(rating);
 
-  console.log(ratingFloor);
-
   return (
     <div className="flex">
       {Array.from({ length: 5 }).map((_, index) =>
