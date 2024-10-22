@@ -1,5 +1,5 @@
 import FormDiv from "../reusable/FormDiv.jsx";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Input from "../reusable/Input.jsx";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "../../../request/account.js";
@@ -9,6 +9,7 @@ import {
   isNotEmpty,
   isPassword,
 } from "../../../validators/account.js";
+import { AccountContext } from "../../../store/account-context.jsx";
 
 export default function Login() {
   const [emailIsInvalid, setEmailIsInvalid] = useState({
@@ -20,12 +21,13 @@ export default function Login() {
     message: "",
   });
 
+  const { setIsLogged } = useContext(AccountContext);
   const navigate = useNavigate();
 
   const email = useRef();
   const password = useRef();
 
-  //Todo powiadominie do error i obsługa redux
+  //Todo powiadominie do error
   const { mutateAsync, error, data, isSuccess } = useMutation({
     mutationKey: "login",
     mutationFn: login,
@@ -33,8 +35,8 @@ export default function Login() {
 
   useEffect(() => {
     if (isSuccess) {
+      setIsLogged(true);
       navigate(data.role === "user" ? "/" : "/admin");
-      localStorage.setItem("is_logged_in", true);
     }
   }, [isSuccess]);
 

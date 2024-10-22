@@ -15,25 +15,16 @@ exports.getCartById = async (req, res) => {
 exports.addToCart = async (req, res) => {
   if (checkErrors(req, res)) return;
   const userId = getUserIdFromToken(req, res);
-  const products = req.body;
+  const cart = req.body;
   try {
     const cartDb = await Cart.findOne({ userId });
     if (cartDb) {
-      products.forEach((newProduct) => {
-        const existingProduct = cartDb.products.find(
-          ({ product }) => product._id === newProduct.product._id,
-        );
-
-        if (existingProduct) {
-          existingProduct.quantity = newProduct.quantity;
-        } else {
-          cartDb.products.push(newProduct);
-        }
-      });
+      cartDb.products = cart.products;
+      cartDb.totalQuantity = cart.totalQuantity;
       await cartDb.save();
       res.status(201).json("Added to cart");
     } else {
-      const newCart = new Cart({ products, userId });
+      const newCart = new Cart({ ...cart, userId });
       await newCart.save();
       res.status(201).json("Added to cart");
     }
@@ -43,7 +34,8 @@ exports.addToCart = async (req, res) => {
 };
 
 exports.deleteFromCart = async (req, res) => {
-  const { userId, productId } = req.body;
+  const { productId } = req.body;
+  const userId = getUserIdFromToken(req, res);
   try {
     const cart = await Cart.findOne({ userId });
     cart.products = cart.products.filter(

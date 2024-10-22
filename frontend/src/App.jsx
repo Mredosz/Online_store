@@ -1,21 +1,41 @@
 import { RouterProvider } from "react-router-dom";
 import router from "./routing/route.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import AccountProvider from "./store/account-context.jsx";
-import { Provider } from "react-redux";
-import cartStore from "./store/cart-redux.jsx";
+import { AccountContext } from "./store/account-context.jsx";
+import { useDispatch } from "react-redux";
+import { cartActions, fetchCartData } from "./store/cart-redux.jsx";
+import { useContext, useLayoutEffect } from "react";
+import { protect } from "./request/account.js";
 
 function App() {
   const queryClient = new QueryClient();
+  const dispatch = useDispatch();
+
+  const { isLogged, setIsLogged } = useContext(AccountContext);
+
+  useLayoutEffect(() => {
+    const checkAuthAndFetchCart = async () => {
+      try {
+        if (isLogged) {
+          await protect();
+          dispatch(fetchCartData());
+        } else {
+          dispatch(cartActions.deleteCart());
+        }
+      } catch (e) {
+        if (e.response && e.response.status === 307) {
+          setIsLogged(false);
+        }
+      }
+    };
+
+    checkAuthAndFetchCart();
+  }, [isLogged, setIsLogged, dispatch]);
 
   return (
-    <Provider store={cartStore}>
-      <AccountProvider>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router}></RouterProvider>
-        </QueryClientProvider>
-      </AccountProvider>
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router}></RouterProvider>
+    </QueryClientProvider>
   );
 }
 

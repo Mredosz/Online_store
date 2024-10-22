@@ -12,7 +12,6 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     setIsLogged(false);
-    localStorage.removeItem("is_logged_in");
     await logout();
   };
 

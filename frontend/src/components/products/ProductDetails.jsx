@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getProductDetails } from "../../request/products.js";
 import { FaCalendarAlt, FaCartPlus, FaClock, FaTruck } from "react-icons/fa";
 import DetailsSections from "./reusable/DetailsSections.jsx";
-import { useReducer, useState } from "react";
+import { useContext, useReducer, useState } from "react";
 import AddButton from "./reusable/AddButton.jsx";
 import SpecificationElement from "./reusable/SpecificationElement.jsx";
 import ProductModal from "./modal/ProductModal.jsx";
@@ -11,6 +11,7 @@ import ReviewsAll from "./review/ReviewsAll.jsx";
 import ReviewStar from "./review/ReviewStar.jsx";
 import { addToCartThunk } from "../../store/cart-redux.jsx";
 import { useDispatch } from "react-redux";
+import { AccountContext } from "../../store/account-context.jsx";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -33,6 +34,7 @@ export default function ProductDetails() {
   const [isTooMuch, setIsTooMuch] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [state, dispatch] = useReducer(reducer, { content: "" });
+  const { isLogged } = useContext(AccountContext);
 
   const { data, isLoading } = useQuery({
     queryKey: ["products", params.productId],
@@ -57,7 +59,11 @@ export default function ProductDetails() {
   };
 
   const handleAddToCart = async (product) => {
-    dispatchCart(addToCartThunk(product));
+    if (isLogged) {
+      dispatchCart(addToCartThunk(product));
+    } else {
+      window.alert("You must be logged");
+    }
   };
 
   if (isLoading) return <div>Loading...</div>;

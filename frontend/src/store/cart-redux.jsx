@@ -3,7 +3,7 @@ import {
   createAsyncThunk,
   createSlice,
 } from "@reduxjs/toolkit";
-import { addToCart } from "../request/cart.js";
+import { addToCart, getCart } from "../request/cart.js";
 
 const initialState = { totalQuantity: 0, products: [] };
 
@@ -13,10 +13,26 @@ export const addToCartThunk = createAsyncThunk(
     dispatch(cartActions.addProduct(product));
 
     const products = getState().products;
+    const totalQuantity = getState().totalQuantity;
 
-    await addToCart(products);
+    await addToCart({ products, totalQuantity });
   },
 );
+
+export const fetchCartData = () => {
+  return async (dispatch) => {
+    const fetchData = async () => {
+      return await getCart();
+    };
+
+    try {
+      const cartData = await fetchData();
+      dispatch(cartActions.replaceCart(cartData));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
 
 const cartSlice = createSlice({
   name: "cart",
@@ -42,6 +58,14 @@ const cartSlice = createSlice({
       state.totalQuantity--;
     },
     deleteProduct(state) {},
+    replaceCart(state, action) {
+      state.totalQuantity = action.payload.totalQuantity;
+      state.products = action.payload.products;
+    },
+    deleteCart(state) {
+      state.totalQuantity = 0;
+      state.products = [];
+    },
   },
 });
 

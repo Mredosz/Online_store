@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getCart = async (cart) => {
+export const getCart = async () => {
   return (
     await axios.get("http://localhost:3000/cart", {
       withCredentials: true,
