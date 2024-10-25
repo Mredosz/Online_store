@@ -3,7 +3,7 @@ import {
   createAsyncThunk,
   createSlice,
 } from "@reduxjs/toolkit";
-import { addToCart, getCart } from "../request/cart.js";
+import { addToCart, deleteFromCart, getCart } from "../request/cart.js";
 
 const initialState = { totalQuantity: 0, products: [] };
 
@@ -13,9 +13,29 @@ export const addToCartThunk = createAsyncThunk(
     dispatch(cartActions.addProduct(product));
 
     const products = getState().products;
-    const totalQuantity = getState().totalQuantity;
+    // const totalQuantity = getState().totalQuantity;
 
-    await addToCart({ products, totalQuantity });
+    await addToCart({ products, totalQuantity: 0 });
+  },
+);
+
+export const changeQuantityThunk = createAsyncThunk(
+  "cart/changeQuantity",
+  async (product, { dispatch, getState }) => {
+    dispatch(cartActions.changeQuantity(product));
+
+    const products = getState().products;
+    // const totalQuantity = getState().totalQuantity;
+    await addToCart({ products, totalQuantity: 0 });
+  },
+);
+
+export const deleteProductThunk = createAsyncThunk(
+  "cart/deleteProduct",
+  async (product, { dispatch }) => {
+    dispatch(cartActions.deleteProduct(product));
+
+    await deleteFromCart(product._id);
   },
 );
 
@@ -38,29 +58,57 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addProduct(state, action) {
-      const newProduct = action.payload;
+    changeQuantity(state, action) {
+      const newProduct = action.payload.product;
+      const quantity = action.payload.quantity;
       const existingProduct = state.products.find(
         ({ product }) => product._id === newProduct._id,
       );
       if (!existingProduct) {
-        state.totalQuantity++;
         state.products.push({
-          product: action.payload,
-          quantity: 1,
+          product: newProduct,
+          quantity: Math.min(quantity, newProduct.availableQuantity),
         });
+      } else if (quantity >= newProduct.availableQuantity) {
+        existingProduct.quantity = newProduct.availableQuantity;
+        console.log(quantity);
       } else {
-        state.totalQuantity++;
-        existingProduct.quantity++;
+        existingProduct.quantity = quantity;
+      }
+    },
+    addProduct(state, action) {
+      const newProduct = action.payload.product;
+      const quantity = action.payload.quantity;
+      const existingProduct = state.products.find(
+        ({ product }) => product._id === newProduct._id,
+      );
+      if (!existingProduct) {
+        state.products.push({
+          product: newProduct,
+          quantity: quantity,
+        });
+      } else if (
+        existingProduct.quantity + quantity >=
+        newProduct.availableQuantity
+      ) {
+        existingProduct.quantity = newProduct.availableQuantity;
+        console.log(quantity);
+      } else {
+        existingProduct.quantity += quantity;
       }
     },
     decrementProduct(state) {
       state.totalQuantity--;
     },
-    deleteProduct(state) {},
+    deleteProduct(state, action) {
+      const product = action.payload;
+      state.products = state.products.filter(
+        (p) => p.product._id !== product._id,
+      );
+    },
     replaceCart(state, action) {
-      state.totalQuantity = action.payload.totalQuantity;
-      state.products = action.payload.products;
+      state.totalQuantity = 0;
+      state.products = action.payload.products || [];
     },
     deleteCart(state) {
       state.totalQuantity = 0;

@@ -34,12 +34,12 @@ exports.addToCart = async (req, res) => {
 };
 
 exports.deleteFromCart = async (req, res) => {
-  const { productId } = req.body;
+  const productId = req.query.productId;
   const userId = getUserIdFromToken(req, res);
   try {
     const cart = await Cart.findOne({ userId });
     cart.products = cart.products.filter(
-      (product) => product.productId !== productId,
+      ({ product }) => product._id !== productId,
     );
     await cart.save();
     res.status(200).json("Deleted from cart");

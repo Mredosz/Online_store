@@ -14,7 +14,7 @@ export default function Product({ product }) {
 
   const handleAddToCart = async (product) => {
     if (isLogged) {
-      dispatch(addToCartThunk(product));
+      dispatch(addToCartThunk({ product, quantity: 1 }));
     } else {
       window.alert("You must be logged");
     }

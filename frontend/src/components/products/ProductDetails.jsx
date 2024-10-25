@@ -31,7 +31,7 @@ function reducer(state, action) {
 export default function ProductDetails() {
   const params = useParams();
   const dispatchCart = useDispatch();
-  const [isTooMuch, setIsTooMuch] = useState(false);
+  const [actualQuantity, setActualQuantity] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [state, dispatch] = useReducer(reducer, { content: "" });
   const { isLogged } = useContext(AccountContext);
@@ -42,10 +42,11 @@ export default function ProductDetails() {
   });
 
   const changeHandler = (event) => {
-    if (event.target.value > data.availableQuantity) {
-      setIsTooMuch(true);
+    const quantity = Math.floor(event.target.value);
+    if (quantity > data.availableQuantity) {
+      setActualQuantity(data.availableQuantity);
     } else {
-      setIsTooMuch(false);
+      setActualQuantity(quantity);
     }
   };
 
@@ -60,7 +61,7 @@ export default function ProductDetails() {
 
   const handleAddToCart = async (product) => {
     if (isLogged) {
-      dispatchCart(addToCartThunk(product));
+      dispatchCart(addToCartThunk({ product, quantity: actualQuantity }));
     } else {
       window.alert("You must be logged");
     }
@@ -92,15 +93,12 @@ export default function ProductDetails() {
                   <input
                     type={"number"}
                     className="rounded-md h-10 w-20 mt-3 text-xl border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-500"
-                    defaultValue={1}
+                    value={actualQuantity}
                     min={1}
                     max={data.availableQuantity}
                     onChange={changeHandler}
                   />
-                  <AddButton
-                    isTooMuch={isTooMuch}
-                    onClick={() => handleAddToCart(data)}
-                  >
+                  <AddButton onClick={() => handleAddToCart(data)}>
                     <FaCartPlus className="text-white" />
                     <p className="ml-2 text-white">Add to cart</p>
                   </AddButton>
