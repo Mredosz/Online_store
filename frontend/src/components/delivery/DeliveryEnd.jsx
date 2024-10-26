@@ -107,7 +107,7 @@ export default function DeliveryEnd() {
           onClose={handleCloseModal}
           button={<Button onClick={handleFinalize}>Yes</Button>}
         >
-          <h2>Are you sure?</h2>
+          <h2 className="text-3xl text-center">Are you sure?</h2>
         </ProductModal>
       )}
       {isFinalize && <OrderFinalize />}
