@@ -23,3 +23,11 @@ export const deleteFromCart = async (id) => {
     })
   ).data;
 };
+
+export const deleteCart = async () => {
+  return (
+    await axios.delete("http://localhost:3000/cart/delete", {
+      withCredentials: true,
+    })
+  ).data;
+};

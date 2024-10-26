@@ -1,6 +1,6 @@
 import CartItem from "./CartItem.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { cartActions } from "../../store/cart-redux.jsx";
+import { deleteCartThunk } from "../../store/cart-redux.jsx";
 
 export default function Cart() {
   const products = useSelector((state) => state.products);
@@ -11,21 +11,26 @@ export default function Cart() {
     return (
       products
         .map(({ product, quantity }) => product.price * quantity)
-        .reduce((acc, el) => acc + el) + deliverPrice
+        .reduce((acc, el) => acc + el, 0) + deliverPrice
     ).toLocaleString("pl-Pl");
   };
 
   const handleDeleteAll = () => {
-    dispatch(cartActions.deleteCart());
+    dispatch(deleteCartThunk({}));
   };
 
   return (
     <div className="flex justify-center min-h-[calc(100vh-168px)] bg-[url('/cart.png')] bg-cover bg-center">
       <div className="flex flex-col bg-form my-10 p-5 rounded-md shadow-md w-1/2">
         <div className="relative">
-          <button onClick={handleDeleteAll} className="absolute top-0 right-0">
-            Delete all
-          </button>
+          {products.length > 0 && (
+            <button
+              onClick={handleDeleteAll}
+              className="absolute top-0 right-0"
+            >
+              Delete all
+            </button>
+          )}
         </div>
         <h1 className="text-3xl text-center font-semibold">Cart</h1>
         {products ? (

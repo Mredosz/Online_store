@@ -20,7 +20,6 @@ exports.addToCart = async (req, res) => {
     const cartDb = await Cart.findOne({ userId });
     if (cartDb) {
       cartDb.products = cart.products;
-      cartDb.totalQuantity = cart.totalQuantity;
       await cartDb.save();
       res.status(201).json("Added to cart");
     } else {
@@ -43,6 +42,17 @@ exports.deleteFromCart = async (req, res) => {
     );
     await cart.save();
     res.status(200).json("Deleted from cart");
+  } catch (e) {
+    res.status(409).json({ message: e.message });
+  }
+};
+
+exports.deleteCart = async (req, res) => {
+  const userId = getUserIdFromToken(req, res);
+  try {
+    const cart = await Cart.findOne({ userId });
+    await cart.deleteOne();
+    res.status(200).json("Cart delete successfully");
   } catch (e) {
     res.status(409).json({ message: e.message });
   }

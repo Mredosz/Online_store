@@ -3,7 +3,12 @@ import {
   createAsyncThunk,
   createSlice,
 } from "@reduxjs/toolkit";
-import { addToCart, deleteFromCart, getCart } from "../request/cart.js";
+import {
+  addToCart,
+  deleteCart,
+  deleteFromCart,
+  getCart,
+} from "../request/cart.js";
 
 const initialState = { totalQuantity: 0, products: [] };
 
@@ -13,9 +18,8 @@ export const addToCartThunk = createAsyncThunk(
     dispatch(cartActions.addProduct(product));
 
     const products = getState().products;
-    // const totalQuantity = getState().totalQuantity;
 
-    await addToCart({ products, totalQuantity: 0 });
+    await addToCart({ products });
   },
 );
 
@@ -25,8 +29,7 @@ export const changeQuantityThunk = createAsyncThunk(
     dispatch(cartActions.changeQuantity(product));
 
     const products = getState().products;
-    // const totalQuantity = getState().totalQuantity;
-    await addToCart({ products, totalQuantity: 0 });
+    await addToCart({ products });
   },
 );
 
@@ -39,6 +42,15 @@ export const deleteProductThunk = createAsyncThunk(
   },
 );
 
+export const deleteCartThunk = createAsyncThunk(
+  "cart/deleteCart",
+  async (_, { dispatch }) => {
+    dispatch(cartActions.deleteCart());
+
+    await deleteCart();
+  },
+);
+
 export const fetchCartData = () => {
   return async (dispatch) => {
     const fetchData = async () => {
@@ -46,7 +58,7 @@ export const fetchCartData = () => {
     };
 
     try {
-      const cartData = await fetchData();
+      const cartData = (await fetchData()) || [];
       dispatch(cartActions.replaceCart(cartData));
     } catch (e) {
       console.log(e);
@@ -75,6 +87,9 @@ const cartSlice = createSlice({
       } else {
         existingProduct.quantity = quantity;
       }
+      state.totalQuantity = state.products
+        .map((product) => product.quantity)
+        .reduce((acc, el) => acc + el);
     },
     addProduct(state, action) {
       const newProduct = action.payload.product;
@@ -96,19 +111,24 @@ const cartSlice = createSlice({
       } else {
         existingProduct.quantity += quantity;
       }
-    },
-    decrementProduct(state) {
-      state.totalQuantity--;
+      state.totalQuantity = state.products
+        .map((product) => product.quantity)
+        .reduce((acc, el) => acc + el);
     },
     deleteProduct(state, action) {
       const product = action.payload;
       state.products = state.products.filter(
         (p) => p.product._id !== product._id,
       );
+      state.totalQuantity = state.products
+        .map((product) => product.quantity)
+        .reduce((acc, el) => acc + el);
     },
     replaceCart(state, action) {
-      state.totalQuantity = 0;
       state.products = action.payload.products || [];
+      state.totalQuantity = state.products
+        .map((product) => product.quantity)
+        .reduce((acc, el) => acc + el, 0);
     },
     deleteCart(state) {
       state.totalQuantity = 0;
