@@ -1,8 +1,4 @@
-import {
-  configureStore,
-  createAsyncThunk,
-  createSlice,
-} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   addToCart,
   deleteCart,
@@ -17,7 +13,7 @@ export const addToCartThunk = createAsyncThunk(
   async (product, { dispatch, getState }) => {
     dispatch(cartActions.addProduct(product));
 
-    const products = getState().products;
+    const products = getState().cart.products;
 
     await addToCart({ products });
   },
@@ -28,7 +24,7 @@ export const changeQuantityThunk = createAsyncThunk(
   async (product, { dispatch, getState }) => {
     dispatch(cartActions.changeQuantity(product));
 
-    const products = getState().products;
+    const products = getState().cart.products;
     await addToCart({ products });
   },
 );
@@ -66,7 +62,10 @@ export const fetchCartData = () => {
   };
 };
 
-const cartSlice = createSlice({
+const calculateTotalQuantity = (products) =>
+  products.map((product) => product.quantity).reduce((acc, el) => acc + el, 0);
+
+export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
@@ -87,9 +86,7 @@ const cartSlice = createSlice({
       } else {
         existingProduct.quantity = quantity;
       }
-      state.totalQuantity = state.products
-        .map((product) => product.quantity)
-        .reduce((acc, el) => acc + el);
+      state.totalQuantity = calculateTotalQuantity(state.products);
     },
     addProduct(state, action) {
       const newProduct = action.payload.product;
@@ -111,24 +108,18 @@ const cartSlice = createSlice({
       } else {
         existingProduct.quantity += quantity;
       }
-      state.totalQuantity = state.products
-        .map((product) => product.quantity)
-        .reduce((acc, el) => acc + el);
+      state.totalQuantity = calculateTotalQuantity(state.products);
     },
     deleteProduct(state, action) {
       const product = action.payload;
       state.products = state.products.filter(
         (p) => p.product._id !== product._id,
       );
-      state.totalQuantity = state.products
-        .map((product) => product.quantity)
-        .reduce((acc, el) => acc + el);
+      state.totalQuantity = calculateTotalQuantity(state.products);
     },
     replaceCart(state, action) {
       state.products = action.payload.products || [];
-      state.totalQuantity = state.products
-        .map((product) => product.quantity)
-        .reduce((acc, el) => acc + el, 0);
+      state.totalQuantity = calculateTotalQuantity(state.products);
     },
     deleteCart(state) {
       state.totalQuantity = 0;
@@ -137,9 +128,4 @@ const cartSlice = createSlice({
   },
 });
 
-const cartStore = configureStore({
-  reducer: cartSlice.reducer,
-});
-
 export const cartActions = cartSlice.actions;
-export default cartStore;

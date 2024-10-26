@@ -27,6 +27,7 @@ exports.addOrder = async (req, res) => {
   const order = req.body;
   const newOrder = new Order({
     ...order,
+    date: new Date(),
     userId,
   });
   try {

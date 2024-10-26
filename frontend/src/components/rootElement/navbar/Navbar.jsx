@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 
 export default function Navbar() {
   const { isLogged, setIsLogged } = useContext(AccountContext);
-  const totalQuantity = useSelector((state) => state.totalQuantity);
+  const totalQuantity = useSelector((state) => state.cart.totalQuantity);
 
   const handleLogout = async () => {
     setIsLogged(false);

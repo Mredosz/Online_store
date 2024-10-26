@@ -1,5 +1,5 @@
 import { FieldArray, Form, Formik } from "formik";
-import InputAdmin from "./InputAdmin.jsx";
+import Input from "./Input.jsx";
 
 export default function FormAdmin({
   validation,
@@ -29,24 +29,16 @@ export default function FormAdmin({
                 {isSuccessText}
               </h2>
             )}
-            <InputAdmin label="name" id="name" type="text" />
-            <InputAdmin label="price" id="price" type="number" />
-            <InputAdmin
-              label="short description"
-              id="shortDescription"
-              textarea
-            />
-            <InputAdmin
+            <Input label="name" id="name" type="text" />
+            <Input label="price" id="price" type="number" />
+            <Input label="short description" id="shortDescription" textarea />
+            <Input
               label="available quantity"
               id="availableQuantity"
               type="number"
             />
-            <InputAdmin
-              label="delivery price"
-              id="deliveryPrice"
-              type="number"
-            />
-            <InputAdmin label="image" id="image" type="text" />
+            <Input label="delivery price" id="deliveryPrice" type="number" />
+            <Input label="image" id="image" type="text" />
             <FieldArray name={"specifications"}>
               {({ push, remove }) => (
                 <div className="mt-2">
@@ -56,13 +48,13 @@ export default function FormAdmin({
                   {values.specifications.map((specification, index) => (
                     <div key={index} className="mt-5">
                       <div className="flex">
-                        <InputAdmin
+                        <Input
                           id={`specifications[${index}].key`}
                           label="key"
                           type="text"
                           className="mr-3"
                         />
-                        <InputAdmin
+                        <Input
                           id={`specifications[${index}].value`}
                           label="value"
                           type="text"

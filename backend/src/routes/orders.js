@@ -9,20 +9,24 @@ router.get("/details", orderController.getOrderById);
 router.post(
   "/",
   body("totalPrice").isNumeric().withMessage("Total price is invalid."),
-  body("date").isDate().withMessage("Date is invalid."),
-  body("street")
+  body("address.street")
     .isLength({ min: 3, max: 50 })
     .withMessage("Street is invalid, min 3, max 50."),
-  body("city")
+  body("address.city")
     .isLength({ min: 3, max: 50 })
     .withMessage("City is invalid, min 3, max 50."),
-  body("postalCode").isPostalCode("PL").withMessage("Postal code is invalid."),
-  body("homeNumber")
+  body("address.postalCode")
+    .isPostalCode("PL")
+    .withMessage("Postal code is invalid."),
+  body("address.homeNumber")
     .isLength({ min: 1, max: 10 })
     .withMessage("Home number is invalid, min 1, max 10."),
-  body("phoneNumber")
+  body("address.phoneNumber")
     .isMobilePhone("pl-PL")
     .withMessage("Phone number is invalid."),
+  body("address.deliveryType")
+    .isLength({ min: 3, max: 50 })
+    .withMessage("Delivery type is invalid."),
   orderController.addOrder,
 );
 

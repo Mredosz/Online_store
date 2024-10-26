@@ -11,6 +11,8 @@ import AdminRootElement from "../components/admin/rootElement/AdminRootElement.j
 import AllReview from "../components/admin/review/AllReview.jsx";
 import Products from "../components/admin/products/Products.jsx";
 import EditProduct from "../components/admin/products/EditProduct.jsx";
+import Delivery from "../components/delivery/Delivery.jsx";
+import DeliveryEnd from "../components/delivery/DeliveryEnd.jsx";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +21,14 @@ const router = createBrowserRouter([
     errorElement: <ErrorElement />,
     children: [
       { index: true, element: <Home /> },
-      { path: "cart", element: <Cart /> },
+      {
+        path: "cart",
+        children: [
+          { index: true, element: <Cart /> },
+          { path: "delivery", element: <Delivery /> },
+          { path: "end", element: <DeliveryEnd /> },
+        ],
+      },
       {
         path: "products",
         children: [

@@ -1,12 +1,6 @@
 import { ErrorMessage, Field } from "formik";
 
-export default function InputAdmin({
-  label,
-  textarea,
-  id,
-  className,
-  ...props
-}) {
+export default function Input({ label, textarea, id, className, ...props }) {
   const classes = `rounded-md border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-500 ${className}`;
 
   return (
