@@ -1,6 +1,27 @@
 $modal-button-color: #ff4343;
 $modal-button-color-hover: #b90202;
 $base-size: 5px;
+$modal-fade-in: 0.3s ease-out;
+
+@keyframes fadeInOverlay {
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+
+@keyframes slideInModal {
+    from{
+        transform: translate(-50%, -60%);
+        opacity: 0;
+    }
+    to{
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
 
 @mixin button-style($bg-color, $font-size, $bg-hover-color) {
     background-color: $bg-color;
@@ -34,6 +55,7 @@ $base-size: 5px;
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
     z-index: 40;
+    animation: fadeInOverlay $modal-fade-in;
 }
 
 .modalContent {
@@ -48,11 +70,13 @@ $base-size: 5px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     z-index: 50;
+    animation: slideInModal $modal-fade-in forwards;
 }
 
 .button{
     @include button-style($modal-button-color, 12px, $modal-button-color-hover);
     margin-top: 1rem;
+    transition: background-color 0.3s;
 }
 
 .h2{
