@@ -62,3 +62,61 @@ exports.deleteProduct = async (req, res) => {
     res.status(404).json({ message: e.message });
   }
 };
+
+exports.sortProducts = async (req, res) => {
+  const { sort, type } = req.body;
+  try {
+    if (sort === "price") {
+      const products = await Product.aggregate([
+        {
+          $sort: {
+            price: type === "asc" ? 1 : -1,
+          },
+        },
+      ]);
+      return res.status(200).json(products);
+    }
+    const products = await Product.aggregate([
+      {
+        $lookup: {
+          from: "reviews",
+          localField: "reviews",
+          foreignField: "_id",
+          as: "reviewsData",
+        },
+      },
+      {
+        $addFields: {
+          averageRating: { $avg: "$reviewsData.rating" },
+        },
+      },
+      {
+        $sort: {
+          averageRating: type === "asc" ? 1 : -1,
+        },
+      },
+    ]);
+    res.status(200).json(products);
+  } catch (e) {
+    res.status(404).json({ message: e.message });
+  }
+};
+
+exports.filterProducts = async (req, res) => {
+  const { minPrice, maxPrice } = req.body;
+  try {
+    const products = await Product.aggregate([
+      {
+        $match: {
+          price: {
+            $gte: minPrice || 0,
+            $lte: maxPrice || Infinity,
+          },
+        },
+      },
+    ]);
+    res.status(200).json(products);
+  } catch (e) {
+    res.status(404).json({ message: e.message });
+  }
+};

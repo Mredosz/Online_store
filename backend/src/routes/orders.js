@@ -22,7 +22,7 @@ router.post(
     .isLength({ min: 1, max: 10 })
     .withMessage("Home number is invalid, min 1, max 10."),
   body("address.phoneNumber")
-    .isMobilePhone("pl-PL")
+    .isLength({ min: 9, max: 12 })
     .withMessage("Phone number is invalid."),
   body("address.deliveryType")
     .isLength({ min: 3, max: 50 })

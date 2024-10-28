@@ -10,9 +10,19 @@ export const getProductDetails = async (id) => {
   ).data;
 };
 
-export const getProductFromCategory = async (id) => {
+export const sortProducts = async (sort) => {
   return (
-    await axios.get(`http://localhost:3000/products/category?categoryId=${id}`)
+    await axios.post("http://localhost:3000/products/sort", sort, {
+      withCredentials: true,
+    })
+  ).data;
+};
+
+export const filterProducts = async (sort) => {
+  return (
+    await axios.post("http://localhost:3000/products/filter", sort, {
+      withCredentials: true,
+    })
   ).data;
 };
 

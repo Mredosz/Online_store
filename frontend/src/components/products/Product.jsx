@@ -44,7 +44,7 @@ export default function Product({ product }) {
           <ProductInfo left="Price:" right={`${product.price} zł`} />
           <ProductInfo
             left="Price with delivery:"
-            right={`${product.deliveryPrice} zł`}
+            right={`${product.price + 12.99} zł`}
           />
           <ProductInfo
             left="Available products:"

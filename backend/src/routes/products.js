@@ -6,8 +6,11 @@ const router = express.Router();
 router.get("/", productController.getAllProducts);
 router.get("/details", productController.getProductById);
 
+router.post("/sort", productController.sortProducts);
+router.post("/filter", productController.filterProducts);
 router.post(
   "/",
+
   body("name")
     .isLength({ min: 3, max: 50 })
     .withMessage("Name must be at least 3 and 50 max characters long."),
