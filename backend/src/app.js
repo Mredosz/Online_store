@@ -12,6 +12,7 @@ const orderRouter = require("./routes/orders");
 const cartRouter = require("./routes/carts");
 const accessRouter = require("./routes/access");
 const categoryRouter = require("./routes/categories");
+const userController = require("./routes/users");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -26,6 +27,7 @@ app.use("/account", accountRouter);
 app.use("/order", orderRouter);
 app.use("/cart", cartRouter);
 app.use("/category", categoryRouter);
+app.use("/user", userController);
 
 connectDb()
   .then(() => {

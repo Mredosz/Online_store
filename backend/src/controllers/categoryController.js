@@ -10,11 +10,22 @@ exports.getAllCategories = async (req, res) => {
   }
 };
 
+exports.getCategoryById = async (req, res) => {
+  if (checkErrors(req, res)) return;
+  const categoryId = req.params.categoryId;
+  try {
+    const category = await Category.findById(categoryId);
+    res.status(200).json(category);
+  } catch (e) {
+    res.status(404).json({ message: e.message });
+  }
+};
+
 exports.addCategory = async (req, res) => {
   if (checkErrors(req, res)) return;
   const category = req.body;
   const newCategory = new Category(category);
-  const categoryDb = await Category.find({ name: category.name });
+  const categoryDb = await Category.findOne({ name: category.name });
   try {
     if (categoryDb) {
       throw new Error("Category already exists!");

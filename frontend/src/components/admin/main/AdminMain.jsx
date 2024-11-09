@@ -10,6 +10,9 @@ export default function AdminMain() {
         <div className="flex justify-center items-end space-x-7">
           <ButtonDashboard to="products">Products</ButtonDashboard>
           <ButtonDashboard to="review">Review</ButtonDashboard>
+          <ButtonDashboard to="orders">Orders</ButtonDashboard>
+          <ButtonDashboard to="users">Users</ButtonDashboard>
+          <ButtonDashboard to="category">Category</ButtonDashboard>
         </div>
       </div>
     </div>

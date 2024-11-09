@@ -25,7 +25,7 @@ exports.addProduct = async (req, res) => {
   const product = req.body;
   const categoryId = req.params.categoryId;
   const newProduct = new Product({ ...product, categoryId });
-  const productDb = await Product.find({ name: product.name });
+  const productDb = await Product.findOne({ name: product.name });
   try {
     if (productDb) {
       throw new Error("Product already exists!");

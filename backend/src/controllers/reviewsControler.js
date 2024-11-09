@@ -71,3 +71,13 @@ exports.acceptReview = async (req, res) => {
     res.status(404).json({ message: e.message });
   }
 };
+
+exports.deleteReview = async (req, res) => {
+  const reviewId = req.params.reviewId;
+  try {
+    await Review.findByIdAndDelete(reviewId);
+    res.status(200).json({ message: "Review deleted successfully!" });
+  } catch (e) {
+    res.status(404).json({ message: e.message });
+  }
+};

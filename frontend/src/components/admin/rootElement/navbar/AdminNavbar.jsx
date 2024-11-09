@@ -2,13 +2,16 @@ import NavItem from "../../../rootElement/navbar/NavItem.jsx";
 import logo from "/logo.png";
 import { logout } from "../../../../request/account.js";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AccountContext } from "../../../../store/account-context.jsx";
 
 export default function AdminNavbar() {
   const navigate = useNavigate();
+  const { setIsLogged } = useContext(AccountContext);
 
   const handleLogout = async () => {
     navigate("/");
-    localStorage.removeItem("is_logged_in");
+    setIsLogged(false);
     await logout();
   };
   return (
@@ -21,6 +24,9 @@ export default function AdminNavbar() {
         <div className="flex space-x-3">
           <NavItem to={"products"}>Products</NavItem>
           <NavItem to={"review"}>Review</NavItem>
+          <NavItem to={"orders"}>Orders</NavItem>
+          <NavItem to={"users"}>Users</NavItem>
+          <NavItem to={"category"}>Category</NavItem>
         </div>
         <button onClick={handleLogout}>Logout</button>
       </ul>

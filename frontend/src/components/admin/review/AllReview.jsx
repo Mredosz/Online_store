@@ -1,5 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { acceptReview, getAllReview } from "../../../request/review.js";
+import {
+  acceptReview,
+  deleteReview,
+  getAllReview,
+} from "../../../request/review.js";
 import Th from "../reusable/table/Th.jsx";
 import Review from "./Review.jsx";
 
@@ -21,7 +25,12 @@ export default function AllReview() {
 
   const handleAcceptReview = async (id, isAccepted) => {
     await mutateAsync({ id, isAccepted });
-    queryClient.invalidateQueries(["review"]);
+    await queryClient.invalidateQueries(["review"]);
+  };
+
+  const handleDelete = async (id) => {
+    await deleteReview(id);
+    await queryClient.invalidateQueries("review");
   };
 
   return (
@@ -35,6 +44,7 @@ export default function AllReview() {
             <Th>Review</Th>
             <Th>Is accepted</Th>
             <Th></Th>
+            <Th></Th>
           </tr>
         </thead>
         <tbody>
@@ -43,6 +53,7 @@ export default function AllReview() {
               review={review}
               onClick={handleAcceptReview}
               key={review._id}
+              onDelete={handleDelete}
             />
           ))}
         </tbody>

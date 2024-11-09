@@ -13,6 +13,11 @@ import Products from "../components/admin/products/Products.jsx";
 import EditProduct from "../components/admin/products/EditProduct.jsx";
 import Delivery from "../components/delivery/Delivery.jsx";
 import DeliveryEnd from "../components/delivery/DeliveryEnd.jsx";
+import Categories from "../components/admin/category/Categories.jsx";
+import EditCategory from "../components/admin/category/EditCategory.jsx";
+import AllUsers from "../components/admin/users/AllUsers.jsx";
+import AllOrders from "../components/admin/orders/AllOrders.jsx";
+import OrderDetails from "../components/admin/orders/OrderDetails.jsx";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +64,33 @@ const router = createBrowserRouter([
         ],
       },
       { path: "review", element: <AllReview /> },
+      {
+        path: "orders",
+        children: [
+          {
+            index: true,
+            element: <AllOrders />,
+          },
+          {
+            path: ":orderId",
+            element: <OrderDetails />,
+          },
+        ],
+      },
+      { path: "users", element: <AllUsers /> },
+      {
+        path: "category",
+        children: [
+          {
+            index: true,
+            element: <Categories />,
+          },
+          {
+            path: ":categoryId",
+            element: <EditCategory />,
+          },
+        ],
+      },
     ],
   },
 ]);

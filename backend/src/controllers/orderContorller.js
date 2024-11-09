@@ -4,7 +4,7 @@ const { getUserIdFromToken } = require("../util/tokenManager");
 
 exports.getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find();
+    const orders = await Order.find().populate("userId");
     res.status(200).json(orders);
   } catch (e) {
     res.status(404).json({ message: e.message });
@@ -14,7 +14,9 @@ exports.getAllOrders = async (req, res) => {
 exports.getOrderById = async (req, res) => {
   try {
     const orderId = req.params.orderId;
-    const order = await Order.findById(orderId);
+    const order = await Order.findById(orderId)
+      .populate("userId")
+      .populate("products.product");
     res.status(200).json(order);
   } catch (e) {
     res.status(404).json({ message: e.message });

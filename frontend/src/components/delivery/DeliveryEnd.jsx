@@ -3,13 +3,13 @@ import { useMutation } from "@tanstack/react-query";
 import { addOrder } from "../../request/order.js";
 import { useDispatch, useSelector } from "react-redux";
 import ProductInfo from "../products/reusable/ProductInfo.jsx";
-import DeliveryEndList from "./DeliveryEndList.jsx";
 import { useState } from "react";
 import ProductModal from "../products/modal/ProductModal.jsx";
 import Button from "./reusable/Button.jsx";
 import { useNavigate } from "react-router-dom";
 import OrderFinalize from "./OrderFinalize.jsx";
 import { deleteCartThunk } from "../../store/cart-redux.jsx";
+import Summary from "./reusable/Summary.jsx";
 
 export default function DeliveryEnd() {
   const { mutateAsync } = useMutation({
@@ -64,31 +64,17 @@ export default function DeliveryEnd() {
     <CartDiv>
       {!isFinalize && (
         <>
-          <h1 className="text-3xl text-center font-semibold">Finalize</h1>
-          <div className="flex space-x-3 mt-6">
-            <DeliveryEndList
-              className="space-y-5"
-              products={firstTwoProducts}
-            />
-            <div className="flex flex-col px-2 py-3 w-1/2 justify-between rounded-md border border-formBorder shadow-md bg-white">
-              <div>
-                <h1 className="text-xl text-center font-semibold">Address</h1>
-                <ProductInfo left="City:" right={address.city} />
-                <ProductInfo left="Postal code:" right={address.postalCode} />
-                <ProductInfo left="Street:" right={address.street} />
-                <ProductInfo left="Home number:" right={address.homeNumber} />
-                <ProductInfo left="Phone number:" right={address.phoneNumber} />
-              </div>
-              <div className="flex space-x-3">
-                <p className="text-lg font-semibold">Total price: </p>
-                <p className="text-lg">{finalPrice} zł</p>
-              </div>
-            </div>
-          </div>
-          <DeliveryEndList
-            className="space-y-5 mt-5"
-            products={remainingProducts}
-          />
+          <Summary
+            first={firstTwoProducts}
+            remaining={remainingProducts}
+            finalPrice={finalPrice}
+          >
+            <ProductInfo left="City:" right={address.city} />
+            <ProductInfo left="Postal code:" right={address.postalCode} />
+            <ProductInfo left="Street:" right={address.street} />
+            <ProductInfo left="Home number:" right={address.homeNumber} />
+            <ProductInfo left="Phone number:" right={address.phoneNumber} />
+          </Summary>
           <div className="flex w-full space-x-3">
             <Button
               className="bg-red-500 hover:bg-red-600 w-1/2"

@@ -4,6 +4,7 @@ const { body } = require("express-validator");
 const router = express.Router();
 
 router.get("/", categoryController.getAllCategories);
+router.get("/:categoryId", categoryController.getCategoryById);
 
 router.post(
   "/",

@@ -1,5 +1,21 @@
 import axios from "axios";
 
+export const getAllOrders = async () => {
+  return (
+    await axios.get("http://localhost:3000/order/", {
+      withCredentials: true,
+    })
+  ).data;
+};
+
+export const getOrderById = async (id) => {
+  return (
+    await axios.get(`http://localhost:3000/order/${id}`, {
+      withCredentials: true,
+    })
+  ).data;
+};
+
 export const addOrder = async (order) => {
   return (
     await axios.post("http://localhost:3000/order/", order, {

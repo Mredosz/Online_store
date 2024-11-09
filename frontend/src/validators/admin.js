@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-export const validation = Yup.object({
+export const validationProduct = Yup.object({
   name: Yup.string().required("Name is required").max(50, "Max 50 characters"),
   price: Yup.number()
     .required("Price is required")
@@ -25,4 +25,8 @@ export const validation = Yup.object({
         .max(50, "Max 50 characters"),
     }),
   ),
+});
+
+export const validationCategory = Yup.object({
+  name: Yup.string().required("Name is required").max(50, "Max 50 characters"),
 });

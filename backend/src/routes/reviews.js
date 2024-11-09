@@ -22,4 +22,6 @@ router.put(
   reviewController.acceptReview,
 );
 
+router.delete("/:reviewId", reviewController.deleteReview);
+
 module.exports = router;

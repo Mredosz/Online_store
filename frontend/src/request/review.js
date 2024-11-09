@@ -22,8 +22,22 @@ export const addReview = async (id, review) => {
 
 export const acceptReview = async (id, value) => {
   return (
-    await axios.put(`http://localhost:3000/review/${id}`, {
-      isAccepted: value,
+    await axios.put(
+      `http://localhost:3000/review/${id}`,
+      {
+        isAccepted: value,
+      },
+      {
+        withCredentials: true,
+      },
+    )
+  ).data;
+};
+
+export const deleteReview = async (id) => {
+  return (
+    await axios.delete(`http://localhost:3000/review/${id}`, {
+      withCredentials: true,
     })
   ).data;
 };
