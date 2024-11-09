@@ -5,9 +5,7 @@ export const getAllProducts = async () => {
 };
 
 export const getProductDetails = async (id) => {
-  return (
-    await axios.get(`http://localhost:3000/products/details?productId=${id}`)
-  ).data;
+  return (await axios.get(`http://localhost:3000/products/${id}`)).data;
 };
 
 export const sortProducts = async (sort) => {
@@ -36,17 +34,15 @@ export const addProduct = async (product) => {
 
 export const updateProduct = async (product, id) => {
   return (
-    await axios.put(
-      `http://localhost:3000/products/?productId=${id}`,
-      product,
-      { withCredentials: true },
-    )
+    await axios.put(`http://localhost:3000/products/${id}`, product, {
+      withCredentials: true,
+    })
   ).data;
 };
 
 export const deleteProduct = async (id) => {
   return (
-    await axios.delete(`http://localhost:3000/products/?productId=${id}`, {
+    await axios.delete(`http://localhost:3000/products/${id}`, {
       withCredentials: true,
     })
   ).data;

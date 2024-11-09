@@ -18,7 +18,7 @@ export const addToCart = async (cart) => {
 
 export const deleteFromCart = async (id) => {
   return (
-    await axios.delete(`http://localhost:3000/cart?productId=${id}`, {
+    await axios.delete(`http://localhost:3000/cart/${id}`, {
       withCredentials: true,
     })
   ).data;
@@ -26,7 +26,7 @@ export const deleteFromCart = async (id) => {
 
 export const deleteCart = async () => {
   return (
-    await axios.delete("http://localhost:3000/cart/delete", {
+    await axios.delete("http://localhost:3000/cart/", {
       withCredentials: true,
     })
   ).data;

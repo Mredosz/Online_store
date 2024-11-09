@@ -3,11 +3,11 @@ const reviewController = require("../controllers/reviewsControler");
 const { body } = require("express-validator");
 const router = express.Router();
 
-router.get("/all", reviewController.getAllReviews);
-router.get("/", reviewController.getAllReviewsFromProduct);
+router.get("/", reviewController.getAllReviews);
+router.get("/:productId", reviewController.getAllReviewsFromProduct);
 
 router.post(
-  "/",
+  "/:productId",
   body("review")
     .isLength({ min: 3, max: 300 })
     .withMessage("Review is to long."),
@@ -17,7 +17,7 @@ router.post(
 );
 
 router.put(
-  "/",
+  "/:reviewId",
   body("isAccepted").isBoolean().withMessage("isAccepted must be a boolean."),
   reviewController.acceptReview,
 );

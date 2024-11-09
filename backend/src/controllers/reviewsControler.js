@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const { getUserIdFromToken } = require("../util/tokenManager");
 
 exports.getAllReviewsFromProduct = async (req, res) => {
-  const productId = req.query.productId;
+  const productId = req.params.productId;
   try {
     const reviews = await Review.find({ productId: productId }).populate(
       "userId",
@@ -18,7 +18,7 @@ exports.getAllReviewsFromProduct = async (req, res) => {
 
 exports.addReview = async (req, res) => {
   if (checkErrors(req, res)) return;
-  const productId = req.query.productId;
+  const productId = req.params.productId;
   const userId = getUserIdFromToken(req, res);
   const opinion = req.body;
   const newReview = new Review({
@@ -62,7 +62,7 @@ exports.getAllReviews = async (req, res) => {
 
 exports.acceptReview = async (req, res) => {
   if (checkErrors(req, res)) return;
-  const reviewId = req.query.reviewId;
+  const reviewId = req.params.reviewId;
   const isAccepted = req.body.isAccepted;
   try {
     await Review.findByIdAndUpdate(reviewId, { isAccepted });

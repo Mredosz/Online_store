@@ -33,7 +33,7 @@ exports.addToCart = async (req, res) => {
 };
 
 exports.deleteFromCart = async (req, res) => {
-  const productId = req.query.productId;
+  const productId = req.params.productId;
   const userId = getUserIdFromToken(req, res);
   try {
     const cart = await Cart.findOne({ userId });

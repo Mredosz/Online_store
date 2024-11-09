@@ -4,7 +4,7 @@ const { body } = require("express-validator");
 const router = express.Router();
 
 router.get("/", orderController.getAllOrders);
-router.get("/details", orderController.getOrderById);
+router.get("/:orderId", orderController.getOrderById);
 
 router.post(
   "/",

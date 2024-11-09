@@ -12,7 +12,7 @@ exports.getAllProducts = async (req, res) => {
 
 exports.getProductById = async (req, res) => {
   try {
-    const productId = req.query.productId;
+    const productId = req.params.productId;
     const product = await Product.findById(productId).populate("reviews");
     res.status(200).json(product);
   } catch (e) {
@@ -23,15 +23,13 @@ exports.getProductById = async (req, res) => {
 exports.addProduct = async (req, res) => {
   if (checkErrors(req, res)) return;
   const product = req.body;
-  const categoryId = req.query.categoryId;
+  const categoryId = req.params.categoryId;
   const newProduct = new Product({ ...product, categoryId });
-  const products = await Product.find();
+  const productDb = await Product.find({ name: product.name });
   try {
-    products.forEach((product) => {
-      if (product.name === newProduct.name) {
-        throw new Error("Product already exists!");
-      }
-    });
+    if (productDb) {
+      throw new Error("Product already exists!");
+    }
     await newProduct.save();
     res.status(201).json("Created");
   } catch (e) {
@@ -41,7 +39,7 @@ exports.addProduct = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
   if (checkErrors(req, res)) return;
-  const productId = req.query.productId;
+  const productId = req.params.productId;
   const product = req.body;
   try {
     const updatedProduct = await Product.findByIdAndUpdate(productId, product, {
@@ -54,7 +52,7 @@ exports.updateProduct = async (req, res) => {
 };
 
 exports.deleteProduct = async (req, res) => {
-  const productId = req.query.productId;
+  const productId = req.params.productId;
   try {
     await Product.findByIdAndDelete(productId);
     res.status(200).json({ message: "Product deleted successfully!" });
