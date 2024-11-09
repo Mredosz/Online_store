@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-export const validation = Yup.object({
+export const validation = Yup.object().shape({
   city: Yup.string()
     .required("City is required")
     .min(2, "City is too short")
@@ -21,4 +21,29 @@ export const validation = Yup.object({
     .required("Phone number is required")
     .min(9, "Phone number is too short")
     .max(15, "Phone number is too long"),
+  deliveryType: Yup.string().required("Delivery type is required"),
+  paymentMethod: Yup.string().required("Payment method is required"),
+  cardNumber: Yup.string().when("paymentMethod", {
+    is: "card",
+    then: (t) =>
+      t
+        .required("Card number is required")
+        .min(16, "Wrong card number")
+        .max(16, "Wrong card number"),
+    otherwise: (t) => t.notRequired(),
+  }),
+  cardExpiration: Yup.string().when("paymentMethod", {
+    is: "card",
+    then: (t) => t.required("Card expiration date is required"),
+    otherwise: (t) => t.notRequired(),
+  }),
+  cvv: Yup.string().when("paymentMethod", {
+    is: "card",
+    then: (t) =>
+      t
+        .required("CVV number is required")
+        .min(3, "Wrong number")
+        .max(4, "Wrong number"),
+    otherwise: (t) => t.notRequired(),
+  }),
 });

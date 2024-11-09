@@ -40,6 +40,7 @@ export default function OrderDetails() {
           <ProductInfo left="Home number:" right={address.homeNumber} />
           <ProductInfo left="Phone number:" right={address.phoneNumber} />
           <ProductInfo left="Delivery type:" right={address.deliveryType} />
+          <ProductInfo left="Payment method:" right={address.paymentMethod} />
         </Summary>
       </div>
     </div>

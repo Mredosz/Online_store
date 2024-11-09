@@ -7,6 +7,10 @@ const initialState = {
   homeNumber: "",
   phoneNumber: "",
   deliveryType: "courier",
+  paymentMethod: "transfer",
+  cardNumber: "",
+  cardExpiration: "",
+  cvv: "",
 };
 
 export const addressSlice = createSlice({

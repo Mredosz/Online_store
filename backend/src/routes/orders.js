@@ -27,6 +27,9 @@ router.post(
   body("address.deliveryType")
     .isLength({ min: 3, max: 50 })
     .withMessage("Delivery type is invalid."),
+  body("address.paymentMethod")
+    .isLength({ min: 3, max: 30 })
+    .withMessage("Payment method is invalid"),
   orderController.addOrder,
 );
 

@@ -53,6 +53,19 @@ const orderSchema = new Schema({
       type: String,
       required: true,
     },
+    paymentMethod: {
+      type: String,
+      required: true,
+    },
+    cardNumber: {
+      type: String,
+    },
+    cardExpiration: {
+      type: String,
+    },
+    cvv: {
+      type: String,
+    },
   },
 });
 
