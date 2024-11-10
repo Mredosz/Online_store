@@ -71,7 +71,7 @@ export default function ProductDetails() {
 
   return (
     <div className="flex flex-col items-center h-full">
-      <div className="flex mt-7 h-full w-full justify-center">
+      <div className="flex flex-wrap mt-7 h-full w-full justify-center">
         <div className="flex mr-20 justify-end items-end">
           <img src={data.image} alt={data.name} className="h-[26rem]" />
         </div>
@@ -81,9 +81,9 @@ export default function ProductDetails() {
             <ReviewStar list={data.reviews} />
           </div>
           <div className="flex space-x-5">
-            <div className="rounded-md border border-gray-300 shadow-md p-4 w-64">
-              Specyfikacja
-            </div>
+            {/*<div className="rounded-md border border-gray-300 shadow-md p-4 w-64">*/}
+            {/*  Specyfikacja*/}
+            {/*</div>*/}
             <div className="flex flex-col rounded-md border border-gray-300 shadow-md h-[23rem] w-64">
               <div className="border-b border-gray-300 w-full pt-4">
                 <p className="flex justify-end text-3xl mr-4">
@@ -145,7 +145,7 @@ export default function ProductDetails() {
       {isModalOpen && (
         <ProductModal content={state.content} onClose={handleCloseModal} />
       )}
-      <div className="flex flex-col mt-10 w-full justify-center items-center">
+      <div className="flex flex-col mt-10 sm:w-full md:w-3/4 justify-center items-center">
         <h1 className="text-3xl mb-4">Specification</h1>
         <article className="rounded-md border border-gray-300 shadow-md p-4 w-3/4">
           <h2 className="text-2xl mb-2">Description</h2>

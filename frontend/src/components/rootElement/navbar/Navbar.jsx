@@ -4,20 +4,37 @@ import NavItem from "./NavItem.jsx";
 import { useContext } from "react";
 import { AccountContext } from "../../../store/account-context.jsx";
 import { logout } from "../../../request/account.js";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import { getAllCategory } from "../../../request/category.js";
+import { productAction } from "../../../store/product-redux.jsx";
 
 export default function Navbar() {
   const { isLogged, setIsLogged } = useContext(AccountContext);
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
+  const dispatch = useDispatch();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: getAllCategory,
+  });
 
   const handleLogout = async () => {
     setIsLogged(false);
     await logout();
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  const handleChangeCategory = (category) => {
+    dispatch(productAction.filtrateCategory(category));
+  };
+
   return (
-    <nav>
-      <ul className="flex bg-navbar justify-between px-4 py-1 items-center">
+    <nav className="sticky top-0">
+      <ul className="flex flex-wrap bg-navbar justify-between px-4 py-1 items-center">
         <NavItem to={"/"} className="flex items-center space-x-1">
           <img src={logo} alt="Logo" className="h-12" />
           <h1>Capy Shop</h1>
@@ -40,6 +57,23 @@ export default function Navbar() {
           {!isLogged && <NavItem to={"/register"}>Sign In</NavItem>}
         </div>
       </ul>
+      <div className="flex flex-wrap bg-navbar justify-center space-x-5 font-semibold py-2 text-lg">
+        <p
+          onClick={() => handleChangeCategory("all")}
+          className="hover:opacity-20 cursor-pointer"
+        >
+          All
+        </p>
+        {data.map((category) => (
+          <p
+            key={category.name}
+            onClick={() => handleChangeCategory(category.name)}
+            className="hover:opacity-20 cursor-pointer"
+          >
+            {category.name}
+          </p>
+        ))}
+      </div>
     </nav>
   );
 }

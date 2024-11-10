@@ -3,7 +3,7 @@ const checkErrors = require("../util/checkErrors");
 
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate("category");
     res.status(200).json(products);
   } catch (e) {
     res.status(404).json({ message: e.message });
@@ -13,7 +13,9 @@ exports.getAllProducts = async (req, res) => {
 exports.getProductById = async (req, res) => {
   try {
     const productId = req.params.productId;
-    const product = await Product.findById(productId).populate("reviews");
+    const product = await Product.findById(productId)
+      .populate("reviews")
+      .populate("category");
     res.status(200).json(product);
   } catch (e) {
     res.status(404).json({ message: e.message });

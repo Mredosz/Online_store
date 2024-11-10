@@ -1,18 +1,22 @@
-import { useQuery } from "@tanstack/react-query";
 import Product from "../products/Product.jsx";
-import { getAllProducts } from "../../request/products.js";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchProductData } from "../../store/product-redux.jsx";
 
 export default function Home() {
-  const { data, isLoading } = useQuery({
-    queryKey: ["products"],
-    queryFn: getAllProducts,
-  });
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.product.filterProducts);
 
-  if (isLoading) return <div>Loading...</div>;
+  useEffect(() => {
+    if (products.length === 0) {
+      dispatch(fetchProductData());
+    }
+  }, [dispatch, products]);
 
+  console.log(products);
   return (
     <div className="flex flex-wrap justify-center items-center">
-      {data.map((product) => (
+      {products.map((product) => (
         <Product key={product._id} product={product} />
       ))}
     </div>

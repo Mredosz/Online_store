@@ -5,6 +5,9 @@ const cookieParser = require("cookie-parser");
 
 const app = express();
 
+const populate = require("./util/populateDb");
+// populate();
+
 const productRoutes = require("./routes/products");
 const reviewRouter = require("./routes/reviews");
 const accountRouter = require("./routes/accounts");

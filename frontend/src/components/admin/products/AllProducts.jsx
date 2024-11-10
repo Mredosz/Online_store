@@ -14,6 +14,8 @@ export default function AllProducts() {
     queryKey: ["products"],
   });
 
+  console.log(data);
+
   const handleDelete = async (id) => {
     await deleteProduct(id);
     await queryClient.invalidateQueries("products");
