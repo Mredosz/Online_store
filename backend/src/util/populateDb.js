@@ -1,6 +1,5 @@
 const Category = require("../models/Category");
 const Product = require("../models/product");
-const { ObjectId } = require("mongodb");
 
 const populateCategories = async () => {
   const categories = [
