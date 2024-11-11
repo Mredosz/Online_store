@@ -26,7 +26,7 @@ export const filterProducts = async (sort) => {
 
 export const addProduct = async (product) => {
   return (
-    await axios.post("http://localhost:3000/products/", product, {
+    await axios.post("http://localhost:3000/products", product, {
       withCredentials: true,
     })
   ).data;

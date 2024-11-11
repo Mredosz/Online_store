@@ -1,9 +1,10 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { addProduct } from "../../../request/products.js";
 import { validationProduct } from "../../../validators/admin.js";
 import FormAdmin from "../reusable/form/FormAdmin.jsx";
 import Input from "../reusable/form/Input.jsx";
 import { FieldArray } from "formik";
+import { getAllCategory } from "../../../request/category.js";
 
 export default function AddProduct() {
   const { mutateAsync, isSuccess } = useMutation({
@@ -11,12 +12,16 @@ export default function AddProduct() {
     mutationFn: addProduct,
   });
 
+  const { data: categories, isLoading: isLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: getAllCategory,
+  });
+
   const initialValues = {
     name: "",
     price: "",
     shortDescription: "",
     availableQuantity: "",
-    deliveryPrice: "",
     image: "",
     specifications: [{ key: "", value: "" }],
   };
@@ -24,6 +29,10 @@ export default function AddProduct() {
     await mutateAsync(values);
     resetForm();
   };
+
+  if (isLoading) {
+    return <div>Loading ...</div>;
+  }
 
   return (
     <FormAdmin
@@ -39,6 +48,13 @@ export default function AddProduct() {
       {({ values }) => (
         <>
           <Input label="name" id="name" type="text" />
+          <Input label="category" id="category" select>
+            {categories.map((c) => (
+              <option value={c.name} key={c.name}>
+                {c.name}
+              </option>
+            ))}
+          </Input>
           <Input label="price" id="price" type="number" />
           <Input label="short description" id="shortDescription" textarea />
           <Input
@@ -46,7 +62,6 @@ export default function AddProduct() {
             id="availableQuantity"
             type="number"
           />
-          <Input label="delivery price" id="deliveryPrice" type="number" />
           <Input label="image" id="image" type="text" />
           <FieldArray name="specifications">
             {({ push, remove }) => (

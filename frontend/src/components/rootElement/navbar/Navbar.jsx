@@ -8,11 +8,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import { getAllCategory } from "../../../request/category.js";
 import { productAction } from "../../../store/product-redux.jsx";
+import { useNavigate } from "react-router-dom";
+import CategoryButton from "./reusable/CategoryButton.jsx";
 
 export default function Navbar() {
   const { isLogged, setIsLogged } = useContext(AccountContext);
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { data, isLoading } = useQuery({
     queryKey: ["categories"],
@@ -58,20 +61,24 @@ export default function Navbar() {
         </div>
       </ul>
       <div className="flex flex-wrap bg-navbar justify-center space-x-5 font-semibold py-2 text-lg">
-        <p
-          onClick={() => handleChangeCategory("all")}
-          className="hover:opacity-20 cursor-pointer"
+        <CategoryButton
+          onClick={() => {
+            navigate("/");
+            handleChangeCategory("all");
+          }}
         >
           All
-        </p>
+        </CategoryButton>
         {data.map((category) => (
-          <p
+          <CategoryButton
             key={category.name}
-            onClick={() => handleChangeCategory(category.name)}
-            className="hover:opacity-20 cursor-pointer"
+            onClick={() => {
+              navigate("/");
+              handleChangeCategory(category.name);
+            }}
           >
             {category.name}
-          </p>
+          </CategoryButton>
         ))}
       </div>
     </nav>

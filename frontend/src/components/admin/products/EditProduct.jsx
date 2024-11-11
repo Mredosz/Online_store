@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import FormAdmin from "../reusable/form/FormAdmin.jsx";
 import Input from "../reusable/form/Input.jsx";
 import { FieldArray } from "formik";
+import { getAllCategory } from "../../../request/category.js";
 
 export default function EditProduct() {
   const params = useParams();
@@ -20,12 +21,18 @@ export default function EditProduct() {
     queryFn: () => getProductDetails(params.productId),
   });
 
+  const { data: categories, isLoading: isLoadingCat } = useQuery({
+    queryKey: ["categories"],
+    queryFn: getAllCategory,
+  });
+
   if (!data) {
     return <div>No product data available</div>;
   }
 
   const initialValues = {
     ...data,
+    category: data.category.name,
     specifications: data.specifications || [],
   };
 
@@ -34,7 +41,7 @@ export default function EditProduct() {
     await queryClient.invalidateQueries(["productEdit", params.productId]);
   };
 
-  if (isLoading) {
+  if (isLoading || isLoadingCat) {
     return <div>Loading ...</div>;
   }
 
@@ -52,6 +59,13 @@ export default function EditProduct() {
       {({ values }) => (
         <>
           <Input label="name" id="name" type="text" />
+          <Input label="category" id="category" select>
+            {categories.map((c) => (
+              <option value={c.name} key={c.name}>
+                {c.name}
+              </option>
+            ))}
+          </Input>
           <Input label="price" id="price" type="number" />
           <Input label="short description" id="shortDescription" textarea />
           <Input
@@ -59,7 +73,6 @@ export default function EditProduct() {
             id="availableQuantity"
             type="number"
           />
-          <Input label="delivery price" id="deliveryPrice" type="number" />
           <Input label="image" id="image" type="text" />
           <FieldArray name="specifications">
             {({ push, remove }) => (

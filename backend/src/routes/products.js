@@ -9,7 +9,7 @@ router.get("/:productId", productController.getProductById);
 router.post("/sort", productController.sortProducts);
 router.post("/filter", productController.filterProducts);
 router.post(
-  "/:categoryId",
+  "/",
   body("name")
     .isLength({ min: 3, max: 50 })
     .withMessage("Name must be at least 3 and 50 max characters long."),
@@ -22,9 +22,6 @@ router.post(
   body("availableQuantity")
     .isNumeric()
     .withMessage("Quantity must be a number."),
-  body("deliveryPrice")
-    .isNumeric()
-    .withMessage("Delivery price must be a number."),
   body("image").isURL().withMessage("Image must be a URL."),
   productController.addProduct,
 );

@@ -11,9 +11,6 @@ export const validationProduct = Yup.object({
   availableQuantity: Yup.number()
     .required("Available quantity is required")
     .min(0, "Available quantity must be positive"),
-  deliveryPrice: Yup.number()
-    .required("Delivery price is required")
-    .min(0, "Delivery price must be positive"),
   image: Yup.string().required("Image is required"),
   specifications: Yup.array().of(
     Yup.object().shape({
