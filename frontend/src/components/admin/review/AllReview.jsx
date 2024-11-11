@@ -4,7 +4,6 @@ import {
   deleteReview,
   getAllReview,
 } from "../../../request/review.js";
-import Th from "../reusable/table/Th.jsx";
 import Review from "./Review.jsx";
 
 export default function AllReview() {
@@ -34,30 +33,23 @@ export default function AllReview() {
   };
 
   return (
-    <div className="flex justify-center items-center w-full my-5">
-      <table className="table-auto border-collapse border-gray-300 w-3/4">
-        <thead>
-          <tr>
-            <Th>Product</Th>
-            <Th>User</Th>
-            <Th>Rating</Th>
-            <Th>Review</Th>
-            <Th>Is accepted</Th>
-            <Th></Th>
-            <Th></Th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((review) => (
-            <Review
-              review={review}
-              onClick={handleAcceptReview}
-              key={review._id}
-              onDelete={handleDelete}
-            />
-          ))}
-        </tbody>
-      </table>
+    <div className="grid justify-items-center w-full my-5">
+      <div className="grid grid-cols-1 sm:grid-cols-6 gap-4 border-b border-gray-300 w-full sm:w-3/4 py-2 font-semibold text-center">
+        <span>Product</span>
+        <span>User</span>
+        <span>Rating</span>
+        <span>Review</span>
+        <span>Is accepted</span>
+        <span>Actions</span>
+      </div>
+      {data.map((review) => (
+        <Review
+          review={review}
+          onClick={handleAcceptReview}
+          key={review._id}
+          onDelete={handleDelete}
+        />
+      ))}
     </div>
   );
 }

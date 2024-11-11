@@ -1,8 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import Th from "../reusable/table/Th.jsx";
 import { getAllOrders } from "../../../request/order.js";
 import ButtonAdmin from "../reusable/Buttons/ButtonAdmin.jsx";
-import Td from "../reusable/table/Td.jsx";
 import { useNavigate } from "react-router-dom";
 
 export default function AllOrders() {
@@ -22,34 +20,29 @@ export default function AllOrders() {
   };
 
   return (
-    <div className="flex justify-center items-center w-full my-5">
-      <table className="table-auto border-collapse border-gray-300 w-3/4">
-        <thead>
-          <tr>
-            <Th>User</Th>
-            <Th>Date</Th>
-            <Th>Total price</Th>
-            <Th></Th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((order) => (
-            <tr className="hover:bg-gray-100">
-              <Td>{order.userId?.email}</Td>
-              <Td>{new Date(order.date).toLocaleDateString("pl-PL")}</Td>
-              <Td>{order.totalPrice}</Td>
-              <Td>
-                <ButtonAdmin
-                  className="bg-yellow-500 hover:bg-yellow-600"
-                  onClick={() => handleDetails(order._id)}
-                >
-                  Details
-                </ButtonAdmin>
-              </Td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="grid justify-items-center w-full mx-3 md:my-5">
+      <div className="grid grid-cols-1 sm:grid-cols-4 text-center gap-4 border-b border-gray-300 w-full sm:w-3/4 py-2 font-semibold">
+        <span>User</span>
+        <span>Date</span>
+        <span>Total price</span>
+        <span>Action</span>
+      </div>
+      {data.map((order) => (
+        <div
+          className="grid grid-cols-1 items-center justify-items-center sm:grid-cols-4 gap-4 w-full sm:w-3/4 py-2 border-b border-gray-300 hover:bg-gray-100"
+          key={order._id}
+        >
+          <span>{order.userId?.email}</span>
+          <span>{new Date(order.date).toLocaleDateString("pl-PL")}</span>
+          <span>{order.totalPrice}</span>
+          <ButtonAdmin
+            className="bg-yellow-500 hover:bg-yellow-600"
+            onClick={() => handleDetails(order._id)}
+          >
+            Details
+          </ButtonAdmin>
+        </div>
+      ))}
     </div>
   );
 }

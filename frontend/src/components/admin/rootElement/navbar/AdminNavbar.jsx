@@ -16,12 +16,12 @@ export default function AdminNavbar() {
   };
   return (
     <nav>
-      <ul className="flex bg-navbar justify-between px-4 py-1 items-center">
+      <ul className="flex flex-wrap bg-navbar justify-between px-4 py-1 items-center">
         <NavItem to={""} className="flex items-center space-x-1">
           <img src={logo} alt="Logo" className="h-12" />
           <h1>Capy Shop</h1>
         </NavItem>
-        <div className="flex space-x-3">
+        <div className="flex flex-wrap space-x-3">
           <NavItem to={"products"}>Products</NavItem>
           <NavItem to={"review"}>Review</NavItem>
           <NavItem to={"orders"}>Orders</NavItem>
