@@ -7,7 +7,7 @@ export default function AdminMain() {
         <h1 className="text-7xl text-white font-bold mt-5 justify-start">
           Admin dashboard
         </h1>
-        <div className="flex justify-center items-end space-x-7">
+        <div className="flex flex-wrap justify-center items-end space-x-7 space-y-2">
           <ButtonDashboard to="products">Products</ButtonDashboard>
           <ButtonDashboard to="review">Review</ButtonDashboard>
           <ButtonDashboard to="orders">Orders</ButtonDashboard>
