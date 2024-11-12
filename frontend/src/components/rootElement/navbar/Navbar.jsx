@@ -17,7 +17,7 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["categories"],
     queryFn: getAllCategory,
   });
@@ -27,16 +27,12 @@ export default function Navbar() {
     await logout();
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   const handleChangeCategory = (category) => {
     dispatch(productAction.filtrateCategory(category));
   };
 
   return (
-    <nav className="sticky top-0">
+    <nav className="">
       <ul className="flex flex-wrap bg-navbar justify-between px-4 py-1 items-center">
         <NavItem to={"/"} className="flex items-center space-x-1">
           <img src={logo} alt="Logo" className="h-12" />
@@ -69,7 +65,7 @@ export default function Navbar() {
         >
           All
         </CategoryButton>
-        {data.map((category) => (
+        {data?.map((category) => (
           <CategoryButton
             key={category.name}
             onClick={() => {

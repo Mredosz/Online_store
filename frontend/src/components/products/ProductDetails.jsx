@@ -12,6 +12,7 @@ import ReviewStar from "./review/ReviewStar.jsx";
 import { addToCartThunk } from "../../store/cart-redux.jsx";
 import { useDispatch } from "react-redux";
 import { AccountContext } from "../../store/account-context.jsx";
+import StateInfo from "../ui/StateInfo.jsx";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -36,7 +37,7 @@ export default function ProductDetails() {
   const [state, dispatch] = useReducer(reducer, { content: "" });
   const { isLogged } = useContext(AccountContext);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["products", params.productId],
     queryFn: () => getProductDetails(params.productId),
   });
@@ -67,7 +68,13 @@ export default function ProductDetails() {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return <StateInfo isLoading={isLoading} />;
+  }
+
+  if (error) {
+    return <StateInfo error={error.message} />;
+  }
 
   return (
     <div className="flex flex-col items-center h-full">
@@ -81,9 +88,6 @@ export default function ProductDetails() {
             <ReviewStar list={data.reviews} />
           </div>
           <div className="flex space-x-5">
-            {/*<div className="rounded-md border border-gray-300 shadow-md p-4 w-64">*/}
-            {/*  Specyfikacja*/}
-            {/*</div>*/}
             <div className="flex flex-col rounded-md border border-gray-300 shadow-md h-[23rem] w-64">
               <div className="border-b border-gray-300 w-full pt-4">
                 <p className="flex justify-end text-3xl mr-4">

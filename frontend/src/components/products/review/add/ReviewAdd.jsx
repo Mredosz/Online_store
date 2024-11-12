@@ -5,6 +5,7 @@ import Input from "../../../account/reusable/Input.jsx";
 import { useEffect, useRef, useState } from "react";
 import ReviewStarAdd from "./ReviewStarAdd.jsx";
 import { isNotEmpty } from "../../../../validators/account.js";
+import ErrorAlert from "../../../ui/ErrorAlert.jsx";
 
 export default function ReviewAdd() {
   const params = useParams();
@@ -16,7 +17,11 @@ export default function ReviewAdd() {
   });
   const ref = useRef();
 
-  const { mutateAsync, isSuccess } = useMutation({
+  const {
+    mutateAsync,
+    isSuccess,
+    error: errorSend,
+  } = useMutation({
     mutationFn: (review) => addReview(params.productId, review),
     onSuccess: () => {
       setIsEdit(false);
@@ -26,19 +31,14 @@ export default function ReviewAdd() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      if (!localStorage.getItem("is_logged_in")) {
-        return window.alert("You must log in");
-      }
-      await mutateAsync({
-        review: enteredReview,
-        rating: ref.current.getRating(),
-        isAccepted: false,
-      });
-    } catch (e) {
-      //Todo zrobić wyświetlanie error
-      console.log(e.response.data.errors);
+    if (!localStorage.getItem("is_logged_in")) {
+      return window.alert("You must log in");
     }
+    await mutateAsync({
+      review: enteredReview,
+      rating: ref.current.getRating(),
+      isAccepted: false,
+    });
   };
 
   const handleInputChange = (event) => {
@@ -66,14 +66,22 @@ export default function ReviewAdd() {
         message: "",
       });
     }
-  }, [error]);
+  }, [enteredReview, isEdit]);
 
   return (
     <div className="flex flex-col items-center space-y-5">
+      {errorSend?.response.data.errors?.map((err) => (
+        <ErrorAlert key={err.msg} error={err.msg} />
+      ))}
       <h1 className="text-3xl font-semibold">Add review</h1>
       {isSuccess && (
         <p className="text-xl text-green-500 font-semibold">
           Review added successfully
+        </p>
+      )}
+      {errorSend?.response.status === 409 && (
+        <p className="text-xl font-semibold text-red-500">
+          You already add review to this product
         </p>
       )}
       <form

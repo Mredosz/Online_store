@@ -1,4 +1,5 @@
 import { Form, Formik } from "formik";
+import ErrorAlert from "../../../ui/ErrorAlert.jsx";
 
 export default function FormAdmin({
   validation,
@@ -10,9 +11,14 @@ export default function FormAdmin({
   children,
   buttonText,
   isProduct,
+  alert,
 }) {
+  console.log(alert);
   return (
-    <div className="flex justify-center mt-5">
+    <div className="flex flex-col items-center mt-5">
+      {alert?.map((err) => (
+        <ErrorAlert key={err.msg} error={err.msg} />
+      ))}
       <Formik
         initialValues={initialValues}
         validationSchema={validation}
@@ -21,7 +27,7 @@ export default function FormAdmin({
         {({ handleSubmit, values }) => (
           <Form
             onSubmit={handleSubmit}
-            className="bg-form min-w-96 border border-formBorder p-4 rounded-md my-3"
+            className="bg-form sm:min-w-96 border border-formBorder p-4 rounded-md my-3"
           >
             <h1 className="flex justify-center text-3xl text-gray-500 mb-4 uppercase font-semibold">
               {text}

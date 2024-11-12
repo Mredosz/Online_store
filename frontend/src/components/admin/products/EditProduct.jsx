@@ -6,12 +6,13 @@ import FormAdmin from "../reusable/form/FormAdmin.jsx";
 import Input from "../reusable/form/Input.jsx";
 import { FieldArray } from "formik";
 import { getAllCategory } from "../../../request/category.js";
+import StateInfo from "../../ui/StateInfo.jsx";
 
 export default function EditProduct() {
   const params = useParams();
   const queryClient = useQueryClient();
 
-  const { mutateAsync, isSuccess } = useMutation({
+  const { mutateAsync, isSuccess, error } = useMutation({
     mutationKey: ["products", params.productId],
     mutationFn: (product) => updateProduct(product, params.productId),
   });
@@ -21,13 +22,17 @@ export default function EditProduct() {
     queryFn: () => getProductDetails(params.productId),
   });
 
-  const { data: categories, isLoading: isLoadingCat } = useQuery({
+  const { data: categories } = useQuery({
     queryKey: ["categories"],
     queryFn: getAllCategory,
   });
 
+  if (isLoading) {
+    return <StateInfo isLoading={isLoading} />;
+  }
+
   if (!data) {
-    return <div>No product data available</div>;
+    return <StateInfo error="Product data is not available" />;
   }
 
   const initialValues = {
@@ -41,10 +46,6 @@ export default function EditProduct() {
     await queryClient.invalidateQueries(["productEdit", params.productId]);
   };
 
-  if (isLoading || isLoadingCat) {
-    return <div>Loading ...</div>;
-  }
-
   return (
     <FormAdmin
       initialValues={initialValues}
@@ -55,12 +56,13 @@ export default function EditProduct() {
       onSubmit={onSubmit}
       buttonText="Edit product"
       isProduct
+      alert={error?.response.data.errors}
     >
       {({ values }) => (
         <>
           <Input label="name" id="name" type="text" />
           <Input label="category" id="category" select>
-            {categories.map((c) => (
+            {categories?.map((c) => (
               <option value={c.name} key={c.name}>
                 {c.name}
               </option>

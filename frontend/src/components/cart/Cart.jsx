@@ -7,10 +7,9 @@ import Button from "../delivery/reusable/Button.jsx";
 
 export default function Cart() {
   const products = useSelector((state) => state.cart.products);
-  const address = useSelector((state) => state.address);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(address);
+
   const calculateTotalPrice = (deliverPrice = 0) => {
     if (!products || products.length === 0) return 0;
     return (

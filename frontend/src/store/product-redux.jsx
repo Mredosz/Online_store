@@ -10,6 +10,8 @@ export const productSlice = createSlice({
   initialState: {
     allProducts: [],
     filterProducts: [],
+    isLoading: false,
+    error: null,
   },
   reducers: {
     filtrateCategory(state, action) {
@@ -24,10 +26,20 @@ export const productSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchProductData.fulfilled, (state, action) => {
-      state.allProducts = action.payload;
-      state.filterProducts = action.payload;
-    });
+    builder
+      .addCase(fetchProductData.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchProductData.fulfilled, (state, action) => {
+        state.allProducts = action.payload;
+        state.filterProducts = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchProductData.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      });
   },
 });
 

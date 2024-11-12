@@ -27,7 +27,6 @@ export default function Login() {
   const email = useRef();
   const password = useRef();
 
-  //Todo powiadominie do error
   const { mutateAsync, error, data, isSuccess } = useMutation({
     mutationKey: "login",
     mutationFn: login,
@@ -74,15 +73,10 @@ export default function Login() {
     setPasswordIsInvalid({ value: false, message: "" });
     setEmailIsInvalid({ value: false, message: "" });
 
-    try {
-      await mutateAsync({
-        email: email.current.value,
-        password: password.current.value,
-      });
-    } catch (e) {
-      //Todo zrobić wyświetlanie error
-      console.log(e.response.data.errors);
-    }
+    await mutateAsync({
+      email: email.current.value,
+      password: password.current.value,
+    });
   };
   return (
     <FormDiv
@@ -92,6 +86,7 @@ export default function Login() {
       type={"/register"}
       accountText="Don't have an account yet?"
       error={error}
+      alert={error?.response.data.errors}
     >
       <Input
         ref={email}

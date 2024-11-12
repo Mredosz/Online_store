@@ -1,5 +1,6 @@
 import Button from "./Button.jsx";
 import { Link } from "react-router-dom";
+import ErrorAlert from "../../ui/ErrorAlert.jsx";
 
 export default function FormDiv({
   children,
@@ -11,11 +12,15 @@ export default function FormDiv({
   isValidate = true,
   type,
   accountText,
+  alert,
 }) {
   return (
-    <div className="flex justify-center items-center min-h-[calc(100vh-168px)] bg-[url('/register.png')] bg-cover bg-center">
+    <div className="flex flex-col justify-center items-center min-h-[calc(100vh-212px)] bg-[url('/register.png')] bg-cover bg-center">
+      {alert?.map((err) => (
+        <ErrorAlert key={err.msg} error={err.msg} />
+      ))}
       <form
-        className="flex flex-col bg-form p-4 rounded-md shadow-md w-[29rem] border-2 border-formBorder"
+        className="flex flex-col bg-form p-4 rounded-md shadow-md w-3/4 sm:w-[29rem] border-2 border-formBorder"
         onSubmit={handleSubmit}
       >
         <h1 className="flex justify-center text-3xl text-gray-500 mb-4 uppercase font-semibold">

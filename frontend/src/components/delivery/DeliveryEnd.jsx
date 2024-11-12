@@ -12,10 +12,11 @@ import { deleteCartThunk } from "../../store/cart-redux.jsx";
 import Summary from "./reusable/Summary.jsx";
 
 export default function DeliveryEnd() {
-  const { mutateAsync } = useMutation({
+  const { mutateAsync, error } = useMutation({
     mutationKey: ["order"],
     mutationFn: addOrder,
   });
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -47,9 +48,11 @@ export default function DeliveryEnd() {
       address,
       totalPrice: Number(calculateTotalPrice()),
     });
-    dispatch(deleteCartThunk());
     setIsModalOpen(false);
-    setIsFinalize(true);
+    if (!error) {
+      dispatch(deleteCartThunk());
+      setIsFinalize(true);
+    }
   };
 
   const handleOpenModal = () => {
@@ -61,7 +64,7 @@ export default function DeliveryEnd() {
   };
 
   return (
-    <CartDiv>
+    <CartDiv alert={error?.response.data.errors}>
       {!isFinalize && (
         <>
           <Summary

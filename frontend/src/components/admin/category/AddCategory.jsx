@@ -5,7 +5,7 @@ import { addCategory } from "../../../request/category.js";
 import Input from "../reusable/form/Input.jsx";
 
 export default function AddCategory() {
-  const { mutateAsync, isSuccess } = useMutation({
+  const { mutateAsync, isSuccess, error } = useMutation({
     mutationKey: ["addCategory"],
     mutationFn: addCategory,
   });
@@ -28,6 +28,7 @@ export default function AddCategory() {
       validation={validationCategory}
       onSubmit={onSubmit}
       buttonText="Add category"
+      alert={error?.response.data.errors}
     >
       <Input label="name" id="name" type="text" />
     </FormAdmin>

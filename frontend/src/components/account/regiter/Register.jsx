@@ -53,12 +53,7 @@ export default function Register() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      await mutateAsync({ ...enteredValue, role: "user" });
-    } catch (e) {
-      //Todo zrobić wyświetlanie error
-      console.log(e.response.data.errors);
-    }
+    await mutateAsync({ ...enteredValue, role: "user" });
   };
 
   const handleInputChange = (id, event) => {
@@ -85,12 +80,12 @@ export default function Register() {
       isValidate={isValidate}
       type="/login"
       accountText="Do you have account already?"
+      alert={error?.response.data.errors}
     >
-      <div className="flex">
+      <div className="flex flex-col sm:flex-row space-x-0 sm:space-x-3">
         <Input
           id="firstName"
           label="First name"
-          className="mr-4"
           type={"text"}
           onChange={(event) => handleInputChange("firstName", event)}
           value={enteredValue.firstName}
