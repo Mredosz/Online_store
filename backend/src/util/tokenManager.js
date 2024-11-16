@@ -9,7 +9,7 @@ exports.createTokensAndAddToCookie = (res, userDb) => {
   const token = jwt.sign({ id: userDb._id }, JWT_SECRET, {
     expiresIn: ACCESS_TOKEN_EXPIRED,
   });
-  res.cookie("refreshToken", token, {
+  res.cookie("Jwt_token", token, {
     httpOnly: true,
     secure: false,
     maxAge: COOKIE_REFRESH_TOKEN,
@@ -23,7 +23,7 @@ exports.getUserIdFromToken = (req, res) => {
 
   try {
     decodedRefreshToken = jwt.verify(
-      req.cookies.refreshToken,
+      req.cookies["Jwt_token"],
       process.env.JWT_SECRET,
     );
     if (!decodedRefreshToken.id) {

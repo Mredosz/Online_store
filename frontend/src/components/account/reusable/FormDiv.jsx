@@ -27,7 +27,7 @@ export default function FormDiv({
           {topText}
         </h1>
         {isSuccess && (
-          <p className="text-center text-xl text-gray-600">Account created!</p>
+          <p className="text-center text-xl text-green-600">Account created!</p>
         )}
         {error && error.status === 404 && (
           <p className="text-center text-xl text-red-600">
@@ -36,7 +36,7 @@ export default function FormDiv({
         )}
         {error && error.status === 409 && (
           <p className="text-center text-xl text-red-600">
-            This user doesn't exist.
+            This user already exist.
           </p>
         )}
         {children}

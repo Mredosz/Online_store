@@ -1,5 +1,7 @@
 const Category = require("../models/Category");
 const Product = require("../models/product");
+const User = require("../models/user");
+const bcrypt = require("bcryptjs");
 
 const populateCategories = async () => {
   const categories = [
@@ -20,7 +22,7 @@ const populateCategories = async () => {
       const newCategory = new Category(category);
       await newCategory.save();
     } catch (error) {
-      console.error("Błąd podczas zapisywania kategorii: ", error);
+      console.error(error);
     }
   }
 };
@@ -708,9 +710,39 @@ const populateProducts = async () => {
       const newProduct = new Product(product);
       await newProduct.save();
     } catch (error) {
-      console.error("Błąd podczas zapisywania kategorii: ", error);
+      console.error(error);
     }
   }
 };
 
-module.exports = populateProducts;
+const populateUsers = async () => {
+  const user = new User({
+    email: "user@user.com",
+    password: await bcrypt.hash("Password1@3", 12),
+    firstName: "John",
+    lastName: "Doe",
+    birthday: "1990-01-01",
+    role: "user",
+  });
+
+  const admin = new User({
+    email: "admin@admin.com",
+    password: await bcrypt.hash("Admin1@3", 12),
+    role: "admin",
+  });
+
+  try {
+    await user.save();
+    await admin.save();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const populateDb = async () => {
+  await populateCategories();
+  await populateProducts();
+  await populateUsers();
+};
+
+module.exports = populateDb;

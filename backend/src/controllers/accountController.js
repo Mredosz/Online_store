@@ -31,8 +31,7 @@ exports.login = async (req, res) => {
   try {
     const doMatch = await bcrypt.compare(user.password, userDb.password);
     if (userDb.email === user.email && doMatch) {
-      createTokensAndAddToCookie(res, userDb, "accessToken");
-      createTokensAndAddToCookie(res, userDb, "refreshToken");
+      createTokensAndAddToCookie(res, userDb);
 
       res.status(200).json({ message: "Logged in", role: userDb.role });
     } else {
@@ -44,6 +43,6 @@ exports.login = async (req, res) => {
 };
 
 exports.logout = async (req, res) => {
-  res.clearCookie("accessToken").clearCookie("refreshToken");
+  res.clearCookie("Jwt_token");
   res.status(200).json("Logged out");
 };
