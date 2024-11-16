@@ -5,15 +5,17 @@ import { useContext } from "react";
 import { AccountContext } from "../../../store/account-context.jsx";
 import { logout } from "../../../request/account.js";
 import { useDispatch, useSelector } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getAllCategory } from "../../../request/category.js";
 import { productAction } from "../../../store/product-redux.jsx";
 import { useNavigate } from "react-router-dom";
 import CategoryButton from "./reusable/CategoryButton.jsx";
+import { filterProducts } from "../../../request/products.js";
 
 export default function Navbar() {
   const { isLogged, setIsLogged } = useContext(AccountContext);
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
+  const sort = useSelector((state) => state.product.sort);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,13 +24,19 @@ export default function Navbar() {
     queryFn: getAllCategory,
   });
 
+  const { mutateAsync } = useMutation({
+    mutationKey: ["products"],
+    mutationFn: filterProducts,
+  });
+
   const handleLogout = async () => {
     setIsLogged(false);
     await logout();
   };
 
-  const handleChangeCategory = (category) => {
-    dispatch(productAction.filtrateCategory(category));
+  const handleChangeCategory = async (category) => {
+    const products = await mutateAsync({ category, ...sort });
+    await dispatch(productAction.fetchProducts({ products, category, sort }));
   };
 
   return (

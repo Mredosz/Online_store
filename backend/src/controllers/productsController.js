@@ -135,3 +135,69 @@ exports.filterProducts = async (req, res) => {
     res.status(404).json({ message: e.message });
   }
 };
+
+exports.filterAndSortProducts = async (req, res) => {
+  try {
+    const { maxPrice, minPrice, category, sort, type } = req.body;
+
+    const aggregationPipeline = [];
+
+    aggregationPipeline.push({
+      $match: {
+        price: {
+          $gte: minPrice || 0,
+          $lte: maxPrice || Infinity,
+        },
+      },
+    });
+
+    if (category && category !== "all") {
+      const categoryDb = await Category.findOne({ name: category });
+      if (!categoryDb) {
+        res.status(404).json({ message: "Product not found." });
+      }
+      aggregationPipeline.push({
+        $match: {
+          category: categoryDb._id,
+        },
+      });
+    }
+
+    if (sort === "price") {
+      aggregationPipeline.push({
+        $sort: {
+          price: type === "asc" ? 1 : -1,
+        },
+      });
+    } else if (sort === "review") {
+      aggregationPipeline.push(
+        {
+          $lookup: {
+            from: "reviews",
+            localField: "reviews",
+            foreignField: "_id",
+            as: "reviewsData",
+          },
+        },
+        {
+          $addFields: {
+            averageRating: {
+              $avg: "$reviewsData.rating",
+            },
+          },
+        },
+        {
+          $sort: {
+            averageRating: type === "asc" ? 1 : -1,
+          },
+        },
+      );
+    }
+
+    const products = await Product.aggregate(aggregationPipeline);
+
+    res.status(200).json(products);
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+};

@@ -47,3 +47,5 @@ export const deleteProduct = async (id) => {
     })
   ).data;
 };
+
+export class filterProductsByCategory {}
