@@ -18,6 +18,7 @@ import EditCategory from "../components/admin/category/EditCategory.jsx";
 import AllUsers from "../components/admin/users/AllUsers.jsx";
 import AllOrders from "../components/admin/orders/AllOrders.jsx";
 import OrderDetails from "../components/admin/orders/OrderDetails.jsx";
+import ProtectedRoute from "../components/ui/ProtectedRoute.jsx";
 
 const router = createBrowserRouter([
   {
@@ -25,29 +26,81 @@ const router = createBrowserRouter([
     element: <RootElement />,
     errorElement: <ErrorElement />,
     children: [
-      { index: true, element: <Home /> },
+      {
+        index: true,
+        element: (
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        ),
+      },
       {
         path: "cart",
         children: [
-          { index: true, element: <Cart /> },
-          { path: "delivery", element: <Delivery /> },
-          { path: "end", element: <DeliveryEnd /> },
+          {
+            index: true,
+            element: (
+              <ProtectedRoute>
+                <Cart />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "delivery",
+            element: (
+              <ProtectedRoute>
+                <Delivery />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "end",
+            element: (
+              <ProtectedRoute>
+                <DeliveryEnd />
+              </ProtectedRoute>
+            ),
+          },
         ],
       },
       {
         path: "products",
         children: [
-          { index: true, element: <ProductDetails /> },
-          { path: "details/:productId", element: <ProductDetails /> },
+          {
+            index: true,
+            element: (
+              <ProtectedRoute>
+                <ProductDetails />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "details/:productId",
+            element: (
+              <ProtectedRoute>
+                <ProductDetails />
+              </ProtectedRoute>
+            ),
+          },
         ],
       },
-      { path: "login", element: <Login /> },
-      { path: "register", element: <Register /> },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "register",
+        element: <Register />,
+      },
     ],
   },
   {
     path: "admin",
-    element: <AdminRootElement />,
+    element: (
+      <ProtectedRoute>
+        <AdminRootElement />
+      </ProtectedRoute>
+    ),
     children: [
       { index: true, element: <AdminMain /> },
       {
