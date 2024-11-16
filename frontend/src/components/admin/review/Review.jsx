@@ -20,7 +20,7 @@ export default function Review({ review, onClick, onDelete }) {
       <div className="flex space-x-2 justify-center">
         <ButtonAdmin
           className={
-            isAccepted
+            !isAccepted
               ? "bg-fuchsia-500 hover:bg-fuchsia-600"
               : "bg-green-500 hover:bg-green-600"
           }

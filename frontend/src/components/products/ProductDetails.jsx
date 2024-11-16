@@ -35,7 +35,6 @@ export default function ProductDetails() {
   const [actualQuantity, setActualQuantity] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [state, dispatch] = useReducer(reducer, { content: "" });
-  const { isLogged } = useContext(AccountContext);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["products", params.productId],
@@ -61,11 +60,7 @@ export default function ProductDetails() {
   };
 
   const handleAddToCart = async (product) => {
-    if (isLogged) {
-      dispatchCart(addToCartThunk({ product, quantity: actualQuantity }));
-    } else {
-      window.alert("You must be logged");
-    }
+    dispatchCart(addToCartThunk({ product, quantity: actualQuantity }));
   };
 
   if (isLoading) {

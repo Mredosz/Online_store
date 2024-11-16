@@ -31,9 +31,6 @@ export default function ReviewAdd() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!localStorage.getItem("is_logged_in")) {
-      return window.alert("You must log in");
-    }
     await mutateAsync({
       review: enteredReview,
       rating: ref.current.getRating(),
