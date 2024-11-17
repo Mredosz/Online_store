@@ -1,12 +1,12 @@
 import { createContext, useLayoutEffect, useState } from "react";
 
 export const AccountContext = createContext({
-  isLogged: false,
+  isLogged: true,
   setIsLogged: () => {},
 });
 
 export default function AccountProvider({ children }) {
-  const [isLogged, setIsLogged] = useState(false);
+  const [isLogged, setIsLogged] = useState(true);
 
   useLayoutEffect(() => {
     const loggedIn = localStorage.getItem("is_logged_in") === "true";
