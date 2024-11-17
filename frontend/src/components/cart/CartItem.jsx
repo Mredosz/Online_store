@@ -5,11 +5,12 @@ import {
   changeQuantityThunk,
   deleteProductThunk,
 } from "../../store/cart-redux.jsx";
+import useDebounce from "../../hooks/useDebounce.jsx";
 
 export default function CartItem({ product, quantity }) {
   const dispatch = useDispatch();
   const [actualQuantity, setActualQuantity] = useState(quantity);
-  const [debouncingQuantity, setDebouncingQuantity] = useState(actualQuantity);
+  const debouncingQuantity = useDebounce(actualQuantity, 500);
 
   const changeHandler = (event) => {
     const quantity = Math.floor(event.target.value);
@@ -19,16 +20,6 @@ export default function CartItem({ product, quantity }) {
       setActualQuantity(quantity);
     }
   };
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncingQuantity(actualQuantity);
-    }, 500);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [actualQuantity]);
 
   useEffect(() => {
     if (debouncingQuantity !== quantity) {

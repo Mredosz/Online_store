@@ -16,6 +16,8 @@ export default function Navbar() {
   const { isLogged, setIsLogged } = useContext(AccountContext);
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
   const sort = useSelector((state) => state.product.sort);
+  const minPrice = useSelector((state) => state.product.minPrice);
+  const maxPrice = useSelector((state) => state.product.maxPrice);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -35,8 +37,21 @@ export default function Navbar() {
   };
 
   const handleChangeCategory = async (category) => {
-    const products = await mutateAsync({ category, ...sort });
-    await dispatch(productAction.fetchProducts({ products, category, sort }));
+    const products = await mutateAsync({
+      category,
+      ...sort,
+      minPrice,
+      maxPrice,
+    });
+    dispatch(
+      productAction.fetchProducts({
+        products,
+        category,
+        sort,
+        minPrice,
+        maxPrice,
+      }),
+    );
   };
 
   return (

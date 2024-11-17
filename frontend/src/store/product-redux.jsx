@@ -6,23 +6,18 @@ export const productSlice = createSlice({
     products: [],
     category: null,
     sort: { sort: "", type: "" },
+    minPrice: 0,
+    maxPrice: null,
   },
   reducers: {
-    filtrateCategory(state, action) {
-      state.category = action.payload.category;
-      state.products = action.payload.products;
-    },
     fetchProducts(state, action) {
       state.category = action.payload.category;
       state.products = action.payload.products;
       state.sort = action.payload.sort;
-    },
-    sortProduct(state, action) {
-      state.products = action.payload;
+      state.minPrice = action.payload.minPrice;
+      state.maxPrice = action.payload.maxPrice;
     },
   },
 });
 
 export const productAction = productSlice.actions;
-
-export class fetchProductData {}
