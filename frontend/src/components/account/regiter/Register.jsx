@@ -2,7 +2,7 @@ import Input from "../reusable/Input.jsx";
 import { useMutation } from "@tanstack/react-query";
 import { register } from "../../../request/account.js";
 import { useEffect, useState } from "react";
-import useValidation from "../../../hooks/useValidation.js";
+import useValidation from "../../../hooks/useValidation.jsx";
 import { isDifferent } from "../../../validators/account.js";
 import FormDiv from "../reusable/FormDiv.jsx";
 
