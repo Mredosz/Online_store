@@ -78,6 +78,19 @@ exports.deleteProduct = async (req, res) => {
   }
 };
 
+exports.searchProducts = async (req, res) => {
+  const query = req.query.q;
+  try {
+    const products = await Product.find({
+      name: { $regex: query, $options: "i" },
+    }).limit(10);
+
+    res.status(200).json(products);
+  } catch (e) {
+    res.status(404).json({ message: e.message });
+  }
+};
+
 exports.filterAndSortProducts = async (req, res) => {
   try {
     const { maxPrice, minPrice, category, sort, type } = req.body;

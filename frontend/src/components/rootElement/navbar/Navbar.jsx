@@ -11,6 +11,7 @@ import { productAction } from "../../../store/product-redux.jsx";
 import { useNavigate } from "react-router-dom";
 import CategoryButton from "./reusable/CategoryButton.jsx";
 import { filterProducts } from "../../../request/products.js";
+import SearchBar from "./SearchBar.jsx";
 
 export default function Navbar() {
   const { isLogged, setIsLogged } = useContext(AccountContext);
@@ -61,11 +62,7 @@ export default function Navbar() {
           <img src={logo} alt="Logo" className="h-12" />
           <h1>Capy Shop</h1>
         </NavItem>
-        <input
-          type={"text"}
-          placeholder="Search"
-          className="w-96 h-10 rounded-md border-0"
-        />
+        <SearchBar />
         <div className="flex items-center space-x-6">
           <NavItem
             to={"/cart"}

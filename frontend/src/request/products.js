@@ -8,9 +8,9 @@ export const getProductDetails = async (id) => {
   return (await axios.get(`http://localhost:3000/products/${id}`)).data;
 };
 
-export const sortProducts = async (sort) => {
+export const searchProducts = async (query) => {
   return (
-    await axios.post("http://localhost:3000/products/sort", sort, {
+    await axios.get(`http://localhost:3000/products/search?q=${query}`, {
       withCredentials: true,
     })
   ).data;
