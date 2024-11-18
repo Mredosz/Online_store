@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { productAction } from "../../../store/product-redux.jsx";
 import { filterProducts } from "../../../request/products.js";
 import { useMutation } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import useDebounce from "../../../hooks/useDebounce.jsx";
 import Input from "../../account/reusable/Input.jsx";
 
@@ -31,6 +31,8 @@ export default function ProductToolbar() {
   const debouncedMinPrice = useDebounce(minPrice, 500);
   const debouncedMaxPrice = useDebounce(maxPrice, 500);
 
+  const options = useMemo(() => optionSortArr, []);
+
   const { mutateAsync } = useMutation({
     mutationKey: "products",
     mutationFn: (filter) => filterProducts(filter, query),
@@ -44,14 +46,44 @@ export default function ProductToolbar() {
     handleFiltratePrice();
   }, [debouncedMinPrice, debouncedMaxPrice]);
 
-  const handleFiltrate = async (event) => {
-    const sort = JSON.parse(event.target.value);
+  const handleFiltrate = useCallback(
+    async (event) => {
+      const sort = JSON.parse(event.target.value);
+      const products = await mutateAsync({
+        ...sort,
+        category,
+        minPrice: debouncedMinPrice,
+        maxPrice: debouncedMaxPrice,
+      });
+      dispatch(
+        productAction.fetchProducts({
+          products,
+          category,
+          sort,
+          minPrice: debouncedMinPrice,
+          maxPrice: debouncedMaxPrice,
+          query,
+        }),
+      );
+    },
+    [
+      category,
+      debouncedMaxPrice,
+      debouncedMinPrice,
+      dispatch,
+      mutateAsync,
+      query,
+    ],
+  );
+
+  const handleFiltratePrice = useCallback(async () => {
     const products = await mutateAsync({
       ...sort,
       category,
       minPrice: debouncedMinPrice,
       maxPrice: debouncedMaxPrice,
     });
+
     dispatch(
       productAction.fetchProducts({
         products,
@@ -62,27 +94,15 @@ export default function ProductToolbar() {
         query,
       }),
     );
-  };
-
-  const handleFiltratePrice = async () => {
-    const products = await mutateAsync({
-      ...sort,
-      category,
-      minPrice: debouncedMinPrice,
-      maxPrice: debouncedMaxPrice,
-    });
-
-    dispatch(
-      productAction.fetchProducts({
-        products,
-        category,
-        sort,
-        minPrice: debouncedMinPrice,
-        maxPrice: debouncedMaxPrice,
-        query,
-      }),
-    );
-  };
+  }, [
+    category,
+    debouncedMaxPrice,
+    debouncedMinPrice,
+    dispatch,
+    mutateAsync,
+    query,
+    sort,
+  ]);
 
   return (
     <div className="h-56 w-64 border border-gray-200 rounded-md shadow-md mt-10 ml-5">
@@ -120,7 +140,7 @@ export default function ProductToolbar() {
             className="rounded-md w-full border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-500"
             onChange={handleFiltrate}
           >
-            {optionSortArr.map((o) => (
+            {options.map((o) => (
               <option value={o.value} key={o.text}>
                 {o.text}
               </option>
