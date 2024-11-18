@@ -73,7 +73,7 @@ export default function SearchBar() {
         onFocus={() => setIsOpen(true)}
         onKeyDown={handleEnterClick}
         onChange={(event) => setQuery(event.target.value)}
-        className="w-96 h-10 rounded-md border-0"
+        className="sm:w-96 h-10 rounded-md border-0"
       />
       <div className="relative">
         {data && isOpen && (

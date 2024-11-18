@@ -4,7 +4,7 @@ const { body } = require("express-validator");
 const router = express.Router();
 
 router.get("/", productController.getAllProducts);
-router.get("/search", productController.searchProducts);
+router.get("/recommended/:productId", productController.recommendedProducts);
 router.get("/:productId", productController.getProductById);
 
 router.post("/filter", productController.filterAndSortProducts);

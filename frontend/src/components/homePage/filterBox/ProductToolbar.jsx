@@ -26,6 +26,7 @@ export default function ProductToolbar() {
 
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+  const [isInitialRender, setIsInitialRender] = useState(true);
 
   const debouncedMinPrice = useDebounce(minPrice, 500);
   const debouncedMaxPrice = useDebounce(maxPrice, 500);
@@ -36,11 +37,11 @@ export default function ProductToolbar() {
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      await handleFiltratePrice();
-    };
-
-    fetchData();
+    if (isInitialRender) {
+      setIsInitialRender(false);
+      return;
+    }
+    handleFiltratePrice();
   }, [debouncedMinPrice, debouncedMaxPrice]);
 
   const handleFiltrate = async (event) => {

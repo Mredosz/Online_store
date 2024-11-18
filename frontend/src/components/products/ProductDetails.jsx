@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getProductDetails } from "../../request/products.js";
 import { FaCalendarAlt, FaCartPlus, FaClock, FaTruck } from "react-icons/fa";
 import DetailsSections from "./reusable/DetailsSections.jsx";
-import { useContext, useReducer, useState } from "react";
+import { useReducer, useState } from "react";
 import AddButton from "./reusable/AddButton.jsx";
 import SpecificationElement from "./reusable/SpecificationElement.jsx";
 import ProductModal from "./modal/ProductModal.jsx";
@@ -11,8 +11,8 @@ import ReviewsAll from "./review/ReviewsAll.jsx";
 import ReviewStar from "./review/ReviewStar.jsx";
 import { addToCartThunk } from "../../store/cart-redux.jsx";
 import { useDispatch } from "react-redux";
-import { AccountContext } from "../../store/account-context.jsx";
 import StateInfo from "../ui/StateInfo.jsx";
+import RecommendedProducts from "./recomendation/RecommendedProducts.jsx";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -161,6 +161,7 @@ export default function ProductDetails() {
           ))}
         </ul>
       </div>
+      <RecommendedProducts />
       <ReviewsAll onClick={() => handleOpenModal("ADD_REVIEW")} />
     </div>
   );

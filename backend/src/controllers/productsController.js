@@ -78,13 +78,27 @@ exports.deleteProduct = async (req, res) => {
   }
 };
 
-exports.searchProducts = async (req, res) => {
-  const query = req.query.q;
+exports.recommendedProducts = async (req, res) => {
+  const id = req.params.productId;
   try {
-    const products = await Product.find({
-      name: { $regex: query, $options: "i" },
-    }).limit(10);
+    const productDb = await Product.findById(id).populate("category");
 
+    const categoryDb = await Category.findOne({
+      name: productDb.category.name,
+    });
+
+    if (!categoryDb) {
+      res.status(404).json({ message: "Product not found." });
+    }
+
+    const products = await Product.aggregate([
+      {
+        $match: {
+          category: categoryDb._id,
+          _id: { $ne: productDb._id },
+        },
+      },
+    ]);
     res.status(200).json(products);
   } catch (e) {
     res.status(404).json({ message: e.message });
@@ -107,7 +121,7 @@ exports.filterAndSortProducts = async (req, res) => {
       },
     });
 
-    if (category && category !== "all" && category !== "main") {
+    if (category && category !== "all") {
       const categoryDb = await Category.findOne({ name: category });
       if (!categoryDb) {
         res.status(404).json({ message: "Product not found." });

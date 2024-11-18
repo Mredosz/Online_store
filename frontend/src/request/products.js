@@ -8,9 +8,9 @@ export const getProductDetails = async (id) => {
   return (await axios.get(`http://localhost:3000/products/${id}`)).data;
 };
 
-export const searchProducts = async (query) => {
+export const getRecommendedProducts = async (id) => {
   return (
-    await axios.get(`http://localhost:3000/products/search?q=${query}`, {
+    await axios.get(`http://localhost:3000/products/recommended/${id}`, {
       withCredentials: true,
     })
   ).data;

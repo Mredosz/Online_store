@@ -26,7 +26,7 @@ export default function Home() {
   return (
     <>
       <StateInfo error={error} isLoading={isLoading} />
-      <div className="flex space-x-2">
+      <div className="flex sm:flex-nowrap flex-wrap space-x-2 justify-center">
         <ProductToolbar />
         <div className="flex flex-wrap justify-center items-center w-full">
           {data && products?.length === 0 && (
