@@ -29,8 +29,10 @@ export default function Home() {
       <div className="flex space-x-2">
         <ProductToolbar />
         <div className="flex flex-wrap justify-center items-center w-full">
-          {data && products.length === 0 && <ErrorBanner error="No products" />}
-          {products.length > 0 &&
+          {data && products?.length === 0 && (
+            <ErrorBanner error="No products" />
+          )}
+          {products?.length > 0 &&
             products?.map((product) => (
               <Product key={product._id} product={product} />
             ))}

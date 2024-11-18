@@ -93,6 +93,7 @@ exports.searchProducts = async (req, res) => {
 
 exports.filterAndSortProducts = async (req, res) => {
   try {
+    const query = req.query.q;
     const { maxPrice, minPrice, category, sort, type } = req.body;
 
     const aggregationPipeline = [];
@@ -106,7 +107,7 @@ exports.filterAndSortProducts = async (req, res) => {
       },
     });
 
-    if (category && category !== "all") {
+    if (category && category !== "all" && category !== "main") {
       const categoryDb = await Category.findOne({ name: category });
       if (!categoryDb) {
         res.status(404).json({ message: "Product not found." });
@@ -147,6 +148,14 @@ exports.filterAndSortProducts = async (req, res) => {
           },
         },
       );
+    }
+
+    if (query !== "undefined" || query !== "") {
+      aggregationPipeline.push({
+        $match: {
+          name: { $regex: query, $options: "i" },
+        },
+      });
     }
 
     const products = await Product.aggregate(aggregationPipeline);

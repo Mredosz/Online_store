@@ -16,9 +16,9 @@ export const searchProducts = async (query) => {
   ).data;
 };
 
-export const filterProducts = async (sort) => {
+export const filterProducts = async (sort, query) => {
   return (
-    await axios.post("http://localhost:3000/products/filter", sort, {
+    await axios.post(`http://localhost:3000/products/filter?q=${query}`, sort, {
       withCredentials: true,
     })
   ).data;
@@ -47,5 +47,3 @@ export const deleteProduct = async (id) => {
     })
   ).data;
 };
-
-export class filterProductsByCategory {}

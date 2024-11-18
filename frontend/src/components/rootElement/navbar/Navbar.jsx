@@ -16,9 +16,9 @@ import SearchBar from "./SearchBar.jsx";
 export default function Navbar() {
   const { isLogged, setIsLogged } = useContext(AccountContext);
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
-  const sort = useSelector((state) => state.product.sort);
-  const minPrice = useSelector((state) => state.product.minPrice);
-  const maxPrice = useSelector((state) => state.product.maxPrice);
+  const { sort, minPrice, maxPrice, query } = useSelector(
+    (state) => state.product,
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ export default function Navbar() {
 
   const { mutateAsync } = useMutation({
     mutationKey: ["products"],
-    mutationFn: filterProducts,
+    mutationFn: (filter) => filterProducts(filter, query),
   });
 
   const handleLogout = async () => {
@@ -51,6 +51,7 @@ export default function Navbar() {
         sort,
         minPrice,
         maxPrice,
+        query,
       }),
     );
   };

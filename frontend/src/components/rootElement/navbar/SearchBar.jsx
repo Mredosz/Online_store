@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import { searchProducts } from "../../../request/products.js";
+import { filterProducts } from "../../../request/products.js";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { productAction } from "../../../store/product-redux.jsx";
 
 export default function SearchBar() {
@@ -11,10 +11,22 @@ export default function SearchBar() {
   const [isOpen, setIsOpen] = useState(true);
   const searchBarRef = useRef(null);
   const dispatch = useDispatch();
+  const { minPrice, maxPrice, category, sort } = useSelector(
+    (state) => state.product,
+  );
 
   const { data } = useQuery({
     queryKey: ["search", query],
-    queryFn: () => searchProducts(query),
+    queryFn: () =>
+      filterProducts(
+        {
+          category,
+          ...sort,
+          minPrice,
+          maxPrice,
+        },
+        query,
+      ),
     enabled: query.length > 2,
   });
 
@@ -32,7 +44,16 @@ export default function SearchBar() {
   const handleEnterClick = (event) => {
     if (event.key === "Enter") {
       setQuery("");
-      dispatch(productAction.fetchProducts({ products: data }));
+      dispatch(
+        productAction.fetchProducts({
+          products: data,
+          minPrice,
+          maxPrice,
+          category,
+          sort,
+          query,
+        }),
+      );
     }
   };
 

@@ -22,8 +22,8 @@ const optionSortArr = [
 
 export default function ProductToolbar() {
   const dispatch = useDispatch();
-  const category = useSelector((state) => state.product.category);
-  const sort = useSelector((state) => state.product.sort);
+  const { sort, category, query } = useSelector((state) => state.product);
+
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
@@ -32,7 +32,7 @@ export default function ProductToolbar() {
 
   const { mutateAsync } = useMutation({
     mutationKey: "products",
-    mutationFn: filterProducts,
+    mutationFn: (filter) => filterProducts(filter, query),
   });
 
   useEffect(() => {
@@ -58,6 +58,7 @@ export default function ProductToolbar() {
         sort,
         minPrice: debouncedMinPrice,
         maxPrice: debouncedMaxPrice,
+        query,
       }),
     );
   };
@@ -77,6 +78,7 @@ export default function ProductToolbar() {
         sort,
         minPrice: debouncedMinPrice,
         maxPrice: debouncedMaxPrice,
+        query,
       }),
     );
   };
@@ -93,6 +95,10 @@ export default function ProductToolbar() {
               className="w-full"
               value={minPrice}
               onChange={(event) => setMinPrice(event.target.value)}
+              error={{
+                value: minPrice < 0 || parseInt(minPrice) > parseInt(maxPrice),
+                message: "Bad value",
+              }}
             />
             <Input
               id="to"
@@ -100,6 +106,10 @@ export default function ProductToolbar() {
               className="w-full"
               value={maxPrice}
               onChange={(event) => setMaxPrice(event.target.value)}
+              error={{
+                value: maxPrice < 0,
+                message: "Bad value",
+              }}
             />
           </div>
         </div>

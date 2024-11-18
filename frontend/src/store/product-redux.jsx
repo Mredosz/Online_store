@@ -8,6 +8,7 @@ export const productSlice = createSlice({
     sort: { sort: "", type: "" },
     minPrice: 0,
     maxPrice: null,
+    query: "",
   },
   reducers: {
     fetchProducts(state, action) {
@@ -16,6 +17,7 @@ export const productSlice = createSlice({
       state.sort = action.payload.sort;
       state.minPrice = action.payload.minPrice;
       state.maxPrice = action.payload.maxPrice;
+      state.query = action.payload.query;
     },
   },
 });
