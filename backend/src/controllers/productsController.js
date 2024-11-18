@@ -150,14 +150,14 @@ exports.filterAndSortProducts = async (req, res) => {
       );
     }
 
-    if (query !== "undefined" || query !== "") {
+    if (query !== "undefined") {
       aggregationPipeline.push({
         $match: {
           name: { $regex: query, $options: "i" },
         },
       });
     }
-
+    console.log(aggregationPipeline);
     const products = await Product.aggregate(aggregationPipeline);
 
     res.status(200).json(products);

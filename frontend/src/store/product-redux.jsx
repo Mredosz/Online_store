@@ -4,11 +4,11 @@ export const productSlice = createSlice({
   name: "product",
   initialState: {
     products: [],
-    category: null,
+    category: "all",
     sort: { sort: "", type: "" },
     minPrice: 0,
     maxPrice: null,
-    query: "",
+    query: "undefined",
   },
   reducers: {
     fetchProducts(state, action) {
