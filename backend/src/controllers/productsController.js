@@ -157,7 +157,7 @@ exports.filterAndSortProducts = async (req, res) => {
         },
       });
     }
-    console.log(aggregationPipeline);
+
     const products = await Product.aggregate(aggregationPipeline);
 
     res.status(200).json(products);
