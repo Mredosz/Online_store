@@ -1,9 +1,10 @@
 const express = require("express");
-const orderController = require("../controllers/orderContorller");
+const orderController = require("../controllers/orderController");
 const { body } = require("express-validator");
 const router = express.Router();
 
 router.get("/", orderController.getAllOrders);
+router.get("/reports", orderController.getReports);
 router.get("/:orderId", orderController.getOrderById);
 
 router.post(

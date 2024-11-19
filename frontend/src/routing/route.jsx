@@ -19,6 +19,7 @@ import AllUsers from "../components/admin/users/AllUsers.jsx";
 import AllOrders from "../components/admin/orders/AllOrders.jsx";
 import OrderDetails from "../components/admin/orders/OrderDetails.jsx";
 import ProtectedRoute from "../components/ui/ProtectedRoute.jsx";
+import Reports from "../components/admin/reports/Reports.jsx";
 
 const router = createBrowserRouter([
   {
@@ -145,6 +146,15 @@ const router = createBrowserRouter([
           {
             path: ":categoryId",
             element: <EditCategory />,
+          },
+        ],
+      },
+      {
+        path: "reports",
+        children: [
+          {
+            index: true,
+            element: <Reports />,
           },
         ],
       },

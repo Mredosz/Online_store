@@ -35,3 +35,11 @@ export const changeOrderStatus = async (id, status) => {
     )
   ).data;
 };
+
+export const getReports = async () => {
+  return (
+    await axios.get("http://localhost:3000/order/reports", {
+      withCredentials: true,
+    })
+  ).data;
+};

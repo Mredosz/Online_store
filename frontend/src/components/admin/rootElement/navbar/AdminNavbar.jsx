@@ -27,6 +27,7 @@ export default function AdminNavbar() {
           <NavItem to={"orders"}>Orders</NavItem>
           <NavItem to={"users"}>Users</NavItem>
           <NavItem to={"category"}>Category</NavItem>
+          <NavItem to={"reports"}>Reports</NavItem>
         </div>
         <button onClick={handleLogout}>Logout</button>
       </ul>

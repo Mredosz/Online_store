@@ -13,6 +13,7 @@ export default function AdminMain() {
           <ButtonDashboard to="orders">Orders</ButtonDashboard>
           <ButtonDashboard to="users">Users</ButtonDashboard>
           <ButtonDashboard to="category">Category</ButtonDashboard>
+          <ButtonDashboard to="reports">Reports</ButtonDashboard>
         </div>
       </div>
     </div>

@@ -61,3 +61,57 @@ exports.changeOrderStatus = async (req, res) => {
     res.status(404).json({ message: e.message });
   }
 };
+
+exports.getReports = async (req, res) => {
+  if (checkErrors(req, res)) return;
+
+  try {
+    const report = await Order.aggregate([
+      {
+        $unwind: "$products",
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "products.product",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      {
+        $unwind: "$productDetails",
+      },
+      {
+        $group: {
+          _id: "$products.product",
+          totalQuantity: { $sum: "$products.quantity" },
+          totalAmountSpent: {
+            $sum: {
+              $multiply: ["$products.quantity", "$productDetails.price"],
+            },
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "_id",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          totalQuantity: 1,
+          totalAmountSpent: 1,
+          productDetails: { $arrayElemAt: ["$productDetails", 0] },
+        },
+      },
+    ]);
+
+    res.status(200).json(report);
+  } catch (e) {
+    res.status(404).json({ message: e.message });
+  }
+};
