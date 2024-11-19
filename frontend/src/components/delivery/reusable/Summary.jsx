@@ -13,7 +13,7 @@ export default function Summary({ children, first, remaining, finalPrice }) {
           </div>
           <div className="flex space-x-3">
             <p className="text-lg font-semibold">Total price: </p>
-            <p className="text-lg">{finalPrice} zł</p>
+            <p className="text-lg">{finalPrice.toLocaleString("pl-PL")} zł</p>
           </div>
         </div>
       </div>

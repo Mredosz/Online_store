@@ -33,4 +33,15 @@ router.post(
   orderController.addOrder,
 );
 
+router.put(
+  "/:orderId",
+  body("status")
+    .isString()
+    .isIn(["processing", "confirmed", "shipped", "delivered"])
+    .withMessage(
+      "Invalid status. Must be one of: processing, confirmed, shipped, delivered",
+    ),
+  orderController.changeOrderStatus,
+);
+
 module.exports = router;

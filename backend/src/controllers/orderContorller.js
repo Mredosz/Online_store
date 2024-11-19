@@ -32,6 +32,7 @@ exports.addOrder = async (req, res) => {
     ...order,
     date: new Date(),
     userId,
+    status: "Processing",
   });
   try {
     for (const { product, quantity } of order.products) {
@@ -45,5 +46,18 @@ exports.addOrder = async (req, res) => {
     res.status(201).json("Created");
   } catch (e) {
     res.status(409).json({ message: e.message });
+  }
+};
+
+exports.changeOrderStatus = async (req, res) => {
+  if (checkErrors(req, res)) return;
+  const orderId = req.params.orderId;
+  const status = req.body.status;
+
+  try {
+    await Order.findByIdAndUpdate(orderId, { status });
+    res.status(200).json("Updated");
+  } catch (e) {
+    res.status(404).json({ message: e.message });
   }
 };

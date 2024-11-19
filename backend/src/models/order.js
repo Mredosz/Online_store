@@ -67,6 +67,10 @@ const orderSchema = new Schema({
       type: String,
     },
   },
+  status: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Order", orderSchema);

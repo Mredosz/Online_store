@@ -112,6 +112,10 @@ exports.filterAndSortProducts = async (req, res) => {
 
     const aggregationPipeline = [];
 
+    if (query.includes("?")) {
+      return res.status(200).json([]);
+    }
+
     aggregationPipeline.push({
       $match: {
         price: {
