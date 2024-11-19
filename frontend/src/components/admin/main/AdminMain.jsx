@@ -4,7 +4,7 @@ export default function AdminMain() {
   return (
     <div className="flex flex-col h-[calc(100vh-56px)] items-center bg-[url('/admin.png')] bg-cover bg-center">
       <div className="h-1/2 flex flex-col justify-between">
-        <h1 className="text-7xl text-white font-bold mt-5 justify-start">
+        <h1 className="text-7xl text-white font-bold mt-5 text-center justify-start">
           Admin dashboard
         </h1>
         <div className="flex flex-wrap justify-center items-end space-x-7 space-y-2">

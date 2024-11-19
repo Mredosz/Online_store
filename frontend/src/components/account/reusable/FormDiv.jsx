@@ -15,7 +15,7 @@ export default function FormDiv({
   alert,
 }) {
   return (
-    <div className="flex flex-col justify-center items-center min-h-[calc(100vh-212px)] bg-[url('/register.png')] bg-cover bg-center">
+    <div className="flex flex-col justify-center items-center h-screen min-h-[calc(100vh-212px)] bg-[url('/register.png')] bg-cover bg-center">
       {alert?.map((err) => (
         <ErrorAlert key={err.msg} error={err.msg} />
       ))}

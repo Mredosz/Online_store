@@ -22,9 +22,12 @@ export default function RecommendedProducts() {
             Recommended products
           </h1>
           <div className="flex flex-wrap">
-            {data.map((product) => (
-              <Product key={product._id} product={product} />
-            ))}
+            {data.map(
+              (product) =>
+                product.availableQuantity > 0 && (
+                  <Product key={product._id} product={product} />
+                ),
+            )}
           </div>
         </div>
       )}

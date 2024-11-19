@@ -14,7 +14,7 @@ import { filterProducts } from "../../../request/products.js";
 import SearchBar from "./SearchBar.jsx";
 
 export default function Navbar() {
-  const { isLogged, setIsLogged } = useContext(AccountContext);
+  const { isLogged, setIsLogged, setIsAdmin } = useContext(AccountContext);
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
   const { sort, minPrice, maxPrice, query } = useSelector(
     (state) => state.product,
@@ -34,6 +34,7 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     setIsLogged(false);
+    setIsAdmin(false);
     await logout();
   };
 
@@ -63,41 +64,45 @@ export default function Navbar() {
           <img src={logo} alt="Logo" className="h-12" />
           <h1>Capy Shop</h1>
         </NavItem>
-        <SearchBar />
+        {isLogged && <SearchBar />}
         <div className="flex items-center space-x-6">
-          <NavItem
-            to={"/cart"}
-            count={totalQuantity > 9 ? "9+" : totalQuantity}
-            className="flex items-center space-x-1 relative p-2"
-          >
-            <FaCartShopping size={28} />
-          </NavItem>
+          {isLogged && (
+            <NavItem
+              to={"/cart"}
+              count={totalQuantity > 9 ? "9+" : totalQuantity}
+              className="flex items-center space-x-1 relative p-2"
+            >
+              <FaCartShopping size={28} />
+            </NavItem>
+          )}
           {isLogged && <button onClick={handleLogout}>Logout</button>}
           {!isLogged && <NavItem to={"/login"}>Login</NavItem>}
           {!isLogged && <NavItem to={"/register"}>Sign In</NavItem>}
         </div>
       </ul>
-      <div className="flex flex-wrap bg-navbar justify-center space-x-5 font-semibold py-2 text-lg">
-        <CategoryButton
-          onClick={() => {
-            navigate("/");
-            handleChangeCategory("all");
-          }}
-        >
-          All
-        </CategoryButton>
-        {data?.map((category) => (
+      {isLogged && (
+        <div className="flex flex-wrap bg-navbar justify-center space-x-5 font-semibold py-2 text-lg">
           <CategoryButton
-            key={category.name}
             onClick={() => {
               navigate("/");
-              handleChangeCategory(category.name);
+              handleChangeCategory("all");
             }}
           >
-            {category.name}
+            All
           </CategoryButton>
-        ))}
-      </div>
+          {data?.map((category) => (
+            <CategoryButton
+              key={category.name}
+              onClick={() => {
+                navigate("/");
+                handleChangeCategory(category.name);
+              }}
+            >
+              {category.name}
+            </CategoryButton>
+          ))}
+        </div>
+      )}
     </nav>
   );
 }

@@ -21,7 +21,7 @@ export default function Login() {
     message: "",
   });
 
-  const { setIsLogged } = useContext(AccountContext);
+  const { setIsLogged, setIsAdmin } = useContext(AccountContext);
   const navigate = useNavigate();
 
   const email = useRef();
@@ -35,9 +35,10 @@ export default function Login() {
   useEffect(() => {
     if (isSuccess) {
       setIsLogged(true);
+      setIsAdmin(data.role === "admin");
       navigate(data.role === "user" ? "/" : "/admin");
     }
-  }, [isSuccess]);
+  }, [data?.role, isSuccess, navigate, setIsAdmin, setIsLogged]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
