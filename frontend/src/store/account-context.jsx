@@ -3,6 +3,8 @@ import { createContext, useLayoutEffect, useState } from "react";
 export const AccountContext = createContext({
   isLogged: false,
   setIsLogged: () => {},
+  isAdmin: false,
+  setIsAdmin: () => {},
 });
 
 export default function AccountProvider({ children }) {

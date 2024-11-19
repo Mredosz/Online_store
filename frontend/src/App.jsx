@@ -11,7 +11,7 @@ function App() {
   const queryClient = new QueryClient();
   const dispatch = useDispatch();
 
-  const { isLogged, setIsLogged } = useContext(AccountContext);
+  const { isLogged, setIsLogged, setIsAdmin } = useContext(AccountContext);
 
   useLayoutEffect(() => {
     const checkAuthAndFetchCart = async () => {
@@ -25,6 +25,7 @@ function App() {
       } catch (e) {
         if (e.response && e.response.status === 307) {
           setIsLogged(false);
+          setIsAdmin(false);
         }
       }
     };
