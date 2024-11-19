@@ -172,6 +172,12 @@ exports.filterAndSortProducts = async (req, res) => {
       });
     }
 
+    aggregationPipeline.push({
+      $match: {
+        availableQuantity: { $gt: 0 },
+      },
+    });
+
     const products = await Product.aggregate(aggregationPipeline);
 
     res.status(200).json(products);
