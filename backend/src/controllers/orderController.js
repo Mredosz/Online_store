@@ -1,7 +1,9 @@
 const Order = require("../models/order");
 const Product = require("../models/product");
+const User = require("../models/user");
 const checkErrors = require("../util/checkErrors");
 const { getUserIdFromToken } = require("../util/tokenManager");
+const sendEmail = require("../util/emailService");
 
 exports.getAllOrders = async (req, res) => {
   try {
@@ -34,16 +36,18 @@ exports.addOrder = async (req, res) => {
     userId,
     status: "Processing",
   });
+
   try {
+    const { email, firstName, lastName } = await User.findById(userId);
     for (const { product, quantity } of order.products) {
       const newQuantity = product.availableQuantity - quantity;
       await Product.findByIdAndUpdate(product._id, {
         availableQuantity: newQuantity,
       });
     }
-
     await newOrder.save();
     res.status(201).json("Created");
+    await sendEmail(`${firstName} ${lastName} ${email}`);
   } catch (e) {
     res.status(409).json({ message: e.message });
   }
