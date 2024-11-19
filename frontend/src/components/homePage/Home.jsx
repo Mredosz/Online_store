@@ -33,9 +33,12 @@ export default function Home() {
             <ErrorBanner error="No products" />
           )}
           {products?.length > 0 &&
-            products?.map((product) => (
-              <Product key={product._id} product={product} />
-            ))}
+            products?.map(
+              (product) =>
+                product.availableQuantity > 0 && (
+                  <Product key={product._id} product={product} />
+                ),
+            )}
         </div>
       </div>
     </>

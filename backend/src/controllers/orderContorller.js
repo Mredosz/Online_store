@@ -1,4 +1,5 @@
 const Order = require("../models/order");
+const Product = require("../models/product");
 const checkErrors = require("../util/checkErrors");
 const { getUserIdFromToken } = require("../util/tokenManager");
 
@@ -33,6 +34,13 @@ exports.addOrder = async (req, res) => {
     userId,
   });
   try {
+    for (const { product, quantity } of order.products) {
+      const newQuantity = product.availableQuantity - quantity;
+      await Product.findByIdAndUpdate(product._id, {
+        availableQuantity: newQuantity,
+      });
+    }
+
     await newOrder.save();
     res.status(201).json("Created");
   } catch (e) {
