@@ -113,7 +113,7 @@ exports.filterAndSortProducts = async (req, res) => {
     const aggregationPipeline = [];
 
     if (query.includes("?")) {
-      return res.status(200).json([]);
+      return res.status(404).json({ message: "Product not found." });
     }
 
     aggregationPipeline.push({

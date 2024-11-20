@@ -25,8 +25,8 @@ export default function OrderFinalize() {
 
       <div className="additional-info">
         <p>
-          Your order is being processed. An SMS confirmation has been sent to
-          your phone.
+          Your order is being processed. An e-mail confirmation has been sent to
+          your email address.
         </p>
         <p>We hope you enjoy your purchase!</p>
       </div>

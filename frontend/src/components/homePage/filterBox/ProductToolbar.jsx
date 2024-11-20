@@ -105,7 +105,7 @@ export default function ProductToolbar() {
   ]);
 
   return (
-    <div className="h-56 w-64 border border-gray-200 rounded-md shadow-md mt-10 ml-5">
+    <div className="h-64 w-64 border border-gray-200 rounded-md shadow-md mt-10 ml-5">
       <div className="p-2 space-y-2">
         <div>
           <h1 className="text-2xl font-semibold">Filtrate</h1>
@@ -113,11 +113,14 @@ export default function ProductToolbar() {
             <Input
               id="from"
               label="from"
+              type="number"
               className="w-full"
               value={minPrice}
               onChange={(event) => setMinPrice(event.target.value)}
               error={{
-                value: minPrice < 0 || parseInt(minPrice) > parseInt(maxPrice),
+                value:
+                  (minPrice <= 0 && minPrice !== "") ||
+                  parseInt(debouncedMinPrice) > parseInt(debouncedMaxPrice),
                 message: "Bad value",
               }}
             />
@@ -128,7 +131,7 @@ export default function ProductToolbar() {
               value={maxPrice}
               onChange={(event) => setMaxPrice(event.target.value)}
               error={{
-                value: maxPrice < 0,
+                value: maxPrice <= 0 && maxPrice !== "",
                 message: "Bad value",
               }}
             />

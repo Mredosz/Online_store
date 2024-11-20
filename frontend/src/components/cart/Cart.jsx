@@ -65,7 +65,12 @@ export default function Cart() {
             <p className="text-lg">{calculateTotalPrice(19.99)} zł</p>
           </div>
         </div>
-        <Button onClick={handleDeliver} className="w-[60%]">
+        <Button
+          onClick={handleDeliver}
+          className="w-[60%]"
+          isValid={products.length > 0}
+          disabled={products.length === 0}
+        >
           Next
         </Button>
       </div>

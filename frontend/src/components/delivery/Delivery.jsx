@@ -62,7 +62,7 @@ export default function Delivery() {
         onSubmit={handleSubmit}
         validationSchema={validation}
       >
-        {({ values }) => (
+        {({ values, isValid }) => (
           <Form>
             <RadioGroup options={deliveryOptions} name="deliveryType" />
             <RadioGroup options={paymentOptions} name="paymentMethod" />
@@ -70,7 +70,7 @@ export default function Delivery() {
             <Input id="street" label="street" />
             <Input id="postalCode" label="postal code" />
             <Input id="homeNumber" label="home number" />
-            <Input id="phoneNumber" label="phone number" />
+            <Input id="phoneNumber" label="phone number" type="tel" />
             {values.paymentMethod === "card" && (
               <>
                 <Input id="cardNumber" label="card number" />
@@ -91,7 +91,12 @@ export default function Delivery() {
               >
                 Back
               </Button>
-              <Button type="submit" className="w-full">
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={!isValid}
+                isValid={isValid}
+              >
                 Next
               </Button>
             </div>

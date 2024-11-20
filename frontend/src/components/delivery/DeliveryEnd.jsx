@@ -85,7 +85,7 @@ export default function DeliveryEnd() {
             >
               Back
             </Button>
-            <Button className="w-1/2" onClick={handleOpenModal}>
+            <Button className="w-1/2" onClick={handleOpenModal} isValid>
               Finalize
             </Button>
           </div>
@@ -94,7 +94,11 @@ export default function DeliveryEnd() {
       {isModalOpen && (
         <ProductModal
           onClose={handleCloseModal}
-          button={<Button onClick={handleFinalize}>Yes</Button>}
+          button={
+            <Button onClick={handleFinalize} isValid>
+              Yes
+            </Button>
+          }
         >
           <h2 className="text-3xl text-center">Are you sure?</h2>
         </ProductModal>

@@ -27,7 +27,7 @@ export default function SearchBar() {
         },
         query,
       ),
-    enabled: query.length > 2,
+    enabled: query.trim().length > 2,
   });
 
   const handleClickProduct = (id) => {

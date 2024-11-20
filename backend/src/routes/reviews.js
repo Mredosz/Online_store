@@ -10,7 +10,7 @@ router.post(
   "/:productId",
   body("review")
     .isLength({ min: 3, max: 300 })
-    .withMessage("Review is to long."),
+    .withMessage("Review is to short or long."),
   body("rating").isNumeric().withMessage("Rating must be a number."),
   body("isAccepted").isBoolean().withMessage("isAccepted must be a boolean."),
   reviewController.addReview,

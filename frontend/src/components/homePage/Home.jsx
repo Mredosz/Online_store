@@ -29,7 +29,7 @@ export default function Home() {
       <div className="flex sm:flex-nowrap flex-wrap space-x-2 justify-center">
         <ProductToolbar />
         <div className="flex flex-wrap justify-center items-center w-full">
-          {data && products?.length === 0 && (
+          {((data && products?.length === 0) || !products) && (
             <ErrorBanner error="No products" />
           )}
           {products?.length > 0 &&

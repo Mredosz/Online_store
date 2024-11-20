@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import ReviewStarAdd from "./ReviewStarAdd.jsx";
 import { isNotEmpty } from "../../../../validators/account.js";
 import ErrorAlert from "../../../ui/ErrorAlert.jsx";
+import Button from "../../../delivery/reusable/Button.jsx";
 
 export default function ReviewAdd() {
   const params = useParams();
@@ -100,9 +101,9 @@ export default function ReviewAdd() {
           onBlur={handleInputBlur}
           error={error}
         />
-        <button className="py-2 px-4 bg-green-500 hover:bg-green-700 rounded-md w-full">
+        <Button disabled={error.value} isValid={!error.value}>
           Add review
-        </button>
+        </Button>
       </form>
     </div>
   );

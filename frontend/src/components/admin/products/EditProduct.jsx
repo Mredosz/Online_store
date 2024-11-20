@@ -42,6 +42,10 @@ export default function EditProduct() {
   };
 
   const onSubmit = async (values) => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     await mutateAsync(values);
     await queryClient.invalidateQueries(["productEdit", params.productId]);
   };
