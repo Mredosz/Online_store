@@ -19,8 +19,9 @@ const sendEmail = async (to) => {
         from: '"Capy store" <capy@store.com>',
         to,
         subject: "Order confirmed",
-        text: "Hello world?",
-        html: "<b>Hello world?</b>",
+        html:
+          "<b>Order placed successfully!</b>\n" +
+          "<p>Your order has been placed successfully and has been sent to the warehouse for processing.</p>\n",
       });
 
       console.log("Email send: %s", info.messageId);
