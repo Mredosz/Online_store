@@ -2,8 +2,19 @@ const express = require("express");
 const cors = require("cors");
 const connectDb = require("./util/database");
 const cookieParser = require("cookie-parser");
+const expbs = require("express-handlebars");
 
 const app = express();
+app.engine(
+  "handlebars",
+  expbs.create({
+    helpers: {
+      isGreater: (v1, v2) => v1 > v2,
+    },
+  }).engine,
+);
+app.set("view engine", "handlebars");
+app.set("views", "./src/views");
 
 const populate = require("./util/populateDb");
 // populate();
@@ -15,7 +26,8 @@ const orderRouter = require("./routes/orders");
 const cartRouter = require("./routes/carts");
 const accessRouter = require("./routes/access");
 const categoryRouter = require("./routes/categories");
-const userController = require("./routes/users");
+const userRouter = require("./routes/users");
+const viewRouter = require("./routes/views");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -30,7 +42,8 @@ app.use("/account", accountRouter);
 app.use("/order", orderRouter);
 app.use("/cart", cartRouter);
 app.use("/category", categoryRouter);
-app.use("/user", userController);
+app.use("/user", userRouter);
+app.use("/views", viewRouter);
 
 connectDb()
   .then(() => {
