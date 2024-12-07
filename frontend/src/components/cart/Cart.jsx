@@ -56,13 +56,13 @@ export default function Cart() {
             <p className="text-lg font-semibold">
               With delivery price to parcel locker:
             </p>
-            <p className="text-lg">{calculateTotalPrice(12.99)} zł</p>
+            <p className="text-lg">{calculateTotalPrice(13)} zł</p>
           </div>
           <div className="flex space-x-3">
             <p className="text-lg font-semibold">
               With delivery price to home:
             </p>
-            <p className="text-lg">{calculateTotalPrice(19.99)} zł</p>
+            <p className="text-lg">{calculateTotalPrice(20)} zł</p>
           </div>
         </div>
         <Button

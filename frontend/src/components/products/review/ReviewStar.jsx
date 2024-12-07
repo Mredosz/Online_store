@@ -1,6 +1,6 @@
 import { FaStar, FaRegStar } from "react-icons/fa";
 
-export default function ({ rating, list }) {
+export default function ReviewStar({ rating, list }) {
   let ratingAll;
   if (list) {
     const acceptedList = list.filter((review) => review.isAccepted === true);

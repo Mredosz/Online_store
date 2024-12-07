@@ -13,7 +13,6 @@ export default function FormAdmin({
   isProduct,
   alert,
 }) {
-  console.log(alert);
   return (
     <div className="flex flex-col items-center mt-5">
       {alert?.map((err) => (

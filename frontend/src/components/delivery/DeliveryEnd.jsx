@@ -29,7 +29,7 @@ export default function DeliveryEnd() {
   const firstTwoProducts = products.slice(0, 2);
   const remainingProducts = products.slice(2);
 
-  const deliverPrice = address.deliveryType === "courier" ? 19.99 : 12.99;
+  const deliverPrice = address.deliveryType === "courier" ? 20 : 13;
 
   const calculateTotalPrice = () => {
     if (!products || products.length === 0) return 0;

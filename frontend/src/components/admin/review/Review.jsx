@@ -21,8 +21,8 @@ export default function Review({ review, onClick, onDelete }) {
         <ButtonAdmin
           className={
             !isAccepted
-              ? "bg-fuchsia-500 hover:bg-fuchsia-600"
-              : "bg-green-500 hover:bg-green-600"
+              ? "bg-green-500 hover:bg-green-600"
+              : "bg-fuchsia-500 hover:bg-fuchsia-600"
           }
           onClick={handleClick}
         >

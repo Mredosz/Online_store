@@ -1,7 +1,6 @@
 export default function Button({ children, className, ...props }) {
-  const classes = `font-bold p-2 rounded-md ${className}`;
   return (
-    <button {...props} className={classes}>
+    <button {...props} className={`font-bold p-2 rounded-md ${className}`}>
       {children}
     </button>
   );

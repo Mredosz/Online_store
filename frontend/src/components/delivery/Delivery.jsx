@@ -18,14 +18,14 @@ const deliveryOptions = [
     value: "parcelLocker",
     label: "Parcel Locker",
     icon: FaTruck,
-    price: "12.99zł",
+    price: "13zł",
   },
   {
     id: "courier",
     value: "courier",
     label: "Courier Delivery",
     icon: PiPackage,
-    price: "19.99zł",
+    price: "20zł",
   },
 ];
 

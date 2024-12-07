@@ -10,14 +10,9 @@ import { AccountContext } from "../../store/account-context.jsx";
 export default function Product({ product }) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);
   const dispatch = useDispatch();
-  const { isLogged } = useContext(AccountContext);
 
   const handleAddToCart = async (product) => {
-    if (isLogged) {
-      dispatch(addToCartThunk({ product, quantity: 1 }));
-    } else {
-      window.alert("You must be logged");
-    }
+    dispatch(addToCartThunk({ product, quantity: 1 }));
   };
 
   return (

@@ -5,7 +5,7 @@ import Cart from "../components/cart/Cart.jsx";
 import RootElement from "../components/rootElement/RootElement.jsx";
 import ProductDetails from "../components/products/ProductDetails.jsx";
 import Login from "../components/account/login/Login.jsx";
-import Register from "../components/account/regiter/Register.jsx";
+import Register from "../components/account/register/Register.jsx";
 import AdminMain from "../components/admin/main/AdminMain.jsx";
 import AdminRootElement from "../components/admin/rootElement/AdminRootElement.jsx";
 import AllReview from "../components/admin/review/AllReview.jsx";

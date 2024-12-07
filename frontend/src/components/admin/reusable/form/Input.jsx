@@ -8,7 +8,6 @@ export default function Input({
   className,
   ...props
 }) {
-  const classes = `rounded-md border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-500 ${className}`;
   let type = "input";
   if (textarea) {
     type = "textarea";
@@ -24,7 +23,12 @@ export default function Input({
       >
         {label}
       </label>
-      <Field className={classes} name={id} as={type} {...props} />
+      <Field
+        className={`rounded-md border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-500 ${className}`}
+        name={id}
+        as={type}
+        {...props}
+      />
       <ErrorMessage
         className="text-red-500 font-semibold"
         name={id}
