@@ -1,7 +1,6 @@
 const Review = require("../models/review");
 const Product = require("../models/product");
 const checkErrors = require("../util/checkErrors");
-const jwt = require("jsonwebtoken");
 const { getUserIdFromToken } = require("../util/tokenManager");
 
 exports.getAllReviewsFromProduct = async (req, res) => {
@@ -43,7 +42,7 @@ exports.addReview = async (req, res) => {
     await Product.findByIdAndUpdate(productId, {
       $push: { reviews: savedReview._id },
     });
-    res.status(201).json("Created");
+    res.status(201).json({ message: "Created" });
   } catch (e) {
     res.status(409).json({ message: e.message });
   }
@@ -64,9 +63,10 @@ exports.acceptReview = async (req, res) => {
   if (checkErrors(req, res)) return;
   const reviewId = req.params.reviewId;
   const isAccepted = req.body.isAccepted;
+
   try {
     await Review.findByIdAndUpdate(reviewId, { isAccepted });
-    res.status(200).json("Accepted");
+    res.status(200).json({ message: "Accepted" });
   } catch (e) {
     res.status(404).json({ message: e.message });
   }
@@ -74,6 +74,7 @@ exports.acceptReview = async (req, res) => {
 
 exports.deleteReview = async (req, res) => {
   const reviewId = req.params.reviewId;
+
   try {
     await Review.findByIdAndDelete(reviewId);
     res.status(200).json({ message: "Review deleted successfully!" });

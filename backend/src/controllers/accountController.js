@@ -17,7 +17,7 @@ exports.register = async (req, res) => {
     const newUser = new User({ ...user, password: hashedPassword });
     await newUser.save();
 
-    res.status(201).json("Created");
+    res.status(201).json({ message: "Created" });
   } catch (e) {
     res.status(409).json({ message: e.message });
   }
@@ -44,5 +44,5 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
   res.clearCookie("Jwt_token");
-  res.status(200).json("Logged out");
+  res.status(200).json({ message: "Logged out" });
 };

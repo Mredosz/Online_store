@@ -27,8 +27,10 @@ exports.addProduct = async (req, res) => {
   if (checkErrors(req, res)) return;
   const product = req.body;
   const categoryName = req.body.category;
+
   try {
     const category = await Category.findOne({ name: categoryName });
+
     if (!category) {
       throw new Error("Category not found!");
     }
@@ -38,7 +40,7 @@ exports.addProduct = async (req, res) => {
     }
     const newProduct = new Product({ ...product, category: category._id });
     await newProduct.save();
-    res.status(201).json("Created");
+    res.status(201).json({ message: "Created" });
   } catch (e) {
     res.status(409).json({ message: e.message });
   }
@@ -48,6 +50,7 @@ exports.updateProduct = async (req, res) => {
   if (checkErrors(req, res)) return;
   const productId = req.params.productId;
   const product = req.body;
+
   try {
     if (product.category) {
       const category = await Category.findOne({ name: product.category });
@@ -70,6 +73,7 @@ exports.updateProduct = async (req, res) => {
 
 exports.deleteProduct = async (req, res) => {
   const productId = req.params.productId;
+
   try {
     await Product.findByIdAndDelete(productId);
     res.status(200).json({ message: "Product deleted successfully!" });
@@ -80,6 +84,7 @@ exports.deleteProduct = async (req, res) => {
 
 exports.recommendedProducts = async (req, res) => {
   const id = req.params.productId;
+
   try {
     const productDb = await Product.findById(id).populate("category");
 
@@ -88,7 +93,7 @@ exports.recommendedProducts = async (req, res) => {
     });
 
     if (!categoryDb) {
-      res.status(404).json({ message: "Product not found." });
+      res.status(404).json({ message: "Catrgory not found." });
     }
 
     const products = await Product.aggregate([
@@ -128,7 +133,7 @@ exports.filterAndSortProducts = async (req, res) => {
     if (category && category !== "all") {
       const categoryDb = await Category.findOne({ name: category });
       if (!categoryDb) {
-        res.status(404).json({ message: "Product not found." });
+        res.status(404).json({ message: "Category not found." });
       }
       aggregationPipeline.push({
         $match: {
