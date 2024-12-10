@@ -39,6 +39,7 @@ exports.addOrder = async (req, res) => {
 
   try {
     const { email, firstName, lastName } = await User.findById(userId);
+
     for (const { product, quantity } of order.products) {
       const newQuantity = product.availableQuantity - quantity;
       await Product.findByIdAndUpdate(product._id, {
@@ -46,7 +47,7 @@ exports.addOrder = async (req, res) => {
       });
     }
     await newOrder.save();
-    res.status(201).json("Created");
+    res.status(201).json({ message: "Created" });
     await sendEmail(`${firstName} ${lastName} ${email}`);
   } catch (e) {
     res.status(409).json({ message: e.message });
@@ -60,15 +61,13 @@ exports.changeOrderStatus = async (req, res) => {
 
   try {
     await Order.findByIdAndUpdate(orderId, { status });
-    res.status(200).json("Updated");
+    res.status(200).json({ message: "Updated" });
   } catch (e) {
     res.status(404).json({ message: e.message });
   }
 };
 
 exports.getReports = async (req, res) => {
-  if (checkErrors(req, res)) return;
-
   try {
     const report = await Order.aggregate([
       {

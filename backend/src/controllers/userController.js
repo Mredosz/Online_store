@@ -1,8 +1,6 @@
-const checkErrors = require("../util/checkErrors");
 const User = require("../models/user");
 
 exports.getAllUsers = async (req, res) => {
-  if (checkErrors(req, res)) return;
   const users = await User.find();
   try {
     res.status(200).json(users);

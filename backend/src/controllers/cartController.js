@@ -4,6 +4,7 @@ const { getUserIdFromToken } = require("../util/tokenManager");
 
 exports.getCartById = async (req, res) => {
   const userId = getUserIdFromToken(req, res);
+
   try {
     const cart = await Cart.findOne({ userId });
     res.status(200).json(cart);
@@ -16,16 +17,17 @@ exports.addToCart = async (req, res) => {
   if (checkErrors(req, res)) return;
   const userId = getUserIdFromToken(req, res);
   const cart = req.body;
+
   try {
     const cartDb = await Cart.findOne({ userId });
     if (cartDb) {
       cartDb.products = cart.products;
       await cartDb.save();
-      res.status(201).json("Added to cart");
+      res.status(201).json({ message: "Added to cart" });
     } else {
       const newCart = new Cart({ ...cart, userId });
       await newCart.save();
-      res.status(201).json("Added to cart");
+      res.status(201).json({ message: "Added to cart" });
     }
   } catch (e) {
     res.status(409).json({ message: e.message });
@@ -35,13 +37,14 @@ exports.addToCart = async (req, res) => {
 exports.deleteFromCart = async (req, res) => {
   const productId = req.params.productId;
   const userId = getUserIdFromToken(req, res);
+
   try {
     const cart = await Cart.findOne({ userId });
     cart.products = cart.products.filter(
       ({ product }) => product._id !== productId,
     );
     await cart.save();
-    res.status(200).json("Deleted from cart");
+    res.status(200).json({ message: "Deleted from cart" });
   } catch (e) {
     res.status(409).json({ message: e.message });
   }
@@ -49,10 +52,11 @@ exports.deleteFromCart = async (req, res) => {
 
 exports.deleteCart = async (req, res) => {
   const userId = getUserIdFromToken(req, res);
+
   try {
     const cart = await Cart.findOne({ userId });
     await cart.deleteOne();
-    res.status(200).json("Cart delete successfully");
+    res.status(200).json({ message: "Cart delete successfully" });
   } catch (e) {
     res.status(409).json({ message: e.message });
   }
