@@ -59,6 +59,7 @@ export default function AllOrders() {
                   <option value="confirmed">Confirmed</option>
                   <option value="shipped">Shipped</option>
                   <option value="delivered">Delivered</option>
+                  <option value="cancelled">Cancelled</option>
                 </select>
                 <ButtonAdmin
                   className="bg-yellow-500 hover:bg-yellow-600"

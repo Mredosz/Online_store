@@ -31,31 +31,24 @@ const orderSchema = new Schema({
   address: {
     street: {
       type: String,
-      required: true,
     },
     city: {
       type: String,
-      required: true,
     },
     postalCode: {
       type: String,
-      required: true,
     },
     homeNumber: {
       type: String,
-      required: true,
     },
     phoneNumber: {
       type: String,
-      required: true,
     },
     deliveryType: {
       type: String,
-      required: true,
     },
     paymentMethod: {
       type: String,
-      required: true,
     },
     cardNumber: {
       type: String,

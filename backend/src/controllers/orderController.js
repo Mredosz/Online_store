@@ -41,14 +41,56 @@ exports.addOrder = async (req, res) => {
     const { email, firstName, lastName } = await User.findById(userId);
 
     for (const { product, quantity } of order.products) {
-      const newQuantity = product.availableQuantity - quantity;
-      await Product.findByIdAndUpdate(product._id, {
+      const productDb = await Product.findById(product._id);
+      const newQuantity = productDb.availableQuantity - quantity;
+      await Product.findByIdAndUpdate(productDb._id, {
         availableQuantity: newQuantity,
       });
     }
     await newOrder.save();
     res.status(201).json({ message: "Created" });
     await sendEmail(`${firstName} ${lastName} ${email}`);
+  } catch (e) {
+    res.status(409).json({ message: e.message });
+  }
+};
+
+exports.addPaymentToOrder = async (req, res) => {
+  if (checkErrors(req, res)) return;
+  const id = req.params.orderId;
+  const payment = req.body;
+  try {
+    await Order.findByIdAndUpdate(id, {
+      $set: {
+        "address.paymentMethod": payment.paymentMethod,
+        "address.cardNumber": payment.cardNumber,
+        "address.cardExpiration": payment.cardExpiration,
+        "address.cvv": payment.cvv,
+      },
+    });
+    res.status(201).json({ message: "Added payment" });
+  } catch (e) {
+    res.status(409).json({ message: e.message });
+  }
+};
+
+exports.addShippingToOrder = async (req, res) => {
+  if (checkErrors(req, res)) return;
+  const id = req.params.orderId;
+  const address = req.body;
+
+  try {
+    await Order.findByIdAndUpdate(id, {
+      $set: {
+        "address.street": address.street,
+        "address.city": address.city,
+        "address.postalCode": address.postalCode,
+        "address.homeNumber": address.homeNumber,
+        "address.phoneNumber": address.phoneNumber,
+        "address.deliveryType": address.deliveryType,
+      },
+    });
+    res.status(201).json({ message: "Added address" });
   } catch (e) {
     res.status(409).json({ message: e.message });
   }
