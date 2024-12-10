@@ -8,7 +8,7 @@ exports.checkAccess = async (req, res, next) => {
 
   if (!jwtToken) {
     res.clearCookie("Jwt_token");
-    return res.status(307).json({ message: "Jwt token missing" });
+    return res.status(401).json({ message: "Jwt token missing" });
   }
 
   let decodedJwtToken;

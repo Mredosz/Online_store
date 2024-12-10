@@ -23,7 +23,7 @@ function App() {
           dispatch(cartActions.deleteCart());
         }
       } catch (e) {
-        if (e.response && e.response.status === 307) {
+        if (e.response && e.response.status === 401) {
           setIsLogged(false);
           setIsAdmin(false);
         }
