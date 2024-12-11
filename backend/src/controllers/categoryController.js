@@ -1,8 +1,8 @@
-const Category = require("../models/Category");
 const checkErrors = require("../util/checkErrors");
 
 exports.getAllCategories = async (req, res) => {
   try {
+    const { default: Category } = await import("../models/Category.js");
     const categories = await Category.find({ isDeleted: false });
     res.status(200).json(categories);
   } catch (e) {
@@ -14,7 +14,11 @@ exports.getCategoryById = async (req, res) => {
   const categoryId = req.params.categoryId;
 
   try {
-    const category = await Category.findById(categoryId);
+    const { default: Category } = await import("../models/Category.js");
+    const category = await Category.findOne({
+      _id: categoryId,
+      isDeleted: false,
+    });
     res.status(200).json(category);
   } catch (e) {
     res.status(404).json({ message: e.message });
@@ -24,10 +28,12 @@ exports.getCategoryById = async (req, res) => {
 exports.addCategory = async (req, res) => {
   if (checkErrors(req, res)) return;
   const category = req.body;
-  const newCategory = new Category(category);
-  const categoryDb = await Category.findOne({ name: category.name });
 
   try {
+    const { default: Category } = await import("../models/Category.js");
+    const newCategory = new Category(category);
+    const categoryDb = await Category.findOne({ name: category.name });
+
     if (categoryDb) {
       throw new Error("Category already exists!");
     }
@@ -44,6 +50,7 @@ exports.updateCategory = async (req, res) => {
   const category = req.body;
 
   try {
+    const { default: Category } = await import("../models/Category.js");
     const updatedCategory = await Category.findByIdAndUpdate(
       categoryId,
       category,
@@ -61,6 +68,7 @@ exports.deleteCategory = async (req, res) => {
   const categoryId = req.params.categoryId;
 
   try {
+    const { default: Category } = await import("../models/Category.js");
     const category = await Category.findById(categoryId);
 
     if (!category) {
