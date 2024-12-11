@@ -4,7 +4,9 @@ const checkErrors = require("../util/checkErrors");
 
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate("category");
+    const products = await Product.find({ isDeleted: false }).populate(
+      "category",
+    );
     res.status(200).json(products);
   } catch (e) {
     res.status(404).json({ message: e.message });
@@ -75,7 +77,14 @@ exports.deleteProduct = async (req, res) => {
   const productId = req.params.productId;
 
   try {
-    await Product.findByIdAndDelete(productId);
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found!" });
+    }
+
+    product.isDeleted = true;
+    await product.save();
     res.status(200).json({ message: "Product deleted successfully!" });
   } catch (e) {
     res.status(404).json({ message: e.message });

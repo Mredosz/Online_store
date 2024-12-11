@@ -3,7 +3,7 @@ const checkErrors = require("../util/checkErrors");
 
 exports.getAllCategories = async (req, res) => {
   try {
-    const categories = await Category.find();
+    const categories = await Category.find({ isDeleted: false });
     res.status(200).json(categories);
   } catch (e) {
     res.status(404).json({ message: e.message });
@@ -61,7 +61,14 @@ exports.deleteCategory = async (req, res) => {
   const categoryId = req.params.categoryId;
 
   try {
-    await Category.findByIdAndDelete(categoryId);
+    const category = await Category.findById(categoryId);
+
+    if (!category) {
+      return res.status(404).json({ message: "Category not found!" });
+    }
+
+    category.isDeleted = true;
+    await category.save();
     res.status(200).json({ message: "Category deleted successfully!" });
   } catch (e) {
     res.status(404).json({ message: e.message });

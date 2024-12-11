@@ -55,6 +55,39 @@ exports.addOrder = async (req, res) => {
   }
 };
 
+exports.addOrderPostman = async (req, res) => {
+  if (checkErrors(req, res)) return;
+  const userId = getUserIdFromToken(req, res);
+  const order = req.body;
+  let totalPrice = 0;
+  try {
+    const { email, firstName, lastName } = await User.findById(userId);
+
+    for (const { product, quantity } of order.products) {
+      const productDb = await Product.findById(product._id);
+      const newQuantity = productDb.availableQuantity - quantity;
+      totalPrice += productDb.price * quantity;
+      await Product.findByIdAndUpdate(productDb._id, {
+        availableQuantity: newQuantity,
+      });
+    }
+
+    const newOrder = new Order({
+      ...order,
+      totalPrice,
+      date: new Date(),
+      userId,
+      status: "Processing",
+    });
+
+    await newOrder.save();
+    res.status(201).json({ message: "Created" });
+    await sendEmail(`${firstName} ${lastName} ${email}`);
+  } catch (e) {
+    res.status(409).json({ message: e.message });
+  }
+};
+
 exports.addPaymentToOrder = async (req, res) => {
   if (checkErrors(req, res)) return;
   const id = req.params.orderId;
