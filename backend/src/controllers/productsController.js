@@ -110,6 +110,7 @@ exports.recommendedProducts = async (req, res) => {
         $match: {
           category: categoryDb._id,
           _id: { $ne: productDb._id },
+          isDeleted: false,
         },
       },
     ]);
@@ -136,6 +137,7 @@ exports.filterAndSortProducts = async (req, res) => {
           $gte: parseInt(minPrice) || 0,
           $lte: parseInt(maxPrice) || Infinity,
         },
+        isDeleted: false,
       },
     });
 
