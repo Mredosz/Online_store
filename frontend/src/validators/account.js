@@ -27,3 +27,21 @@ export const isDate = (value) => {
 export const isDifferent = (obj1, obj2) => {
   return Object.keys(obj1).every((key) => obj1[key] !== obj2[key]);
 };
+
+export const isUserAdult = (value) => {
+  const today = new Date();
+  const birthday = new Date(value);
+
+  let age = today.getFullYear() - birthday.getFullYear();
+
+  const isBirthdayPassed =
+    today.getMonth() > birthday.getMonth() ||
+    (today.getMonth() === birthday.getMonth() &&
+      today.getDate() >= birthday.getDate());
+
+  if (!isBirthdayPassed) {
+    age -= 1;
+  }
+
+  return age >= 18;
+};

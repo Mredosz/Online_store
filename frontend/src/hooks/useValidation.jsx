@@ -5,6 +5,7 @@ import {
   isPassword,
   isEqualsToOtherValue,
   isDate,
+  isUserAdult,
 } from "../validators/account.js";
 import { useEffect, useState } from "react";
 
@@ -87,12 +88,15 @@ export default function useValidation(enteredValue, isEdit) {
         ),
       },
       birthday: {
-        value: isEdit.birthday && !isDate(enteredValue.birthday),
+        value:
+          isEdit.birthday ||
+          (isDate(enteredValue.birthday) &&
+            !isUserAdult(enteredValue.birthday)),
         message: createValidationMessage(
           "birthday",
           "Birthday can't be empty.",
-          "Birthday must be valid.",
-          isDate,
+          "User must be adult.",
+          (value) => isDate(value) && isUserAdult(value),
         ),
       },
     };
