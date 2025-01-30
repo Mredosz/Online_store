@@ -4,7 +4,6 @@ const { body } = require("express-validator");
 const router = express.Router();
 
 router.get("/", productController.getAllProducts);
-router.get("/inventory", productController.inventory);
 router.get("/recommended/:productId", productController.recommendedProducts);
 router.get("/:productId", productController.getProductById);
 
@@ -27,13 +26,6 @@ router.post(
   productController.addProduct,
 );
 
-router.put(
-  "/inventory/:id",
-  body("availableQuantity")
-    .isNumeric()
-    .withMessage("Quantity must be a number."),
-  productController.updateInventory,
-);
 router.put(
   "/:productId",
   body("name")

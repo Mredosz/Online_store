@@ -10,7 +10,7 @@ exports.register = async (req, res) => {
   try {
     const userDb = await User.findOne({ email: user.email });
     if (userDb) {
-      throw new Error("User already exist.");
+      res.status(409).json({ message: "User already exist." });
     }
 
     const hashedPassword = await bcrypt.hash(user.password, 12);
@@ -35,7 +35,7 @@ exports.login = async (req, res) => {
 
       res.status(200).json({ message: "Logged in", role: userDb.role });
     } else {
-      throw new Error("Invalid credentials");
+      res.status(404).json({ message: "Invalid credentials" });
     }
   } catch (e) {
     res.status(404).json({ message: e.message });

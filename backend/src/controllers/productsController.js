@@ -205,33 +205,3 @@ exports.filterAndSortProducts = async (req, res) => {
     res.status(500).json({ message: e.message });
   }
 };
-
-exports.inventory = async (req, res) => {
-  try {
-    const products = await Product.find({}, "name availableQuantity");
-    res.json(products);
-  } catch (e) {
-    res.status(404).json({ message: e.message });
-  }
-};
-
-exports.updateInventory = async (req, res) => {
-  const { id } = req.params;
-  const { availableQuantity } = req.body;
-
-  try {
-    const updatedProduct = await Product.findByIdAndUpdate(
-      id,
-      { availableQuantity },
-      { new: true },
-    );
-
-    if (!updatedProduct) {
-      return res.status(404).json({ message: "Produkt nie istnieje." });
-    }
-
-    res.json(updatedProduct);
-  } catch (e) {
-    res.status(500).json({ message: e.message });
-  }
-};

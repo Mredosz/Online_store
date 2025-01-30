@@ -33,35 +33,7 @@ router.post(
     .withMessage("Payment method is invalid"),
   orderController.addOrder,
 );
-router.post("/orders", orderController.addOrderPostman);
 
-router.put(
-  "/payment/:orderId",
-  body("paymentMethod")
-    .isLength({ min: 3, max: 30 })
-    .withMessage("Payment method is invalid"),
-  orderController.addPaymentToOrder,
-);
-router.put(
-  "/shipping/:orderId",
-  body("street")
-    .isLength({ min: 3, max: 50 })
-    .withMessage("Street is invalid, min 3, max 50."),
-  body("city")
-    .isLength({ min: 3, max: 50 })
-    .withMessage("City is invalid, min 3, max 50."),
-  body("postalCode").isPostalCode("PL").withMessage("Postal code is invalid."),
-  body("homeNumber")
-    .isLength({ min: 1, max: 10 })
-    .withMessage("Home number is invalid, min 1, max 10."),
-  body("phoneNumber")
-    .isLength({ min: 9, max: 12 })
-    .withMessage("Phone number is invalid."),
-  body("deliveryType")
-    .isLength({ min: 3, max: 50 })
-    .withMessage("Delivery type is invalid."),
-  orderController.addShippingToOrder,
-);
 router.put(
   "/:orderId",
   body("status")

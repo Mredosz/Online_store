@@ -21,17 +21,6 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-exports.updateUser = async (req, res) => {
-  const userId = req.params.userId;
-  const user = req.body;
-  try {
-    const updatedUser = await User.findByIdAndUpdate(userId, user);
-    res.status(200).json(updatedUser);
-  } catch (e) {
-    res.status(404).json({ message: e.message });
-  }
-};
-
 exports.deleteUser = async (req, res) => {
   const userId = req.params.userId;
   try {

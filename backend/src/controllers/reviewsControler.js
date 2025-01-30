@@ -35,7 +35,7 @@ exports.addReview = async (req, res) => {
     });
 
     if (existingReview) {
-      throw new Error("Review already exist.");
+      res.status(409).json({ message: "Review already exist." });
     }
 
     const savedReview = await newReview.save();
