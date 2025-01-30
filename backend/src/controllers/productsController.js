@@ -34,11 +34,11 @@ exports.addProduct = async (req, res) => {
     const category = await Category.findOne({ name: categoryName });
 
     if (!category) {
-      throw new Error("Category not found!");
+      res.status(404).json({ message: "Category not found!" });
     }
     const productDb = await Product.findOne({ name: product.name });
     if (productDb) {
-      throw new Error("Product already exists!");
+      res.status(409).json({ message: "Product already exists!" });
     }
     const newProduct = new Product({ ...product, category: category._id });
     await newProduct.save();
