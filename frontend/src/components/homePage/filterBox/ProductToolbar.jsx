@@ -2,11 +2,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { productAction } from "../../../store/product-redux.jsx";
 import { filterProducts } from "../../../request/products.js";
 import { useMutation } from "@tanstack/react-query";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useDebounce from "../../../hooks/useDebounce.jsx";
 import Input from "../../account/reusable/Input.jsx";
 
-const optionSortArr = [
+const options = [
   { value: '{ "sort": "", "type": "" }', text: "No sort" },
   {
     value: '{ "sort": "review", "type": "asc" }',
@@ -30,8 +30,6 @@ export default function ProductToolbar() {
 
   const debouncedMinPrice = useDebounce(minPrice, 500);
   const debouncedMaxPrice = useDebounce(maxPrice, 500);
-
-  const options = useMemo(() => optionSortArr, []);
 
   const { mutateAsync } = useMutation({
     mutationKey: "products",
