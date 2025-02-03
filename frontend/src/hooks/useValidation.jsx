@@ -16,6 +16,8 @@ export default function useValidation(enteredValue, isEdit) {
     invalidMessage,
     validationFn,
   ) => {
+    if (!(field in enteredValue)) return "";
+
     return !isNotEmpty(enteredValue[field])
       ? emptyMessage
       : !validationFn(enteredValue[field]) && invalidMessage;
@@ -89,8 +91,8 @@ export default function useValidation(enteredValue, isEdit) {
       },
       birthday: {
         value:
-          isEdit.birthday ||
-          (isDate(enteredValue.birthday) &&
+          isEdit.birthday &&
+          (!isDate(enteredValue.birthday) ||
             !isUserAdult(enteredValue.birthday)),
         message: createValidationMessage(
           "birthday",

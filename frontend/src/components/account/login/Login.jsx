@@ -4,33 +4,49 @@ import Input from "../reusable/Input.jsx";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "../../../request/account.js";
 import { useNavigate } from "react-router-dom";
-import {
-  isEmail,
-  isNotEmpty,
-  isPassword,
-} from "../../../validators/account.js";
 import { useDispatch } from "react-redux";
 import { accountAction } from "../../../store/account-redux.jsx";
+import useValidation from "../../../hooks/useValidation.jsx";
+import { isDifferent } from "../../../validators/account.js";
 
 export default function Login() {
-  const [emailIsInvalid, setEmailIsInvalid] = useState({
-    value: false,
-    message: "",
-  });
-  const [passwordIsInvalid, setPasswordIsInvalid] = useState({
-    value: false,
-    message: "",
-  });
+  const { enteredDefault, isEditDefault } = {
+    enteredDefault: {
+      email: "",
+      password: "",
+    },
+    isEditDefault: {
+      email: false,
+      password: false,
+    },
+  };
+
+  const [enteredValue, setEnteredValue] = useState(enteredDefault);
+  const [isEdit, setIsEdit] = useState(isEditDefault);
+  const [isValidate, setIsValidate] = useState(false);
+
+  const validation = useValidation(enteredValue, isEdit);
+
+  useEffect(() => {
+    if (
+      isDifferent(enteredValue, enteredDefault) &&
+      isDifferent(isEdit, isEditDefault)
+    ) {
+      setIsValidate(Object.values(validation).every((field) => !field.value));
+    }
+  }, [enteredValue, isEdit, validation]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const email = useRef();
-  const password = useRef();
-
   const { mutateAsync, error, data, isSuccess } = useMutation({
     mutationKey: "login",
     mutationFn: login,
+    onSuccess: () => {
+      setEnteredValue(enteredDefault);
+      setIsEdit(isEditDefault);
+      setIsValidate(false);
+    },
   });
 
   useEffect(() => {
@@ -42,66 +58,51 @@ export default function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const enteredEmail = email.current.value;
-    const enteredPassword = password.current.value;
-
-    let isValid = true;
-
-    if (!isNotEmpty(enteredEmail)) {
-      setEmailIsInvalid({ value: true, message: "Email can't be empty." });
-      isValid = false;
-    } else if (!isEmail(enteredEmail)) {
-      setEmailIsInvalid({ value: true, message: "Email must be valid." });
-      isValid = false;
-    }
-
-    if (!isNotEmpty(enteredPassword)) {
-      setPasswordIsInvalid({
-        value: true,
-        message: "Password can't be empty.",
-      });
-      isValid = false;
-    } else if (!isPassword(enteredPassword)) {
-      setPasswordIsInvalid({ value: true, message: "Password must be valid." });
-      isValid = false;
-    }
-
-    if (!isValid) {
-      return;
-    }
-
-    setPasswordIsInvalid({ value: false, message: "" });
-    setEmailIsInvalid({ value: false, message: "" });
-
-    await mutateAsync({
-      email: email.current.value,
-      password: password.current.value,
-    });
+    await mutateAsync(enteredValue);
   };
+
+  const handleInputChange = (id, event) => {
+    setEnteredValue((prevState) => ({
+      ...prevState,
+      [id]: event.target.value,
+    }));
+  };
+
+  const handleInputBlur = (id) => {
+    setIsEdit((prevState) => ({
+      ...prevState,
+      [id]: true,
+    }));
+  };
+
   return (
     <FormDiv
       buttonText="Login"
       topText="Login"
       handleSubmit={handleSubmit}
-      type={"/register"}
+      type="/register"
       accountText="Don't have an account yet?"
       error={error}
       alert={error?.response.data.errors}
+      isValidate={isValidate}
     >
       <Input
-        ref={email}
         id="email"
-        label="email"
-        type="text"
-        error={emailIsInvalid}
+        label="Email"
+        type={"email"}
+        onChange={(event) => handleInputChange("email", event)}
+        value={enteredValue.email}
+        onBlur={() => handleInputBlur("email")}
+        error={validation.email}
       />
       <Input
-        ref={password}
         id="password"
-        label="password"
-        type="password"
-        error={passwordIsInvalid}
+        label="Password"
+        type={"password"}
+        onChange={(event) => handleInputChange("password", event)}
+        value={enteredValue.password}
+        onBlur={() => handleInputBlur("password")}
+        error={validation.password}
       />
     </FormDiv>
   );

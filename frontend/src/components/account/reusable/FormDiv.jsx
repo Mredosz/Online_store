@@ -40,9 +40,9 @@ export default function FormDiv({
           </p>
         )}
         {children}
-        <Link to={type} className="mt-2">
-          {accountText}
-        </Link>
+        <div className="mt-2">
+          <Link to={type}>{accountText}</Link>
+        </div>
         <Button className="bg-green-400 mt-8" isValidate={isValidate}>
           {buttonText}
         </Button>
