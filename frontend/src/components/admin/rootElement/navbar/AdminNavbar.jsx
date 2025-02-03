@@ -2,18 +2,19 @@ import NavItem from "../../../rootElement/navbar/NavItem.jsx";
 import logo from "/logo.png";
 import { logout } from "../../../../request/account.js";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { AccountContext } from "../../../../store/account-context.jsx";
+import { useDispatch } from "react-redux";
+import { accountAction } from "../../../../store/account-redux.jsx";
 
 export default function AdminNavbar() {
   const navigate = useNavigate();
-  const { setIsLogged } = useContext(AccountContext);
+  const dispatch = useDispatch();
 
   const handleLogout = async () => {
     navigate("/");
-    setIsLogged(false);
+    dispatch(accountAction.logout());
     await logout();
   };
+
   return (
     <nav>
       <ul className="flex flex-wrap bg-navbar justify-between px-4 py-1 items-center">

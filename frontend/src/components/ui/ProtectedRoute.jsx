@@ -1,9 +1,8 @@
-import { useContext } from "react";
-import { AccountContext } from "../../store/account-context.jsx";
 import { Navigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function ProtectedRoute({ children }) {
-  const { isLogged, isAdmin } = useContext(AccountContext);
+  const { isLogged, isAdmin } = useSelector((state) => state.account);
   const location = useLocation();
 
   if (location.pathname.includes("admin")) {

@@ -1,5 +1,5 @@
 import FormDiv from "../reusable/FormDiv.jsx";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Input from "../reusable/Input.jsx";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "../../../request/account.js";
@@ -9,7 +9,8 @@ import {
   isNotEmpty,
   isPassword,
 } from "../../../validators/account.js";
-import { AccountContext } from "../../../store/account-context.jsx";
+import { useDispatch } from "react-redux";
+import { accountAction } from "../../../store/account-redux.jsx";
 
 export default function Login() {
   const [emailIsInvalid, setEmailIsInvalid] = useState({
@@ -21,7 +22,7 @@ export default function Login() {
     message: "",
   });
 
-  const { setIsLogged, setIsAdmin } = useContext(AccountContext);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const email = useRef();
@@ -34,11 +35,10 @@ export default function Login() {
 
   useEffect(() => {
     if (isSuccess) {
-      setIsLogged(true);
-      setIsAdmin(data.role === "admin");
-      navigate(data.role === "user" ? "/" : "/admin");
+      dispatch(accountAction.login({ isLogged: true, isAdmin: data?.role }));
+      navigate(data?.role === "user" ? "/" : "/admin");
     }
-  }, [data?.role, isSuccess, navigate, setIsAdmin, setIsLogged]);
+  }, [data?.role, dispatch, isSuccess, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

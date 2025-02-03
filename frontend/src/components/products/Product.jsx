@@ -1,11 +1,10 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import ProductInfo from "./reusable/ProductInfo.jsx";
 import Button from "./reusable/Button.jsx";
 import { Link } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
 import { addToCartThunk } from "../../store/cart-redux.jsx";
 import { useDispatch } from "react-redux";
-import { AccountContext } from "../../store/account-context.jsx";
 
 export default function Product({ product }) {
   const [isMouseEnter, setIsMouseEnter] = useState(false);

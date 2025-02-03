@@ -1,8 +1,6 @@
 import logo from "/logo.png";
 import { FaCartShopping } from "react-icons/fa6";
 import NavItem from "./NavItem.jsx";
-import { useContext } from "react";
-import { AccountContext } from "../../../store/account-context.jsx";
 import { logout } from "../../../request/account.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -12,9 +10,10 @@ import { useNavigate } from "react-router-dom";
 import CategoryButton from "./reusable/CategoryButton.jsx";
 import { filterProducts } from "../../../request/products.js";
 import SearchBar from "./SearchBar.jsx";
+import { accountAction } from "../../../store/account-redux.jsx";
 
 export default function Navbar() {
-  const { isLogged, setIsLogged, setIsAdmin } = useContext(AccountContext);
+  const isLogged = useSelector((state) => state.account.isLogged);
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
   const { sort, minPrice, maxPrice, query } = useSelector(
     (state) => state.product,
@@ -33,8 +32,7 @@ export default function Navbar() {
   });
 
   const handleLogout = async () => {
-    setIsLogged(false);
-    setIsAdmin(false);
+    dispatch(accountAction.logout());
     await logout();
   };
 
