@@ -44,6 +44,8 @@ npm install
 # Create a .env file and configure the following variables
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
+MailTrapUser=your_mailtrap_username
+MailTrapPass=your_mailtrap_password
 
 # Start the backend server
 npm run dev
