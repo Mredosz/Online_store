@@ -13,21 +13,5 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
       MONGO_INITDB_DATABASE: mongo_db
 
-  express-app:
-    build:
-      context: ../
-      dockerfile: ./docker/express/Dockerfile
-    container_name: express-app
-    ports:
-      - "3000:3000"
-    depends_on:
-      - mongo
-    environment:
-      MONGO_URI: mongodb://user:password@mongo:27017/mongo_db
-      JWT_SECRET: VGhpcyBpcyBhIHNlY3JldCBleGFtcGxlIHZhbHVlIQ==
-    volumes:
-      - ../:/usr/src/app
-    command: npm start
-
 volumes:
   mongo:
