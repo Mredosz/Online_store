@@ -135,6 +135,3 @@ The frontend will be available at `http://localhost:5173`, and the backend API a
 
 ## License
 This project is open-source under the MIT license.
-
-## Author
-Developed by **Mredosz**. Contributions are welcome!
