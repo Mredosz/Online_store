@@ -1,15 +1,18 @@
-import { StatusBar, Text, View } from "react-native";
+import { StatusBar } from "react-native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { NavigationContainer } from "@react-navigation/native";
+import BottomTabs from "./routing/bottom-tabs/BottomTabs";
 import "../global.css";
-import Test from "./screens/Test";
+
+const queryClient = new QueryClient();
 
 export default function App() {
   return (
-    <View className="flex-1 items-center justify-center bg-blue-500">
-      <StatusBar />
-      <Text className="text-white text-lg font-bold">
-        Hello, NativeWind! 🚀
-      </Text>
-      <Test text="hgyh" number={3} />
-    </View>
+    <NavigationContainer>
+      <QueryClientProvider client={queryClient}>
+        <StatusBar />
+        <BottomTabs />
+      </QueryClientProvider>
+    </NavigationContainer>
   );
 }
