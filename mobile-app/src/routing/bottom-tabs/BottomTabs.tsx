@@ -5,6 +5,8 @@ import Cart from "../../screens/cart/Cart";
 import Search from "../../screens/search/Search";
 import { colors } from "../../utils/colors";
 import Login from "../../screens/account/login/Login";
+import Register from "../../screens/account/register/Register";
+import AccountStack from "../stack/AccountStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -46,7 +48,7 @@ export default function BottomTabs() {
       <Tab.Screen name="Home" component={Test} />
       <Tab.Screen name="Search" component={Search} />
       <Tab.Screen name="Cart" component={Cart} />
-      <Tab.Screen name="Account" component={Login} />
+      <Tab.Screen name="Account" component={AccountStack} />
     </Tab.Navigator>
   );
 }

@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
+import { Link } from "@react-navigation/native";
 
 type FormDivProps = {
   children: ReactNode;
@@ -56,12 +57,17 @@ export default function FormDiv({
         {children}
         {accountText && (
           <View className="mt-2">
-            <Text className="text-darkText">{accountText}</Text>
+            <Link
+              screen={topText === "Login" ? "Register" : "Login"}
+              className="text-darkText"
+            >
+              {accountText}
+            </Link>
           </View>
         )}
         <TouchableOpacity
           className={"bg-green-400 rounded-md mt-8"}
-          // disabled={!isValidate}
+          disabled={!isValidate}
           onPress={handleSubmit}
         >
           <Text className="text-white text-center py-2">{buttonText}</Text>

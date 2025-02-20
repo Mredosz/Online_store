@@ -1,22 +1,30 @@
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { login } from "../../../request/account";
+import { register } from "../../../request/account";
 import FormDiv from "../../../components/form/FormDiv";
 import Input from "../../../components/form/Input";
 import useValidation from "../../../hooks/useValidation";
 import { isDifferent } from "../../../validators/account";
 
 const enteredDefault = {
+  firstName: "",
+  lastName: "",
   email: "",
   password: "",
+  confirmPassword: "",
+  birthday: "",
 };
 
 const isEditDefault = {
+  firstName: false,
+  lastName: false,
   email: false,
   password: false,
+  confirmPassword: false,
+  birthday: false,
 };
 
-export default function Login() {
+export default function Register() {
   const [enteredValue, setEnteredValue] = useState(enteredDefault);
   const [isEdit, setIsEdit] = useState(isEditDefault);
   const [isValidate, setIsValidate] = useState(false);
@@ -32,9 +40,9 @@ export default function Login() {
     }
   }, [enteredValue, isEdit, validation]);
 
-  const { mutateAsync, error } = useMutation({
-    mutationKey: ["login"],
-    mutationFn: login,
+  const { mutateAsync, error, isSuccess } = useMutation({
+    mutationKey: ["register"],
+    mutationFn: register,
     onSuccess: () => {
       setEnteredValue(enteredDefault);
       setIsEdit(isEditDefault);
@@ -43,7 +51,7 @@ export default function Login() {
   });
 
   const handleSubmit = async () => {
-    await mutateAsync(enteredValue);
+    await mutateAsync({ ...enteredValue, role: "user" });
   };
 
   const handleInputChange = (
@@ -59,15 +67,40 @@ export default function Login() {
 
   return (
     <FormDiv
-      buttonText="Login"
-      topText="Login"
-      handleSubmit={handleSubmit}
-      type="/register"
-      accountText="Don't have an account yet?"
       error={error}
-      alert={error?.response?.data?.errors}
+      buttonText="Register"
+      handleSubmit={handleSubmit}
+      isSuccess={isSuccess}
+      topText="Create account"
       isValidate={isValidate}
+      type="/login"
+      accountText="Do you have account already?"
+      alert={error?.response.data.errors}
     >
+      <Input
+        id="firstName"
+        label="First name"
+        onChangeText={(value) => handleInputChange("firstName", value)}
+        value={enteredValue.firstName}
+        onBlur={() => handleInputBlur("firstName")}
+        error={validation.firstName}
+      />
+      <Input
+        id="lastName"
+        label="Last name"
+        onChangeText={(value) => handleInputChange("lastName", value)}
+        value={enteredValue.lastName}
+        onBlur={() => handleInputBlur("lastName")}
+        error={validation.lastName}
+      />
+      <Input
+        id="birthday"
+        label="Birthday"
+        onChangeText={(value) => handleInputChange("birthday", value)}
+        value={enteredValue.birthday}
+        onBlur={() => handleInputBlur("birthday")}
+        error={validation.birthday}
+      />
       <Input
         id="email"
         label="Email"
@@ -79,11 +112,18 @@ export default function Login() {
       <Input
         id="password"
         label="Password"
-        secureTextEntry
         onChangeText={(value) => handleInputChange("password", value)}
         value={enteredValue.password}
         onBlur={() => handleInputBlur("password")}
         error={validation.password}
+      />
+      <Input
+        id="confirmPassword"
+        label="Confirm password"
+        onChangeText={(value) => handleInputChange("confirmPassword", value)}
+        value={enteredValue.confirmPassword}
+        onBlur={() => handleInputBlur("confirmPassword")}
+        error={validation.confirmPassword}
       />
     </FormDiv>
   );
