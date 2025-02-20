@@ -1,12 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Test from "../../screens/Test";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Cart from "../../screens/cart/Cart";
 import Search from "../../screens/search/Search";
 import { colors } from "../../utils/colors";
-import Login from "../../screens/account/login/Login";
-import Register from "../../screens/account/register/Register";
 import AccountStack from "../stack/AccountStack";
+import ProductStack from "../stack/ProductStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -45,7 +43,7 @@ export default function BottomTabs() {
         tabBarInactiveTintColor: colors.darkBorder,
       })}
     >
-      <Tab.Screen name="Home" component={Test} />
+      <Tab.Screen name="Home" component={ProductStack} />
       <Tab.Screen name="Search" component={Search} />
       <Tab.Screen name="Cart" component={Cart} />
       <Tab.Screen name="Account" component={AccountStack} />

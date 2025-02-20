@@ -1,7 +1,7 @@
 import { ScrollView, Text } from "react-native";
 import { useQuery } from "@tanstack/react-query";
-import Product from "../components/products/Product";
-import { getAllProducts } from "../request/products";
+import Product from "../../components/products/Product";
+import { getAllProducts } from "../../request/products";
 
 type prop = {
   image: string;
@@ -13,7 +13,7 @@ type prop = {
   isDeleted: boolean;
 };
 
-export default function Test() {
+export default function Home() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["products"],
     queryFn: getAllProducts,
