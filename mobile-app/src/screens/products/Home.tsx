@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import Product from "../../components/products/Product";
 import { getAllProducts } from "../../request/products";
 
-type prop = {
+type ProductProp = {
   image: string;
   name: string;
   shortDescription: string;
@@ -25,7 +25,7 @@ export default function Home() {
   return (
     <ScrollView className="flex-1 w-full h-screen">
       {data &&
-        data.map((product: prop) => (
+        data.map((product: ProductProp) => (
           <Product key={product._id} product={product} />
         ))}
     </ScrollView>

@@ -1,7 +1,30 @@
 import { useQuery } from "@tanstack/react-query";
 import { getProductDetails } from "../../../request/products";
-import { Image, ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, Text, TextInput, View } from "react-native";
 import { RouteProp } from "@react-navigation/native";
+import { useReducer, useState } from "react";
+import AddButton from "../../../components/products/reusable/AddButton";
+import { useDispatch } from "react-redux";
+import { addToCartThunk } from "../../../store/cart-redux";
+import DetailsSections from "../../../components/products/reusable/DetailsSections";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import { colors } from "../../../utils/colors";
+import ProductModal from "../../../components/products/modal/ProductModal";
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "DELIVER":
+      return { content: "delivery" };
+    case "WARRANTY":
+      return { content: "warranty" };
+    case "BUY_NOW":
+      return { content: "buy_now" };
+    case "ADD_REVIEW":
+      return { content: "add_review" };
+    default:
+      return state;
+  }
+}
 
 type RootStackParamList = {
   ProductDetails: { _id: string };
@@ -15,96 +38,117 @@ export default function ProductDetails({
 }) {
   const id = route.params._id;
 
+  const dispatchCart = useDispatch();
+  const [actualQuantity, setActualQuantity] = useState("1");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [state, dispatch] = useReducer(reducer, { content: "" });
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["products", id],
     queryFn: () => getProductDetails(id),
   });
+
+  const changeHandler = (value: number) => {
+    const quantity = Math.floor(value);
+    if (quantity > data.availableQuantity) {
+      setActualQuantity(data.availableQuantity.toString());
+    } else {
+      setActualQuantity(quantity);
+    }
+  };
+
+  const handleOpenModal = (type) => {
+    dispatch({ type });
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleAddToCart = async (product) => {
+    dispatchCart(addToCartThunk({ product, quantity: actualQuantity }));
+  };
+
   if (isLoading) {
     return <Text>"Loading..."</Text>;
   }
 
   return (
     <ScrollView>
-      <View className="flex-1 mt-7 h-full w-full justify-center">
-        <Image
-          source={{ uri: data.image }}
-          accessibilityLabel={data.name}
-          className="w-2/5 h-1/2 rounded-md aspect-square"
-        />
-        <View>
-          <View className="flex flex-col pt-3 pl-3 mb-2">
-            <Text className="text-3xl mb-2 text-darkText">{data.name}</Text>
+      <View className="flex-1 justify-center items-center">
+        <View className="flex-1 w-full items-center bg-darkBgSoft rounded-md">
+          <Image
+            source={{ uri: data.image }}
+            accessibilityLabel={data.name}
+            className="w-full h-[80%] rounded-md p-2 aspect-square"
+          />
+          <View className="flex-1 w-full p-2 mt-2 gap-2">
+            <Text className="text-3xl text-darkText">{data.name}</Text>
             {/*<ReviewStar list={data.reviews} />*/}
+            <Text className="text-lg text-darkText font-semibold">
+              {data.price} zł
+            </Text>
           </View>
-          <View className="flex space-x-5">
-            <View className="flex flex-col rounded-md border border-gray-300 shadow-md h-[23rem] w-64">
-              <View className="border-b border-gray-300 w-full pt-4">
-                <Text className="flex justify-end text-3xl mr-4 text-darkText">
-                  {data.price} zł
-                </Text>
-                <View className="flex mt-3 justify-center">
-                  {/*<input*/}
-                  {/*    type={"number"}*/}
-                  {/*    className="rounded-md h-10 w-20 mt-3 text-xl border border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-500"*/}
-                  {/*    value={actualQuantity}*/}
-                  {/*    min={1}*/}
-                  {/*    max={data.availableQuantity}*/}
-                  {/*    onChange={changeHandler}*/}
-                  {/*/>*/}
-                  {/*<AddButton onClick={() => handleAddToCart(data)}>*/}
-                  {/*    <FaCartPlus className="text-white" />*/}
-                  {/*    <p className="ml-2 text-white">Add to cart</p>*/}
-                  {/*</AddButton>*/}
-                </View>
-              </View>
-              {/*<div>*/}
-              {/*    <DetailsSections*/}
-              {/*        component="div"*/}
-              {/*        firstText="Available"*/}
-              {/*        secondText={data.availableQuantity}*/}
-              {/*    />*/}
-              {/*    <DetailsSections*/}
-              {/*        component="button"*/}
-              {/*        firstText="Buy now, get on Tuesday"*/}
-              {/*        secondText="Click for more information"*/}
-              {/*        onClick={() => handleOpenModal("BUY_NOW")}*/}
-              {/*    >*/}
-              {/*        <FaClock size={26} className="mr-3 flex justify-center" />*/}
-              {/*    </DetailsSections>*/}
-              {/*    <DetailsSections*/}
-              {/*        component="button"*/}
-              {/*        firstText="Free Deliver"*/}
-              {/*        secondText="Click for more information"*/}
-              {/*        onClick={() => handleOpenModal("DELIVER")}*/}
-              {/*    >*/}
-              {/*        <FaTruck size={26} className="mr-3 flex justify-center" />*/}
-              {/*    </DetailsSections>*/}
-              {/*    <DetailsSections*/}
-              {/*        component="button"*/}
-              {/*        firstText="Waranty"*/}
-              {/*        onClick={() => handleOpenModal("WARRANTY")}*/}
-              {/*        isLast*/}
-              {/*    >*/}
-              {/*        <FaCalendarAlt*/}
-              {/*            size={26}*/}
-              {/*            className="mr-3 flex justify-center"*/}
-              {/*        />*/}
-              {/*    </DetailsSections>*/}
-              {/*</div>*/}
-            </View>
+        </View>
+        <View className="flex-1 rounded-md shadow-md h-[23rem] w-full">
+          <View className="flex flex-row items-center mt-2">
+            <TextInput
+              className="rounded-md text-center w-20 text-2xl border text-darkText border-darkBorder focus:outline-none focus:ring-0 focus:border-gray-500"
+              value={actualQuantity}
+              keyboardType="numeric"
+              onChangeText={changeHandler}
+            />
+            <AddButton onPress={() => handleAddToCart(data)}>
+              <Icon name="shopping-cart" color={colors.darkText} />
+              <Text className="ml-2 text-white">Add to cart</Text>
+            </AddButton>
+          </View>
+          <View className="bg-darkBgSoft rounded-md mt-2">
+            <DetailsSections
+              component="div"
+              firstText="Available"
+              secondText={data.availableQuantity}
+            />
+            <DetailsSections
+              component="button"
+              firstText="Buy now, get on Tuesday"
+              secondText="Click for more information"
+              onPress={() => handleOpenModal("BUY_NOW")}
+            >
+              <Icon name="clock" size={26} color={colors.darkText} />
+            </DetailsSections>
+            <DetailsSections
+              component="button"
+              firstText="Free Deliver"
+              secondText="Click for more information"
+              onPress={() => handleOpenModal("DELIVER")}
+            >
+              <Icon name="truck" size={26} color={colors.darkText} />
+            </DetailsSections>
+            <DetailsSections
+              component="button"
+              firstText="Waranty"
+              onPress={() => handleOpenModal("WARRANTY")}
+              isLast
+            >
+              <Icon name="calendar" size={26} color={colors.darkText} />
+            </DetailsSections>
           </View>
         </View>
       </View>
-      {/*{isModalOpen && (*/}
-      {/*    <ProductModal content={state.content} onClose={handleCloseModal} />*/}
-      {/*)}*/}
-      <View className="flex flex-col mt-10 sm:w-full md:w-3/4 justify-center items-center">
+      <ProductModal
+        isVisible={isModalOpen}
+        onClose={handleCloseModal}
+        content={state.content}
+      />
+      <View className="items-center mb-4">
         <Text className="text-3xl mb-4 text-darkText">Specification</Text>
-        <View className="rounded-md border border-gray-300 shadow-md p-4 w-3/4">
+        <View className="rounded-md border border-darkBorder shadow-md p-4">
           <Text className="text-2xl mb-2 text-darkText">Description</Text>
           <Text className="text-darkText">{data.shortDescription}</Text>
         </View>
-        {/*<ul className="my-4 w-3/4">*/}
+        {/*<FlatList className="my-4 w-3/4">*/}
         {/*    {data.specifications.map(({ key, value }, index) => (*/}
         {/*        <SpecificationElement*/}
         {/*            key={key}*/}
@@ -113,7 +157,7 @@ export default function ProductDetails({
         {/*            index={index}*/}
         {/*        />*/}
         {/*    ))}*/}
-        {/*</ul>*/}
+        {/*</FlatList>*/}
       </View>
       {/*<RecommendedProducts />*/}
       {/*<ReviewsAll onClick={() => handleOpenModal("ADD_REVIEW")} />*/}
