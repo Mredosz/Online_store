@@ -1,6 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { getProductDetails } from "../../../request/products";
-import { Image, ScrollView, Text, TextInput, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { useReducer, useState } from "react";
 import AddButton from "../../../components/products/reusable/AddButton";
@@ -10,6 +17,8 @@ import DetailsSections from "../../../components/products/reusable/DetailsSectio
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { colors } from "../../../utils/colors";
 import ProductModal from "../../../components/products/modal/ProductModal";
+import SpecificationElement from "../../../components/products/reusable/SpecificationElement";
+import ReviewsAll from "../../../components/products/review/ReviewsAll";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -142,25 +151,29 @@ export default function ProductDetails({
         onClose={handleCloseModal}
         content={state.content}
       />
-      <View className="items-center mb-4">
-        <Text className="text-3xl mb-4 text-darkText">Specification</Text>
+      <View className="items-center mb-4 gap-4">
+        <Text className="text-3xl text-darkText">Specification</Text>
         <View className="rounded-md border border-darkBorder shadow-md p-4">
           <Text className="text-2xl mb-2 text-darkText">Description</Text>
           <Text className="text-darkText">{data.shortDescription}</Text>
         </View>
-        {/*<FlatList className="my-4 w-3/4">*/}
-        {/*    {data.specifications.map(({ key, value }, index) => (*/}
-        {/*        <SpecificationElement*/}
-        {/*            key={key}*/}
-        {/*            left={key}*/}
-        {/*            right={value}*/}
-        {/*            index={index}*/}
-        {/*        />*/}
-        {/*    ))}*/}
-        {/*</FlatList>*/}
+        <FlatList
+          className="w-full px-2"
+          data={data.specifications}
+          keyExtractor={(item) => item.key}
+          scrollEnabled={false}
+          renderItem={({ item, index }) => (
+            <SpecificationElement
+              key={item.key}
+              left={item.key}
+              right={item.value}
+              index={index}
+            />
+          )}
+        />
       </View>
       {/*<RecommendedProducts />*/}
-      {/*<ReviewsAll onClick={() => handleOpenModal("ADD_REVIEW")} />*/}
+      <ReviewsAll onClick={() => handleOpenModal("ADD_REVIEW")} id={id} />
     </ScrollView>
   );
 }
