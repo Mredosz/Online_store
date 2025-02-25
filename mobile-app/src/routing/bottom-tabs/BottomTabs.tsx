@@ -5,10 +5,13 @@ import Search from "../../screens/search/Search";
 import { colors } from "../../utils/colors";
 import AccountStack from "../stack/AccountStack";
 import ProductStack from "../stack/ProductStack";
+import { useSelector } from "react-redux";
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabs() {
+  const cartItemNumber = useSelector((state) => state.cart.totalQuantity);
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -45,7 +48,11 @@ export default function BottomTabs() {
     >
       <Tab.Screen name="Home" component={ProductStack} />
       <Tab.Screen name="Search" component={Search} />
-      <Tab.Screen name="Cart" component={Cart} />
+      <Tab.Screen
+        name="Cart"
+        component={Cart}
+        options={{ tabBarBadge: cartItemNumber }}
+      />
       <Tab.Screen name="Account" component={AccountStack} />
     </Tab.Navigator>
   );

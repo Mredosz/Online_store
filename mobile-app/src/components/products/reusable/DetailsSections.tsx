@@ -1,12 +1,17 @@
-import { Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import {
+  Text,
+  TouchableOpacity,
+  TouchableOpacityProps,
+  View,
+} from "react-native";
+import React, { ReactNode } from "react";
 
-type DetailsSectionsProps = {
+type DetailsSectionsProps = TouchableOpacityProps & {
   component: string;
-  children: React.ReactElement;
+  children?: ReactNode;
   firstText: string;
-  secondText: string;
-  isLast: boolean;
+  secondText?: string;
+  isLast?: boolean;
 };
 
 export default function DetailsSections({

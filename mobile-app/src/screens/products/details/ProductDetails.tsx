@@ -48,7 +48,7 @@ export default function ProductDetails({
   const id = route.params._id;
 
   const dispatchCart = useDispatch();
-  const [actualQuantity, setActualQuantity] = useState("1");
+  const [actualQuantity, setActualQuantity] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [state, dispatch] = useReducer(reducer, { content: "" });
 
@@ -66,7 +66,7 @@ export default function ProductDetails({
     }
   };
 
-  const handleOpenModal = (type) => {
+  const handleOpenModal = (type: string) => {
     dispatch({ type });
     setIsModalOpen(true);
   };
