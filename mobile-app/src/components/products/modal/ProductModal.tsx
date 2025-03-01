@@ -1,5 +1,5 @@
 import { buyNow, delivery, warranty } from "./content";
-import { TouchableOpacity, View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import Modal from "react-native-modal";
 import React from "react";
 
@@ -47,12 +47,12 @@ export default function ProductModal({
         {children}
 
         <View className="flex-row space-x-3 mt-4">
-          <TouchableOpacity
+          <Pressable
             onPress={onClose}
             className="px-4 py-2 bg-darkBgMuted rounded-lg"
           >
             <Text className="text-darkText">{children ? "No" : "Close"}</Text>
-          </TouchableOpacity>
+          </Pressable>
           {button}
         </View>
       </View>

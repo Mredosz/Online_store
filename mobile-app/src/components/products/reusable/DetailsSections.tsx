@@ -1,12 +1,7 @@
-import {
-  Text,
-  TouchableOpacity,
-  TouchableOpacityProps,
-  View,
-} from "react-native";
+import { Pressable, PressableProps, Text, View } from "react-native";
 import React, { ReactNode } from "react";
 
-type DetailsSectionsProps = TouchableOpacityProps & {
+type DetailsSectionsProps = PressableProps & {
   component: string;
   children?: ReactNode;
   firstText: string;
@@ -32,12 +27,12 @@ export default function DetailsSections({
       <Text className="pr-3 text-gray-500">{secondText}</Text>
     </View>
   ) : (
-    <TouchableOpacity {...props} className={classButton}>
+    <Pressable {...props} className={classButton}>
       {children}
       <View className="ml-3">
         <Text className="text-darkText">{firstText}</Text>
         <Text className="text-sm text-gray-500">{secondText}</Text>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 }

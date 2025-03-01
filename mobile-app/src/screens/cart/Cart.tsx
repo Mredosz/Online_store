@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import Button from "../../components/delivery/Button";
 import { deleteCartThunk } from "../../store/cart-redux";
 import CartView from "./CartView";
 import CartItem from "./CartItem";
+import { AppDispatch, RootState } from "../../store/store-redux";
 
 export default function Cart() {
-  const products = useSelector((state) => state.cart.products);
-  const dispatch = useDispatch();
+  const products = useSelector((state: RootState) => state.cart.products);
+  const dispatch = useDispatch<AppDispatch>();
 
   const calculateTotalPrice = (deliverPrice = 0) => {
     if (!products || products.length === 0) return 0;
@@ -30,12 +31,12 @@ export default function Cart() {
     <CartView>
       <View className="relative">
         {products.length > 0 && (
-          <TouchableOpacity
+          <Pressable
             onPress={handleDeleteAll}
             className="absolute top-0 right-0"
           >
             <Text className="text-darkText">Delete all</Text>
-          </TouchableOpacity>
+          </Pressable>
         )}
       </View>
       <Text className="text-3xl text-center font-semibold text-darkText">

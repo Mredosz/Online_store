@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { logout } from "../../../request/account";
 import { accountAction } from "../../../store/account-redux";
 import { useDispatch } from "react-redux";
@@ -13,12 +13,12 @@ export default function Logout() {
   };
   return (
     <View className="flex h-full w-full justify-center items-center">
-      <TouchableOpacity
+      <Pressable
         onPress={handleLogout}
         className="px-3 py-2 rounded-md bg-darkBgMuted"
       >
         <Text className="text-darkText">Log out.</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }

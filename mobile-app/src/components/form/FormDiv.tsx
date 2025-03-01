@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { Link } from "@react-navigation/native";
 
 type FormDivProps = {
@@ -65,13 +65,12 @@ export default function FormDiv({
             </Link>
           </View>
         )}
-        <TouchableOpacity
+        <Pressable
           className={"bg-green-400 rounded-md mt-8"}
-          disabled={!isValidate}
           onPress={handleSubmit}
         >
           <Text className="text-white text-center py-2">{buttonText}</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );

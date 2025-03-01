@@ -19,7 +19,7 @@ export default function Input({
       <Text className="uppercase font-semibold mb-1 text-darkText">
         {label}
       </Text>
-      <TextInput className={inputClasses} {...props} />
+      <TextInput className={inputClasses} {...props} autoCapitalize="none" />
       {error.value && error.message && (
         <Text className="text-red-500">{error.message}</Text>
       )}

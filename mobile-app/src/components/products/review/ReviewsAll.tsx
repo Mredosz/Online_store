@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllReviewFromProduct } from "../../../request/review.js";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import ReviewStar from "./ReviewStar";
 
 type ReviewsAllProps = {
@@ -21,12 +21,12 @@ export default function ReviewsAll({ onClick, id }: ReviewsAllProps) {
           <Text className="text-3xl mb-4 mt-3 text-center text-darkText">
             Reviews
           </Text>
-          <TouchableOpacity
+          <Pressable
             onPress={onClick}
-            className="rounded-md py-2 px-4 bg-green-700 absolute right-6 top-4"
+            className="rounded-md py-2 px-4 bg-green-700 active:bg-green-900 absolute right-6 top-4"
           >
             <Text className="text-darkText">Add review</Text>
-          </TouchableOpacity>
+          </Pressable>
           <View className="flex items-center px-2 divide-y gap-4 divide-gray-400">
             {data
               ?.filter((review) => review.isAccepted === true)
