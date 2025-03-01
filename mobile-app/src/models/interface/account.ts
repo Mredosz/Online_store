@@ -4,4 +4,5 @@ export default interface Account {
   isLogged: boolean;
   isAdmin?: boolean;
   role: UserRole;
+  token: string;
 }

@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const checkErrors = require("../util/checkErrors");
-const { createTokensAndAddToCookie } = require("../util/tokenManager");
+const { createToken } = require("../util/tokenManager");
 
 exports.register = async (req, res) => {
   if (checkErrors(req, res)) return;
@@ -25,13 +25,14 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   if (checkErrors(req, res)) return;
-  const user = req.body;
+  const user = req.body.user;
+  const platform = req.body.platform;
   const userDb = await User.findOne({ email: user.email });
 
   try {
     const doMatch = await bcrypt.compare(user.password, userDb.password);
     if (userDb.email === user.email && doMatch) {
-      createTokensAndAddToCookie(res, userDb);
+      createToken(res, userDb, platform);
 
       res.status(200).json({ message: "Logged in", role: userDb.role });
     } else {

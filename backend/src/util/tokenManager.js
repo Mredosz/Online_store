@@ -1,20 +1,23 @@
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
 
 const COOKIE_JWT_TOKEN = 1000 * 60 * 60 * 24 * 7;
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_TOKEN_EXPIRED = "7d";
 
-exports.createTokensAndAddToCookie = (res, userDb) => {
+exports.createToken = (res, userDb, platform) => {
   const token = jwt.sign({ id: userDb._id }, JWT_SECRET, {
     expiresIn: JWT_TOKEN_EXPIRED,
   });
-  res.cookie("Jwt_token", token, {
-    httpOnly: true,
-    secure: false,
-    maxAge: COOKIE_JWT_TOKEN,
-    path: "/",
-  });
+  if (platform !== "mobile") {
+    res.cookie("Jwt_token", token, {
+      httpOnly: true,
+      secure: false,
+      maxAge: COOKIE_JWT_TOKEN,
+      path: "/",
+    });
+  } else if (platform === "mobile") {
+    res.setHeader("Authorization", token);
+  }
   return token;
 };
 
@@ -23,14 +26,16 @@ exports.getUserIdFromToken = (req, res) => {
 
   try {
     decodedJwtToken = jwt.verify(
-      req.cookies["Jwt_token"],
+      req.cookies["Jwt_token"] || req.headers["authorization"],
       process.env.JWT_SECRET,
     );
     if (!decodedJwtToken.id) {
-      return res.status(401).json({ message: "Invalid jwt token: missing id" });
+      res.status(401).json({ message: "Invalid jwt token: missing id" });
+      return;
     }
   } catch (err) {
-    return res.status(401).json({ message: "Invalid jwt token" });
+    res.status(401).json({ message: "Invalid jwt token" });
+    return;
   }
   return decodedJwtToken.id;
 };

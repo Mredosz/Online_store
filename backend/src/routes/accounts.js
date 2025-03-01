@@ -36,7 +36,7 @@ router.post(
 );
 router.post(
   "/login",
-  body("email").isEmail().withMessage("Please enter a valid email."),
+  body("user.email").isEmail().withMessage("Please enter a valid email."),
   accountController.login,
 );
 

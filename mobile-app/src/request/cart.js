@@ -1,9 +1,12 @@
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const getCart = async () => {
   return (
     await axios.get("http://localhost:3000/cart", {
-      withCredentials: true,
+      headers: {
+        Authorization: await AsyncStorage.getItem("token"),
+      },
     })
   ).data;
 };

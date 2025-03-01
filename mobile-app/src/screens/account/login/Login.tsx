@@ -8,6 +8,7 @@ import { isDifferent } from "../../../validators/account";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../store/store-redux";
 import { accountAction } from "../../../store/account-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const enteredDefault = {
   email: "",
@@ -39,7 +40,8 @@ export default function Login() {
   const { mutateAsync, error, data } = useMutation({
     mutationKey: ["login"],
     mutationFn: login,
-    onSuccess: () => {
+    onSuccess: async (data) => {
+      await AsyncStorage.setItem("token", data?.headers["authorization"]);
       setEnteredValue(enteredDefault);
       setIsEdit(isEditDefault);
       setIsValidate(false);
@@ -48,7 +50,13 @@ export default function Login() {
 
   const handleSubmit = async () => {
     await mutateAsync(enteredValue);
-    dispatch(accountAction.login({ isLogged: true, role: data?.role }));
+    dispatch(
+      accountAction.login({
+        isLogged: true,
+        role: data?.data.role,
+        token: data?.headers["Authorization"],
+      }),
+    );
   };
 
   const handleInputChange = (

@@ -4,4 +4,6 @@ const router = express.Router();
 
 router.get("/", accessController.checkAccess);
 
+router.post("/", accessController.checkAccess);
+
 module.exports = router;

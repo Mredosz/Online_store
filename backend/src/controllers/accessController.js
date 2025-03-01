@@ -1,9 +1,10 @@
 const jwt = require("jsonwebtoken");
-const { createTokensAndAddToCookie } = require("../util/tokenManager");
-require("dotenv").config();
+const { createToken } = require("../util/tokenManager");
 
 exports.checkAccess = async (req, res, next) => {
-  const jwtToken = req.cookies["Jwt_token"];
+  const platform = req.body.platform;
+
+  const jwtToken = req.headers["authorization"];
   const ONE_DAY = 1000 * 60 * 60 * 24;
 
   if (!jwtToken) {
@@ -24,11 +25,7 @@ exports.checkAccess = async (req, res, next) => {
 
   if (decodedJwtToken.exp * 1000 < Date.now() + ONE_DAY) {
     try {
-      createTokensAndAddToCookie(
-        res,
-        { _id: decodedJwtToken.id },
-        "refreshToken",
-      );
+      createToken(res, { _id: decodedJwtToken.id }, platform);
     } catch (err) {
       return res.status(401).json({ message: "Unable to renew Jwt token" });
     }
