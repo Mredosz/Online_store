@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Account from "../models/interface/account";
+import { UserRole } from "../models/enum/user-role";
 
 const initialState: Account = {
   isLogged: true,
   isAdmin: false,
+  role: UserRole.USER,
 };
 
 export const accountSlice = createSlice({
@@ -12,7 +14,7 @@ export const accountSlice = createSlice({
   reducers: {
     login(state, action: PayloadAction<Account>) {
       state.isLogged = action.payload.isLogged;
-      state.isAdmin = action.payload.isAdmin === "admin";
+      state.isAdmin = action.payload.role === UserRole.ADMIN;
 
       // localStorage.setItem("is_logged_in", state.isLogged);
       // localStorage.setItem("is_admin", state.isAdmin);

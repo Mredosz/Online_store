@@ -5,6 +5,9 @@ import FormDiv from "../../../components/form/FormDiv";
 import Input from "../../../components/form/Input";
 import useValidation from "../../../hooks/useValidation";
 import { isDifferent } from "../../../validators/account";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../store/store-redux";
+import { accountAction } from "../../../store/account-redux";
 
 const enteredDefault = {
   email: "",
@@ -22,6 +25,7 @@ export default function Login() {
   const [isValidate, setIsValidate] = useState(false);
 
   const validation = useValidation(enteredValue, isEdit);
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     if (
@@ -32,7 +36,7 @@ export default function Login() {
     }
   }, [enteredValue, isEdit, validation]);
 
-  const { mutateAsync, error } = useMutation({
+  const { mutateAsync, error, data } = useMutation({
     mutationKey: ["login"],
     mutationFn: login,
     onSuccess: () => {
@@ -44,6 +48,7 @@ export default function Login() {
 
   const handleSubmit = async () => {
     await mutateAsync(enteredValue);
+    dispatch(accountAction.login({ isLogged: true, role: data?.role }));
   };
 
   const handleInputChange = (
