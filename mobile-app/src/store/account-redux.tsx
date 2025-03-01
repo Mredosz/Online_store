@@ -1,6 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import Account from "../models/interface/account";
 
-const initialState = {
+const initialState: Account = {
   isLogged: true,
   isAdmin: false,
 };
@@ -9,7 +10,7 @@ export const accountSlice = createSlice({
   name: "account",
   initialState,
   reducers: {
-    login(state, action) {
+    login(state, action: PayloadAction<Account>) {
       state.isLogged = action.payload.isLogged;
       state.isAdmin = action.payload.isAdmin === "admin";
 
