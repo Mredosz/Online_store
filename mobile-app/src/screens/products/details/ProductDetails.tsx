@@ -19,8 +19,20 @@ import { colors } from "../../../utils/colors";
 import ProductModal from "../../../components/products/modal/ProductModal";
 import SpecificationElement from "../../../components/products/reusable/SpecificationElement";
 import ReviewsAll from "../../../components/products/review/ReviewsAll";
+import Product from "../../../models/interface/product";
+import ReviewStar from "../../../components/products/review/ReviewStar";
 
-function reducer(state, action) {
+type State = {
+  content: string;
+};
+
+type Action =
+  | { type: "DELIVER" }
+  | { type: "WARRANTY" }
+  | { type: "BUY_NOW" }
+  | { type: "ADD_REVIEW" };
+
+function reducer(state: State, action: Action) {
   switch (action.type) {
     case "DELIVER":
       return { content: "delivery" };
@@ -57,16 +69,14 @@ export default function ProductDetails({
     queryFn: () => getProductDetails(id),
   });
 
-  const changeHandler = (value: number) => {
-    const quantity = Math.floor(value);
-    if (quantity > data.availableQuantity) {
-      setActualQuantity(data.availableQuantity.toString());
-    } else {
-      setActualQuantity(quantity);
-    }
+  const changeHandler = (value: string) => {
+    const quantity = parseInt(value.replace(/[^0-9]/g, ""));
+    setActualQuantity(
+      Math.min(data.availableQuantity, quantity ? quantity : 0),
+    );
   };
 
-  const handleOpenModal = (type: string) => {
+  const handleOpenModal = (type: Action["type"]) => {
     dispatch({ type });
     setIsModalOpen(true);
   };
@@ -75,8 +85,10 @@ export default function ProductDetails({
     setIsModalOpen(false);
   };
 
-  const handleAddToCart = async (product) => {
-    dispatchCart(addToCartThunk({ product, quantity: actualQuantity }));
+  const handleAddToCart = async (product: Product) => {
+    if (actualQuantity !== 0) {
+      dispatchCart(addToCartThunk({ product, quantity: actualQuantity }));
+    }
   };
 
   if (isLoading) {
@@ -94,7 +106,7 @@ export default function ProductDetails({
           />
           <View className="flex-1 w-full p-2 mt-2 gap-2">
             <Text className="text-3xl text-darkText">{data.name}</Text>
-            {/*<ReviewStar list={data.reviews} />*/}
+            <ReviewStar list={data.reviews} />
             <Text className="text-lg text-darkText font-semibold">
               {data.price} zł
             </Text>
@@ -104,7 +116,7 @@ export default function ProductDetails({
           <View className="flex flex-row items-center mt-2">
             <TextInput
               className="rounded-md text-center w-20 text-2xl border text-darkText border-darkBorder focus:outline-none focus:ring-0 focus:border-gray-500"
-              value={actualQuantity}
+              value={actualQuantity.toString()}
               keyboardType="numeric"
               onChangeText={changeHandler}
             />

@@ -91,7 +91,6 @@ export const cartSlice = createSlice({
         });
       } else if (quantity >= newProduct.availableQuantity) {
         existingProduct.quantity = newProduct.availableQuantity;
-        console.log(quantity);
       } else {
         existingProduct.quantity = quantity;
       }

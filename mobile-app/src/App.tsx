@@ -36,7 +36,7 @@ export default function App() {
 
   return (
     <>
-      {isLogged && <StatusBar />}
+      <StatusBar />
       {isLogged && <BottomTabs />}
       {!isLogged && <AccountStack />}
     </>

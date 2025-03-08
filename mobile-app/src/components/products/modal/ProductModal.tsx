@@ -6,7 +6,7 @@ import React from "react";
 type ProductModalProps = {
   isVisible: boolean;
   onClose: () => void;
-  content?: "warranty" | "delivery" | "buy_now";
+  content?: string;
   children?: React.ReactNode;
   button?: React.ReactElement;
 };
