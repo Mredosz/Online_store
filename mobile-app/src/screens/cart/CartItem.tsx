@@ -55,7 +55,7 @@ export default function CartItem({ product, quantity }: CartItemProp) {
         <Text className="text-lg text-darkText">{product.name}</Text>
         <TextInput
           keyboardType="numeric"
-          className="rounded-md h-10 w-20 border text-darkText text-center border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-500"
+          className="rounded-md h-12 w-20 border text-darkText text-center border-gray-300 focus:outline-none focus:ring-0 focus:border-gray-500"
           value={actualQuantity.toString()}
           onChangeText={changeHandler}
         />
