@@ -1,9 +1,10 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { EXPO_BASE_URL } from "@env";
 
 export const getCart = async () => {
   return (
-    await axios.get("http://localhost:3000/cart", {
+    await axios.get(`${EXPO_BASE_URL}/cart`, {
       headers: {
         Authorization: await AsyncStorage.getItem("token"),
       },
@@ -13,24 +14,30 @@ export const getCart = async () => {
 
 export const addToCart = async (cart) => {
   return (
-    await axios.post("http://localhost:3000/cart", cart, {
-      withCredentials: true,
+    await axios.post(`${EXPO_BASE_URL}/cart`, cart, {
+      headers: {
+        Authorization: await AsyncStorage.getItem("token"),
+      },
     })
   ).data;
 };
 
 export const deleteFromCart = async (id) => {
   return (
-    await axios.delete(`http://localhost:3000/cart/${id}`, {
-      withCredentials: true,
+    await axios.delete(`${EXPO_BASE_URL}/cart/${id}`, {
+      headers: {
+        Authorization: await AsyncStorage.getItem("token"),
+      },
     })
   ).data;
 };
 
 export const deleteCart = async () => {
   return (
-    await axios.delete("http://localhost:3000/cart/", {
-      withCredentials: true,
+    await axios.delete(`${EXPO_BASE_URL}/cart/`, {
+      headers: {
+        Authorization: await AsyncStorage.getItem("token"),
+      },
     })
   ).data;
 };

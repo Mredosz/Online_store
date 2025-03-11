@@ -1,8 +1,9 @@
 import axios from "axios";
+import { EXPO_BASE_URL } from "@env";
 
 export const getAllOrders = async () => {
   return (
-    await axios.get("http://localhost:3000/order/", {
+    await axios.get(`${EXPO_BASE_URL}/order/`, {
       withCredentials: true,
     })
   ).data;
@@ -10,7 +11,7 @@ export const getAllOrders = async () => {
 
 export const getOrderById = async (id) => {
   return (
-    await axios.get(`http://localhost:3000/order/${id}`, {
+    await axios.get(`${EXPO_BASE_URL}/order/${id}`, {
       withCredentials: true,
     })
   ).data;
@@ -18,27 +19,7 @@ export const getOrderById = async (id) => {
 
 export const addOrder = async (order) => {
   return (
-    await axios.post("http://localhost:3000/order/", order, {
-      withCredentials: true,
-    })
-  ).data;
-};
-
-export const changeOrderStatus = async (id, status) => {
-  return (
-    await axios.put(
-      `http://localhost:3000/order/${id}`,
-      { status },
-      {
-        withCredentials: true,
-      },
-    )
-  ).data;
-};
-
-export const getReports = async () => {
-  return (
-    await axios.get("http://localhost:3000/order/reports", {
+    await axios.post(`${EXPO_BASE_URL}/order/`, order, {
       withCredentials: true,
     })
   ).data;

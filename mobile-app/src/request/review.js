@@ -1,12 +1,13 @@
 import axios from "axios";
+import { EXPO_BASE_URL } from "@env";
 
 export const getAllReview = async () => {
-  return (await axios.get("http://localhost:3000/review/")).data;
+  return (await axios.get(`${EXPO_BASE_URL}/review/`)).data;
 };
 
 export const getAllReviewFromProduct = async (id) => {
   return (
-    await axios.get(`http://localhost:3000/review/${id}`, {
+    await axios.get(`${EXPO_BASE_URL}/review/${id}`, {
       withCredentials: true,
     })
   ).data;
@@ -14,29 +15,7 @@ export const getAllReviewFromProduct = async (id) => {
 
 export const addReview = async (id, review) => {
   return (
-    await axios.post(`http://localhost:3000/review/${id}`, review, {
-      withCredentials: true,
-    })
-  ).data;
-};
-
-export const acceptReview = async (id, value) => {
-  return (
-    await axios.put(
-      `http://localhost:3000/review/${id}`,
-      {
-        isAccepted: value,
-      },
-      {
-        withCredentials: true,
-      },
-    )
-  ).data;
-};
-
-export const deleteReview = async (id) => {
-  return (
-    await axios.delete(`http://localhost:3000/review/${id}`, {
+    await axios.post(`${EXPO_BASE_URL}/review/${id}`, review, {
       withCredentials: true,
     })
   ).data;
