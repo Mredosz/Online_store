@@ -1,6 +1,14 @@
 import { Text, View } from "react-native";
+import { ReactNode } from "react";
 
-export default function CartView({ children, alert }) {
+type CartViewProps = {
+  children: ReactNode;
+  alert?: {
+    msg: string;
+  }[];
+};
+
+export default function CartView({ children, alert }: CartViewProps) {
   return (
     <>
       <View>{alert?.map((err) => <Text key={err.msg}>{err.msg}</Text>)}</View>

@@ -1,13 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Pressable, Text, View } from "react-native";
-import Button from "../../components/delivery/Button";
 import { deleteCartThunk } from "../../store/cart-redux";
 import CartView from "./CartView";
 import CartItem from "./CartItem";
 import { AppDispatch, RootState } from "../../store/store-redux";
+import { Link } from "@react-navigation/native";
+import CartProduct from "../../models/interface/cart-product";
 
 export default function Cart() {
-  const products = useSelector((state: RootState) => state.cart.products);
+  const products = useSelector<RootState, CartProduct[]>(
+    (state) => state.cart.products,
+  );
   const dispatch = useDispatch<AppDispatch>();
 
   const calculateTotalPrice = (deliverPrice = 0) => {
@@ -22,10 +25,6 @@ export default function Cart() {
   const handleDeleteAll = () => {
     dispatch(deleteCartThunk());
   };
-
-  // const handleDeliver = () => {
-  //     navigate("delivery");
-  // };
 
   return (
     <CartView>
@@ -78,14 +77,13 @@ export default function Cart() {
             </Text>
           </View>
         </View>
-        <Button
-          // onClick={handleDeliver}
+        <Link
           className="w-full"
-          isValid={products.length > 0}
+          screen="DeliveryEnd"
           disabled={products.length === 0}
         >
           Next
-        </Button>
+        </Link>
       </View>
     </CartView>
   );

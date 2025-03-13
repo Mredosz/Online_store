@@ -11,7 +11,9 @@ import { accountAction } from "./store/account-redux";
 import { AxiosError } from "axios";
 
 export default function App() {
-  const isLogged = useSelector<RootState>((state) => state.account.isLogged);
+  const isLogged = useSelector<RootState, boolean>(
+    (state) => state.account.isLogged,
+  );
   const dispatch = useDispatch<AppDispatch>();
 
   useLayoutEffect(() => {

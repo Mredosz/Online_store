@@ -1,18 +1,18 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import Cart from "../../screens/cart/Cart";
 import Search from "../../screens/search/Search";
 import { colors } from "../../utils/colors";
 import ProductStack from "../stack/ProductStack";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store-redux";
 import Logout from "../../screens/account/logout/Logout";
+import CartStack from "../stack/CartStack";
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabs() {
-  const cartItemNumber = useSelector(
-    (state: RootState) => state.cart.totalQuantity,
+  const cartItemNumber = useSelector<RootState, number>(
+    (state) => state.cart.totalQuantity,
   );
 
   return (
@@ -53,7 +53,7 @@ export default function BottomTabs() {
       <Tab.Screen name="Search" component={Search} />
       <Tab.Screen
         name="Cart"
-        component={Cart}
+        component={CartStack}
         options={{ tabBarBadge: cartItemNumber }}
       />
       <Tab.Screen name="Account" component={Logout} />

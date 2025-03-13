@@ -4,7 +4,7 @@ import Modal from "react-native-modal";
 import React from "react";
 
 type ProductModalProps = {
-  isVisible: boolean;
+  isVisible?: boolean;
   onClose: () => void;
   content?: string;
   children?: React.ReactNode;
