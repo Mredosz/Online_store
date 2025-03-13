@@ -11,18 +11,16 @@ export default function DeliveryEndItem({
   quantity,
 }: DeliveryEndItemProps) {
   return (
-    <View className="flex items-center justify-between rounded-md border border-formBorder shadow-md bg-white">
-      <View className="flex items-center space-x-5">
-        <Image
-          source={{ uri: product.image }}
-          accessibilityLabel={product.name}
-          className="h-1/2 w-1/2 rounded-l-md"
-        />
-        <Text className="text-xl">{product.name}</Text>
-      </View>
+    <View className="flex-1 p-3 flex-row mt-3 items-center justify-between rounded-md shadow-md bg-darkBgMuted">
+      <Image
+        source={{ uri: product.image }}
+        accessibilityLabel={product.name}
+        className="h-40 w-[42%] rounded-md"
+      />
       <View className="flex items-center justify-around w-1/2">
-        <Text className="text-lg">{product.price}</Text>
-        <Text className="text-lg">{quantity}</Text>
+        <Text className="text-xl text-darkText">{product.name}</Text>
+        <Text className="text-lg text-darkText">{product.price}</Text>
+        <Text className="text-lg text-darkText">{quantity}</Text>
       </View>
     </View>
   );

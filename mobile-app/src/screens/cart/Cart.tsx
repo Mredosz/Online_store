@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import { deleteCartThunk } from "../../store/cart-redux";
 import CartView from "./CartView";
 import CartItem from "./CartItem";
@@ -42,11 +42,17 @@ export default function Cart() {
         Cart
       </Text>
       {products.length > 0 ? (
-        <View className="mt-6 gap-6">
-          {products.map(({ product, quantity }) => (
-            <CartItem key={product._id} product={product} quantity={quantity} />
-          ))}
-        </View>
+        <ScrollView>
+          <View className="mt-6 gap-6">
+            {products.map(({ product, quantity }) => (
+              <CartItem
+                key={product._id}
+                product={product}
+                quantity={quantity}
+              />
+            ))}
+          </View>
+        </ScrollView>
       ) : (
         <Text className="text-darkText">Cart is empty</Text>
       )}

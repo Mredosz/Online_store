@@ -12,7 +12,7 @@ export default function CartView({ children, alert }: CartViewProps) {
   return (
     <>
       <View>{alert?.map((err) => <Text key={err.msg}>{err.msg}</Text>)}</View>
-      <View className="flex-1 bg-darkBg p-3">{children}</View>
+      <View className="flex-1 h-full bg-darkBg p-3">{children}</View>
     </>
   );
 }
